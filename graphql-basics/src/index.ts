@@ -1,12 +1,40 @@
-// Using typescript (son no need for babel to get import/export syntax)
+import { GraphQLServer } from 'graphql-yoga'
 
-import myCity, { message, name, getGreeting } from './myModule'
-import addFunc, { subtract } from './math'
 
-console.log(message)
-console.log(name)
-console.log(myCity)
-console.log(getGreeting(name))
 
-console.log(addFunc(10,7))
-console.log(subtract(20, 10))
+// Type definitions (Schema)
+const typeDefs = `
+  type Query {
+    hello: String!
+    name: String!
+    location: String!
+    bio: String!
+  }
+`
+
+// Resolvers
+const resolvers = {
+  Query: {
+    hello() {
+      return 'This is my first query!'
+    },
+    name() {
+      return 'Bernardo Quina'
+    },
+    location() {
+      return 'Lisboa'
+    },
+    bio() {
+      return 'I am a self-taught web developer, currently learning GraphQL.'
+    }
+  }
+}
+
+const server = new GraphQLServer({
+  typeDefs,
+  resolvers
+})
+
+server.start(() => {
+  console.log('The server is up!')
+})
