@@ -6,6 +6,7 @@ type User = {
   name: string
   email: string
   age?: number
+  posts: string[]
 }
 
 // Typescript type for posts
@@ -14,6 +15,7 @@ type Post = {
   title: string
   body: string
   published: boolean
+  author: string
 }
 
 // Demo post data
@@ -23,18 +25,21 @@ const posts: Post[] = [
     title: 'The first post',
     body: 'This is the body of the first post',
     published: true,
+    author: '1'
   },
   {
     id: '2',
     title: 'The second post is not published',
     body: 'This text is not readable by users because it is not published',
     published: false,
+    author: '1'
   },
   {
     id: '3',
     title: 'GraphQL course',
     body: 'I am taking the GraphQL course by Andrew Mead on Udemy',
     published: true,
+    author: '2'
   },
 ]
 
@@ -45,22 +50,26 @@ const users: User[] = [
     name: 'Bernardo',
     email: 'bernardo@example.com',
     age: 24,
+    posts: ['1', '2']
   },
   {
     id: '2',
     name: 'Andrew',
     email: 'andrew@example.com',
     age: 27,
+    posts: ['3']
   },
   {
     id: '3',
     name: 'Sarah',
     email: 'sarah@example.com',
+    posts: []
   },
   {
     id: '4',
     name: 'Mike',
     email: 'mike@example.com',
+    posts: []
   },
 ]
 
@@ -78,6 +87,7 @@ const typeDefs = `
     name: String!
     email: String!
     age: Int
+    posts: [Post!]!
   }
 
   type Post {
@@ -85,6 +95,7 @@ const typeDefs = `
     title: String!
     body: String!
     published: Boolean!
+    author: User!
   }
 `
 
@@ -127,8 +138,22 @@ const resolvers = {
         body: 'The body',
         published: true,
       }
-    },
+    }
   },
+  Post: {
+    author(parent: Post, args: any, ctx: any, info: any) {
+      return users.find((user) => {
+        return user.id === parent.author
+      })
+    }
+  },
+  User: {
+    posts(parent: User, args: any, ctx: any, info: any) {
+      return posts.filter((post) => {
+        return post.author === parent.id
+      })
+    }
+  }
 }
 
 const server = new GraphQLServer({
