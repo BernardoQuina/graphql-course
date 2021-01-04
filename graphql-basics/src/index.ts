@@ -1,10 +1,20 @@
 import { GraphQLServer } from 'graphql-yoga'
 
+interface GreetingParams {
+  name?: string
+  position?: string
+}
 
+interface AddParams {
+  a: number
+  b: number
+}
 
 // Type definitions (Schema)
 const typeDefs = `
   type Query {
+    add(a: Float!, b: Float!): Float!
+    greeting(name: String, position: String): String!
     me: User!
     post: Post!
   }
@@ -27,6 +37,16 @@ const typeDefs = `
 // Resolvers
 const resolvers = {
   Query: {
+    add(source: any, args: AddParams, ctx: any, info: any) {
+      return args.a + args.b
+    },
+    greeting(source: any, args: GreetingParams, ctx: any, info: any) {
+      if (args.name && args.position) {
+        return `Hello, ${args.name}! You are my favorite ${args.position}`
+      } else {
+        return 'Hello!'
+      }
+    },
     me() {
       return {
         id: 'abc123',
