@@ -1,20 +1,74 @@
 import { GraphQLServer } from 'graphql-yoga'
 
-interface GreetingParams {
-  name?: string
-  position?: string
+// Typescript type for users
+type User = {
+  id: string
+  name: string
+  email: string
+  age?: number
 }
 
-interface AddParams {
-  numbers: number[]
+// Typescript type for posts
+type Post = {
+  id: string
+  title: string
+  body: string
+  published: boolean
 }
+
+// Demo post data
+const posts: Post[] = [
+  {
+    id: '1',
+    title: 'The first post',
+    body: 'This is the body of the first post',
+    published: true,
+  },
+  {
+    id: '2',
+    title: 'The second post is not published',
+    body: 'This text is not readable by users because it is not published',
+    published: false,
+  },
+  {
+    id: '3',
+    title: 'GraphQL course',
+    body: 'I am taking the GraphQL course by Andrew Mead on Udemy',
+    published: true,
+  },
+]
+
+// Demo user data
+const users: User[] = [
+  {
+    id: '1',
+    name: 'Bernardo',
+    email: 'bernardo@example.com',
+    age: 24,
+  },
+  {
+    id: '2',
+    name: 'Andrew',
+    email: 'andrew@example.com',
+    age: 27,
+  },
+  {
+    id: '3',
+    name: 'Sarah',
+    email: 'sarah@example.com',
+  },
+  {
+    id: '4',
+    name: 'Mike',
+    email: 'mike@example.com',
+  },
+]
 
 // Type definitions (Schema)
 const typeDefs = `
   type Query {
-    add(numbers: [Float]!): Float!
-    greeting(name: String, position: String): String!
-    grades: [Int!]!
+    users(query: String): [User!]!
+    posts(query: String): [Post!]!
     me: User!
     post: Post!
   }
@@ -37,29 +91,33 @@ const typeDefs = `
 // Resolvers
 const resolvers = {
   Query: {
-    add(source: any, args: AddParams, ctx: any, info: any) {
-      if (args.numbers.length === 0) {
-        return 0
-      } else {
-        return args.numbers.reduce((a, b) => a + b, 0)
+    users(parent: any, args: { query: string }, ctx: any, info: any) {
+      if (!args.query) {
+        return users
       }
+
+      return users.filter((user) => {
+        return user.name.toLowerCase().includes(args.query.toLowerCase())
+      })
     },
-    greeting(source: any, args: GreetingParams, ctx: any, info: any) {
-      if (args.name && args.position) {
-        return `Hello, ${args.name}! You are my favorite ${args.position}`
-      } else {
-        return 'Hello!'
+    posts(parent: any, args: { query: string }, ctx: any, info: any) {
+      if (!args.query) {
+        return posts
       }
-    },
-    grades(parent: any, args: any, ctx: any, info: any) {
-      return [99, 80, 93]
+
+      return posts.filter((post) => {
+        return (
+          post.title.toLowerCase().includes(args.query.toLowerCase()) ||
+          post.body.toLowerCase().includes(args.query.toLowerCase())
+        )
+      })
     },
     me() {
       return {
         id: 'abc123',
         name: 'Bernardo',
         email: 'bernardo@example.com',
-        age: 24
+        age: 24,
       }
     },
     post() {
@@ -67,15 +125,15 @@ const resolvers = {
         id: '123084',
         title: 'The title',
         body: 'The body',
-        published: true
+        published: true,
       }
-    }
-  }
+    },
+  },
 }
 
 const server = new GraphQLServer({
   typeDefs,
-  resolvers
+  resolvers,
 })
 
 server.start(() => {
