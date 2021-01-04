@@ -6,15 +6,15 @@ interface GreetingParams {
 }
 
 interface AddParams {
-  a: number
-  b: number
+  numbers: number[]
 }
 
 // Type definitions (Schema)
 const typeDefs = `
   type Query {
-    add(a: Float!, b: Float!): Float!
+    add(numbers: [Float]!): Float!
     greeting(name: String, position: String): String!
+    grades: [Int!]!
     me: User!
     post: Post!
   }
@@ -38,7 +38,11 @@ const typeDefs = `
 const resolvers = {
   Query: {
     add(source: any, args: AddParams, ctx: any, info: any) {
-      return args.a + args.b
+      if (args.numbers.length === 0) {
+        return 0
+      } else {
+        return args.numbers.reduce((a, b) => a + b, 0)
+      }
     },
     greeting(source: any, args: GreetingParams, ctx: any, info: any) {
       if (args.name && args.position) {
@@ -46,6 +50,9 @@ const resolvers = {
       } else {
         return 'Hello!'
       }
+    },
+    grades(parent: any, args: any, ctx: any, info: any) {
+      return [99, 80, 93]
     },
     me() {
       return {
