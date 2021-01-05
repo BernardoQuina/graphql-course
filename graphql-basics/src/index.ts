@@ -11,9 +11,6 @@ import { Post } from './typescript-types/Post'
 import { User } from './typescript-types/User'
 import { Comment } from './typescript-types/Comment'
 
-
-
-
 // Type definitions (Schema)
 const typeDefs = `
   type Query {
@@ -26,6 +23,8 @@ const typeDefs = `
 
   type Mutation {
     createUser(name: String!, email: String!, age: Int): User!
+    createPost(title: String!, body: String!, published: Boolean!, author: ID!): Post!
+    createComment(text: String!, author: ID!, post: ID!): Comment!
   }
 
   type User {
@@ -96,7 +95,7 @@ const resolvers = {
         body: 'The body',
         published: true,
       }
-    }
+    },
   },
   Mutation: {
     createUser(parent: any, args: any, ctx: any, info: any) {
@@ -113,13 +112,58 @@ const resolvers = {
         email: args.email,
         age: args.age,
         posts: [],
-        comments: []
+        comments: [],
       }
 
       users.push(user)
 
       return user
-    }
+    },
+    createPost(parent: any, args: any, ctx: any, info: any) {
+      const userExists = users.some((user) => user.id === args.author)
+
+      if (!userExists) {
+        throw new Error('User not found')
+      }
+
+      const post: Post = {
+        id: uuidv4(),
+        title: args.title,
+        body: args.body,
+        published: args.published,
+        author: args.author,
+        comments: [],
+      }
+
+      posts.push(post)
+
+      return post
+    },
+    createComment(parent: any, args: any, ctx: any, info: any) {
+      const userExists = users.some((user) => user.id === args.author)
+      const postExistsAndPublished = posts.some((post) => {
+        return post.id === args.post && post.published
+      })
+
+      if (!userExists) {
+        throw new Error('User not found')
+      }
+
+      if (!postExistsAndPublished) {
+        throw new Error('Post not found')
+      }
+
+      const comment: Comment = {
+        id: uuidv4(),
+        text: args.text,
+        author: args.author,
+        post: args.post,
+      }
+
+      comments.push(comment)
+
+      return comment
+    },
   },
   Post: {
     author(parent: Post, args: any, ctx: any, info: any) {
@@ -131,7 +175,7 @@ const resolvers = {
       return comments.filter((comment) => {
         return comment.post === parent.id
       })
-    }
+    },
   },
   User: {
     posts(parent: User, args: any, ctx: any, info: any) {
@@ -143,7 +187,7 @@ const resolvers = {
       return comments.filter((comment) => {
         return comment.author === parent.id
       })
-    }
+    },
   },
   Comment: {
     author(parent: Comment, args: any, ctx: any, info: any) {
@@ -155,8 +199,8 @@ const resolvers = {
       return posts.find((post) => {
         return post.id === parent.post
       })
-    }
-  }
+    },
+  },
 }
 
 const server = new GraphQLServer({
