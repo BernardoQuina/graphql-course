@@ -1,122 +1,18 @@
 import { GraphQLServer } from 'graphql-yoga'
+import { v4 as uuidv4 } from 'uuid'
 
-// Typescript type for users
-type User = {
-  id: string
-  name: string
-  email: string
-  age?: number
-  posts: string[]
-  comments: string[]
-}
+// Demo data
+import { comments } from './demo-data/comments'
+import { posts } from './demo-data/posts'
+import { users } from './demo-data/users'
 
-// Typescript type for posts
-type Post = {
-  id: string
-  title: string
-  body: string
-  published: boolean
-  author: string
-  comments: string[]
-}
+// Typescript types
+import { Post } from './typescript-types/Post'
+import { User } from './typescript-types/User'
+import { Comment } from './typescript-types/Comment'
 
-// Typescript type for comments
-type Comment = {
-  id: string
-  text: string
-  author: string
-  post: string
-}
 
-// Demo post data
-const posts: Post[] = [
-  {
-    id: '1',
-    title: 'The first post',
-    body: 'This is the body of the first post',
-    published: true,
-    author: '1',
-    comments: ['4', '3']
-  },
-  {
-    id: '2',
-    title: 'The second post is not published',
-    body: 'This text is not readable by users because it is not published',
-    published: false,
-    author: '1',
-    comments: ['2']
-  },
-  {
-    id: '3',
-    title: 'GraphQL course',
-    body: 'I am taking the GraphQL course by Andrew Mead on Udemy',
-    published: true,
-    author: '2',
-    comments: ['1']
-  },
-]
 
-// Demo user data
-const users: User[] = [
-  {
-    id: '1',
-    name: 'Bernardo',
-    email: 'bernardo@example.com',
-    age: 24,
-    posts: ['1', '2'],
-    comments: ['3']
-  },
-  {
-    id: '2',
-    name: 'Andrew',
-    email: 'andrew@example.com',
-    age: 27,
-    posts: ['3'],
-    comments: ['2']
-  },
-  {
-    id: '3',
-    name: 'Sarah',
-    email: 'sarah@example.com',
-    posts: [],
-    comments: ['1']
-  },
-  {
-    id: '4',
-    name: 'Mike',
-    email: 'mike@example.com',
-    posts: [],
-    comments: ['4']
-  },
-]
-
-// Demo comment data
-const comments: Comment[] = [
-  {
-    id: '1',
-    text: 'This post is trash',
-    author: '3',
-    post: '3'
-  },
-  {
-    id: '2',
-    text: 'I do not find this useful at all',
-    author: '2',
-    post: '2'
-  },
-  {
-    id: '3',
-    text: 'I think this is great!',
-    author: '1',
-    post: '1'
-  },
-  {
-    id: '4',
-    text: 'Just wow!',
-    author: '4',
-    post: '1'
-  }
-]
 
 // Type definitions (Schema)
 const typeDefs = `
@@ -126,6 +22,10 @@ const typeDefs = `
     comments: [Comment!]!
     me: User!
     post: Post!
+  }
+
+  type Mutation {
+    createUser(name: String!, email: String!, age: Int): User!
   }
 
   type User {
@@ -196,6 +96,29 @@ const resolvers = {
         body: 'The body',
         published: true,
       }
+    }
+  },
+  Mutation: {
+    createUser(parent: any, args: any, ctx: any, info: any) {
+      console.log(args)
+      const emailTaken = users.some((user) => user.email === args.email)
+
+      if (emailTaken) {
+        throw new Error('Email already taken')
+      }
+
+      const user: User = {
+        id: uuidv4(),
+        name: args.name,
+        email: args.email,
+        age: args.age,
+        posts: [],
+        comments: []
+      }
+
+      users.push(user)
+
+      return user
     }
   },
   Post: {
