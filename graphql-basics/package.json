@@ -6,7 +6,7 @@
   "license": "MIT",
   "scripts": {
     "watch": "tsc -w",
-    "start": "nodemon dist/index.js"
+    "start": "nodemon dist/index.js --ext js,graphql"
   },
   "devDependencies": {
     "@types/node": "^14.14.19",
