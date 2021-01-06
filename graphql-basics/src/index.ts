@@ -1,16 +1,100 @@
+
 import { GraphQLServer } from 'graphql-yoga'
 import { v4 as uuidv4 } from 'uuid'
-
-// Demo data
-import { comments } from './demo-data/comments'
-import { posts } from './demo-data/posts'
-import { users } from './demo-data/users'
 
 // Typescript types
 import { Post } from './typescript-types/Post'
 import { User } from './typescript-types/User'
 import { Comment } from './typescript-types/Comment'
 
+
+// Demo data
+let users: User[] = [
+  {
+    id: '1',
+    name: 'Bernardo',
+    email: 'bernardo@example.com',
+    age: 24,
+    posts: ['1', '2'],
+    comments: ['3']
+  },
+  {
+    id: '2',
+    name: 'Andrew',
+    email: 'andrew@example.com',
+    age: 27,
+    posts: ['3'],
+    comments: ['2']
+  },
+  {
+    id: '3',
+    name: 'Sarah',
+    email: 'sarah@example.com',
+    posts: [],
+    comments: ['1']
+  },
+  {
+    id: '4',
+    name: 'Mike',
+    email: 'mike@example.com',
+    posts: [],
+    comments: ['4']
+  },
+]
+
+let posts: Post[] = [
+  {
+    id: '1',
+    title: 'The first post',
+    body: 'This is the body of the first post',
+    published: true,
+    author: '1',
+    comments: ['4', '3']
+  },
+  {
+    id: '2',
+    title: 'The second post is not published',
+    body: 'This text is not readable by users because it is not published',
+    published: false,
+    author: '1',
+    comments: ['2']
+  },
+  {
+    id: '3',
+    title: 'GraphQL course',
+    body: 'I am taking the GraphQL course by Andrew Mead on Udemy',
+    published: true,
+    author: '2',
+    comments: ['1']
+  },
+]
+
+let comments: Comment[] = [
+  {
+    id: '1',
+    text: 'This post is trash',
+    author: '3',
+    post: '3'
+  },
+  {
+    id: '2',
+    text: 'I do not find this useful at all',
+    author: '2',
+    post: '2'
+  },
+  {
+    id: '3',
+    text: 'I think this is great!',
+    author: '1',
+    post: '1'
+  },
+  {
+    id: '4',
+    text: 'Just wow!',
+    author: '4',
+    post: '1'
+  }
+]
 // Type definitions (Schema)
 const typeDefs = `
   type Query {
@@ -23,8 +107,11 @@ const typeDefs = `
 
   type Mutation {
     createUser(data: CreateUserInput): User!
+    deleteUser(id: ID!): User!
     createPost(data: CreatePostInput): Post!
+    deletePost(id: ID!): Post!
     createComment(data: CreateCommentInput): Comment!
+    deleteComment(id: ID!): Comment!
   }
 
   input CreateUserInput {
@@ -135,6 +222,32 @@ const resolvers = {
 
       return user
     },
+    deleteUser(parent: any, args: any, ctx: any, info: any) {
+      const userIndex = users.findIndex((user) => user.id === args.id)
+
+      if (userIndex === -1) {
+        throw new Error('User not found')
+      }
+
+      const deletedUser = users.splice(userIndex, 1) // returns an array
+
+
+      posts = posts.filter((post) => {
+        const match = post.author === args.id
+
+        if (match) {
+          comments = comments.filter(comment => comment.post !== post.id)
+        }
+
+        return !match
+      })
+
+      comments = comments.filter(comment => comment.author !== args.id)
+
+      
+
+      return deletedUser[0]
+    },
     createPost(parent: any, args: any, ctx: any, info: any) {
       const userExists = users.some((user) => user.id === args.data.author)
 
@@ -151,6 +264,19 @@ const resolvers = {
       posts.push(post)
 
       return post
+    },
+    deletePost(parent: any, args: any, ctx: any, info: any) {
+      const postIndex = posts.findIndex((post) => post.id === args.id)
+
+      if (postIndex === -1) {
+        throw new Error('Post not found')
+      }
+
+      const deletedPost = posts.splice(postIndex, 1) // returns an array
+
+      comments = comments.filter(comment => comment.post !== args.id)
+
+      return deletedPost[0]
     },
     createComment(parent: any, args: any, ctx: any, info: any) {
       const userExists = users.some((user) => user.id === args.data.author)
@@ -175,6 +301,17 @@ const resolvers = {
 
       return comment
     },
+    deleteComment(parent: any, args: any, ctx: any, info: any) {
+      const commentIndex = comments.findIndex(comment => comment.id === args.id)
+
+      if (commentIndex === -1) {
+        throw new Error('Comment not found')
+      }
+
+      const deletedComment = comments.splice(commentIndex, 1)
+
+      return deletedComment[0]
+    }
   },
   Post: {
     author(parent: Post, args: any, ctx: any, info: any) {
