@@ -24,6 +24,33 @@ export const Mutation = {
 
     return user
   },
+  updateUser(parent: any, args: any, { db }: DbContext, info: any) {
+    const user = db.users.find(user => user.id === args.id)
+
+    if (!user) {
+      throw new Error('User not found!')
+    }
+
+    if (typeof args.data.email === 'string') {
+      const emailTaken = db.users.some(user => user.email === args.data.email)
+
+      if (emailTaken) {
+        throw new Error('Email taken')
+      }
+
+      user.email = args.data.email
+    }
+
+    if (typeof args.data.name === 'string') {
+      user.name = args.data.name
+    }
+
+    if (typeof args.data.age !== 'undefined') {
+      user.age = args.data.age
+    }
+
+    return user
+  },
   deleteUser(parent: any, args: any, { db }: DbContext, info: any) {
     const userIndex = db.users.findIndex((user) => user.id === args.id)
 
