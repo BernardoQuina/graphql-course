@@ -28,7 +28,7 @@ export const Mutation = {
     const user = db.users.find(user => user.id === args.id)
 
     if (!user) {
-      throw new Error('User not found!')
+      throw new Error('User not found')
     }
 
     if (typeof args.data.email === 'string') {
@@ -91,6 +91,27 @@ export const Mutation = {
 
     return post
   },
+  updatePost(parent: any, args: any, { db }: DbContext, info: any) {
+    const post = db.posts.find(post => post.id === args.id)
+
+    if (!post) {
+      throw new Error('Post not found')
+    }
+
+    if (typeof args.data.title === 'string') {
+      post.title = args.data.title
+    }
+
+    if (typeof args.data.body === 'string') {
+      post.body = args.data.body
+    }
+
+    if (typeof args.data.published === 'boolean') {
+      post.published = args.data.published
+    }
+
+    return post
+  },
   deletePost(parent: any, args: any, { db }: DbContext, info: any) {
     const postIndex = db.posts.findIndex((post) => post.id === args.id)
 
@@ -124,6 +145,19 @@ export const Mutation = {
     }
 
     db.comments.push(comment)
+
+    return comment
+  },
+  updateComment(parent: any, args: any, { db }: DbContext, info: any) {
+    const comment = db.comments.find(comment => comment.id === args.id)
+
+    if (!comment) {
+      throw new Error('Comment not found')
+    }
+
+    if (typeof args.data.text === 'string') {
+      comment.text = args.data.text
+    }
 
     return comment
   },
