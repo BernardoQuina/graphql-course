@@ -1,7 +1,7 @@
-import { DbContext } from '../db'
+import { ServerContext } from '../typescript-types/ServerContext'
 
 export const Query = {
-  users(parent: any, args: { query: string }, { db }: DbContext, info: any) {
+  users(parent: any, args: { query: string }, { db }: ServerContext, info: any) {
     if (!args.query) {
       return db.users
     }
@@ -10,7 +10,7 @@ export const Query = {
       return user.name.toLowerCase().includes(args.query.toLowerCase())
     })
   },
-  posts(parent: any, args: { query: string }, { db }: DbContext, info: any) {
+  posts(parent: any, args: { query: string }, { db }: ServerContext, info: any) {
     if (!args.query) {
       return db.posts
     }
@@ -22,7 +22,7 @@ export const Query = {
       )
     })
   },
-  comments(parent: any, args: any, { db }: DbContext, info: any) {
+  comments(parent: any, args: any, { db }: ServerContext, info: any) {
     return db.comments
   },
   me() {

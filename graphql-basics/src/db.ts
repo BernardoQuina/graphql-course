@@ -3,13 +3,7 @@ import { Post } from './typescript-types/Post'
 import { User } from './typescript-types/User'
 import { Comment } from './typescript-types/Comment'
 
-export type DbContext = {
-  db: {
-    users: User[]
-    posts: Post[]
-    comments: Comment[]
-  }
-}
+
 
 let users: User[] = [
   {

@@ -1,12 +1,12 @@
 import { v4 as uuidv4 } from 'uuid'
 
-import { DbContext } from '../db'
+import { ServerContext } from '../typescript-types/ServerContext'
 import { Post } from '../typescript-types/Post'
 import { User } from '../typescript-types/User'
 import { Comment } from '../typescript-types/Comment'
 
 export const Mutation = {
-  createUser(parent: any, args: any, { db }: DbContext, info: any) {
+  createUser(parent: any, args: any, { db }: ServerContext, info: any) {
     const emailTaken = db.users.some((user) => user.email === args.data.email)
 
     if (emailTaken) {
@@ -24,7 +24,7 @@ export const Mutation = {
 
     return user
   },
-  updateUser(parent: any, args: any, { db }: DbContext, info: any) {
+  updateUser(parent: any, args: any, { db }: ServerContext, info: any) {
     const user = db.users.find(user => user.id === args.id)
 
     if (!user) {
@@ -51,7 +51,7 @@ export const Mutation = {
 
     return user
   },
-  deleteUser(parent: any, args: any, { db }: DbContext, info: any) {
+  deleteUser(parent: any, args: any, { db }: ServerContext, info: any) {
     const userIndex = db.users.findIndex((user) => user.id === args.id)
 
     if (userIndex === -1) {
@@ -74,7 +74,7 @@ export const Mutation = {
 
     return deletedUser[0]
   },
-  createPost(parent: any, args: any, { db }: DbContext, info: any) {
+  createPost(parent: any, args: any, { db }: ServerContext, info: any) {
     const userExists = db.users.some((user) => user.id === args.data.author)
 
     if (!userExists) {
@@ -91,7 +91,7 @@ export const Mutation = {
 
     return post
   },
-  updatePost(parent: any, args: any, { db }: DbContext, info: any) {
+  updatePost(parent: any, args: any, { db }: ServerContext, info: any) {
     const post = db.posts.find(post => post.id === args.id)
 
     if (!post) {
@@ -112,7 +112,7 @@ export const Mutation = {
 
     return post
   },
-  deletePost(parent: any, args: any, { db }: DbContext, info: any) {
+  deletePost(parent: any, args: any, { db }: ServerContext, info: any) {
     const postIndex = db.posts.findIndex((post) => post.id === args.id)
 
     if (postIndex === -1) {
@@ -125,7 +125,7 @@ export const Mutation = {
 
     return deletedPost[0]
   },
-  createComment(parent: any, args: any, { db }: DbContext, info: any) {
+  createComment(parent: any, args: any, { db, pubSub }: ServerContext, info: any) {
     const userExists = db.users.some((user) => user.id === args.data.author)
     const postExistsAndPublished = db.posts.some((post) => {
       return post.id === args.data.post && post.published
@@ -145,10 +145,11 @@ export const Mutation = {
     }
 
     db.comments.push(comment)
+    pubSub.publish(`comment ${args.data.post}`, { comment })
 
     return comment
   },
-  updateComment(parent: any, args: any, { db }: DbContext, info: any) {
+  updateComment(parent: any, args: any, { db }: ServerContext, info: any) {
     const comment = db.comments.find(comment => comment.id === args.id)
 
     if (!comment) {
@@ -161,7 +162,7 @@ export const Mutation = {
 
     return comment
   },
-  deleteComment(parent: any, args: any, { db }: DbContext, info: any) {
+  deleteComment(parent: any, args: any, { db }: ServerContext, info: any) {
     const commentIndex = db.comments.findIndex(
       (comment) => comment.id === args.id
     )
