@@ -11,5 +11,10 @@ export const Subscription = {
 
       return pubSub.asyncIterator(`comment ${postId}`)
     }
+  },
+  post: {
+    subscribe(parent: any, { postId }: any, { pubSub, db }: ServerContext, info: any) {
+      return pubSub.asyncIterator('post')
+    }
   }
 }

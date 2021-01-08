@@ -25,14 +25,14 @@ export const Mutation = {
     return user
   },
   updateUser(parent: any, args: any, { db }: ServerContext, info: any) {
-    const user = db.users.find(user => user.id === args.id)
+    const user = db.users.find((user) => user.id === args.id)
 
     if (!user) {
       throw new Error('User not found')
     }
 
     if (typeof args.data.email === 'string') {
-      const emailTaken = db.users.some(user => user.email === args.data.email)
+      const emailTaken = db.users.some((user) => user.email === args.data.email)
 
       if (emailTaken) {
         throw new Error('Email taken')
@@ -74,7 +74,7 @@ export const Mutation = {
 
     return deletedUser[0]
   },
-  createPost(parent: any, args: any, { db }: ServerContext, info: any) {
+  createPost(parent: any, args: any, { db, pubSub }: ServerContext, info: any) {
     const userExists = db.users.some((user) => user.id === args.data.author)
 
     if (!userExists) {
@@ -89,10 +89,15 @@ export const Mutation = {
 
     db.posts.push(post)
 
+    if (post.published) {
+      pubSub.publish('post', { post: { mutation: 'CREATED', data: post } })
+    }
+
     return post
   },
-  updatePost(parent: any, args: any, { db }: ServerContext, info: any) {
-    const post = db.posts.find(post => post.id === args.id)
+  updatePost(parent: any, args: any, { db, pubSub }: ServerContext, info: any) {
+    const post = db.posts.find((post) => post.id === args.id)
+    const originalPost = { ...post }
 
     if (!post) {
       throw new Error('Post not found')
@@ -108,24 +113,45 @@ export const Mutation = {
 
     if (typeof args.data.published === 'boolean') {
       post.published = args.data.published
+
+      if (originalPost.published && !post.published) {
+        pubSub.publish('post', {
+          post: { mutation: 'DELETED', data: originalPost },
+        })
+      } else if (!originalPost.published && post.published) {
+        pubSub.publish('post', { post: { mutation: 'CREATED', data: post } })
+      }
+    } else if (post.published) {
+      pubSub.publish('post', { post: { mutation: 'UPDATED', data: post } })
     }
 
     return post
   },
-  deletePost(parent: any, args: any, { db }: ServerContext, info: any) {
+  deletePost(parent: any, args: any, { db, pubSub }: ServerContext, info: any) {
     const postIndex = db.posts.findIndex((post) => post.id === args.id)
 
     if (postIndex === -1) {
       throw new Error('Post not found')
     }
 
-    const deletedPost = db.posts.splice(postIndex, 1) // returns an array
+    const [post] = db.posts.splice(postIndex, 1) // returns an array
 
     db.comments = db.comments.filter((comment) => comment.post !== args.id)
 
-    return deletedPost[0]
+    if (post.published) {
+      pubSub.publish('post', {
+        post: { mutation: 'DELETED', data: post },
+      })
+    }
+
+    return post
   },
-  createComment(parent: any, args: any, { db, pubSub }: ServerContext, info: any) {
+  createComment(
+    parent: any,
+    args: any,
+    { db, pubSub }: ServerContext,
+    info: any
+  ) {
     const userExists = db.users.some((user) => user.id === args.data.author)
     const postExistsAndPublished = db.posts.some((post) => {
       return post.id === args.data.post && post.published
@@ -150,7 +176,7 @@ export const Mutation = {
     return comment
   },
   updateComment(parent: any, args: any, { db }: ServerContext, info: any) {
-    const comment = db.comments.find(comment => comment.id === args.id)
+    const comment = db.comments.find((comment) => comment.id === args.id)
 
     if (!comment) {
       throw new Error('Comment not found')

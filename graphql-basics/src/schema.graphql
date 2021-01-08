@@ -22,6 +22,7 @@ type Query {
 
   type Subscription {
     comment(postId: ID!): Comment!
+    post: PostSubscriptionPayload!
   }
 
   input CreateUserInput {
@@ -82,4 +83,9 @@ type Query {
     text: String!
     author: User!
     post: Post!
+  }
+
+  type PostSubscriptionPayload {
+    mutation: String!
+    data: Post!
   }
