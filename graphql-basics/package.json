@@ -6,12 +6,13 @@
   "license": "MIT",
   "scripts": {
     "watch": "tsc -w",
-    "start": "nodemon dist/index.js --ext js,graphql"
+    "start": "nodemon dist/index.js --ext js,graphql",
+    "update": "yarn upgrade-interactive --latest"
   },
   "devDependencies": {
-    "@types/node": "^14.14.19",
+    "@types/node": "^14.14.20",
     "@types/uuid": "^8.3.0",
-    "nodemon": "^2.0.6"
+    "nodemon": "^2.0.7"
   },
   "dependencies": {
     "graphql-yoga": "^1.18.3",

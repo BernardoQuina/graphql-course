@@ -171,11 +171,14 @@ export const Mutation = {
     }
 
     db.comments.push(comment)
-    pubSub.publish(`comment ${args.data.post}`, { comment })
+
+    pubSub.publish(`comment ${comment.post}`, {
+      comment: { mutation: 'CREATED', data: comment },
+    })
 
     return comment
   },
-  updateComment(parent: any, args: any, { db }: ServerContext, info: any) {
+  updateComment(parent: any, args: any, { db, pubSub }: ServerContext, info: any) {
     const comment = db.comments.find((comment) => comment.id === args.id)
 
     if (!comment) {
@@ -186,9 +189,14 @@ export const Mutation = {
       comment.text = args.data.text
     }
 
+    
+    pubSub.publish(`comment ${comment.post}`, {
+      comment: { mutation: 'UPDATED', data: comment }
+    })
+
     return comment
   },
-  deleteComment(parent: any, args: any, { db }: ServerContext, info: any) {
+  deleteComment(parent: any, args: any, { db, pubSub }: ServerContext, info: any) {
     const commentIndex = db.comments.findIndex(
       (comment) => comment.id === args.id
     )
@@ -197,8 +205,12 @@ export const Mutation = {
       throw new Error('Comment not found')
     }
 
-    const deletedComment = db.comments.splice(commentIndex, 1)
+    const [comment] = db.comments.splice(commentIndex, 1)
 
-    return deletedComment[0]
+    pubSub.publish(`comment ${comment.post}`, {
+      comment: { mutation: 'DELETED', data: comment }
+    })
+
+    return comment
   },
 }
