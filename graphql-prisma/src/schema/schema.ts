@@ -5,18 +5,23 @@ import path from 'path'
 import { Query } from './query'
 import { User, createUser, deleteUser, updateUser } from './user'
 import { Post, createPost, updatePost, deletePost } from './post'
+import { Comment, createComment, updateComment, deleteComment } from './comment'
 
 export const schema = makeSchema({
   types: {
     Query,
     User,
     Post,
+    Comment,
     createUser,
     deleteUser,
     updateUser,
     createPost,
     updatePost,
     deletePost,
+    createComment,
+    updateComment,
+    deleteComment,
   },
   plugins: [nexusPrisma({ experimentalCRUD: true })],
   outputs: {

@@ -7,11 +7,52 @@ input BoolFilter {
   not: NestedBoolFilter
 }
 
+type Comment {
+  author: User!
+  id: String!
+  post: Post!
+  postId: String!
+  text: String!
+  userId: String!
+}
+
+input CommentListRelationFilter {
+  every: CommentWhereInput
+  none: CommentWhereInput
+  some: CommentWhereInput
+}
+
+input CommentOrderByInput {
+  id: SortOrder
+  postId: SortOrder
+  text: SortOrder
+  userId: SortOrder
+}
+
+input CommentWhereInput {
+  AND: [CommentWhereInput!]
+  author: UserWhereInput
+  id: StringFilter
+  NOT: [CommentWhereInput!]
+  OR: [CommentWhereInput!]
+  post: PostWhereInput
+  postId: StringFilter
+  text: StringFilter
+  userId: StringFilter
+}
+
+input CommentWhereUniqueInput {
+  id: String
+}
+
 type Mutation {
+  createComment(postId: String!, text: String!, userId: String!): Comment
   createPost(body: String!, published: Boolean!, title: String!, userId: String!): Post
   createUser(email: String!, name: String!): User
+  deleteComment(id: String!): Comment
   deletePost(id: String!): Post
   deleteUser(id: ID!): User
+  updateComment(updateText: String!, whereId: String!): Comment
   updatePost(updateBody: String!, updatePublished: Boolean!, updateTitle: String!, whereId: String!): Post
   updateUser(updateEmail: String, updateName: String, whereId: ID!): User
 }
@@ -38,6 +79,7 @@ input NestedStringFilter {
 type Post {
   author: User!
   body: String!
+  comments(after: CommentWhereUniqueInput, before: CommentWhereUniqueInput, first: Int, last: Int): [Comment!]!
   id: String!
   published: Boolean!
   title: String!
@@ -62,6 +104,7 @@ input PostWhereInput {
   AND: [PostWhereInput!]
   author: UserWhereInput
   body: StringFilter
+  comments: CommentListRelationFilter
   id: StringFilter
   NOT: [PostWhereInput!]
   OR: [PostWhereInput!]
@@ -75,6 +118,8 @@ input PostWhereUniqueInput {
 }
 
 type Query {
+  comment(where: CommentWhereUniqueInput!): Comment
+  comments(after: CommentWhereUniqueInput, before: CommentWhereUniqueInput, first: Int!, last: Int!, orderBy: [CommentOrderByInput!]!, where: CommentWhereInput): [Comment!]!
   post(where: PostWhereUniqueInput!): Post
   posts(after: PostWhereUniqueInput, before: PostWhereUniqueInput, first: Int!, last: Int!, orderBy: [PostOrderByInput!]!, where: PostWhereInput): [Post!]!
   user(where: UserWhereUniqueInput!): User
@@ -121,6 +166,7 @@ input UserOrderByInput {
 
 input UserWhereInput {
   AND: [UserWhereInput!]
+  comments: CommentListRelationFilter
   email: StringFilter
   id: StringFilter
   name: StringFilter

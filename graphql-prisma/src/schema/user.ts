@@ -24,24 +24,6 @@ export const createUser = mutationField('createUser', {
   },
 })
 
-export const deleteUser = mutationField('deleteUser', {
-  type: User,
-  args: {
-    id: nonNull(idArg()),
-  },
-  async resolve(_root, { id }, { prisma }) {
-    const userExists = await prisma.user.findUnique({ where: { id } })
-
-    if (!userExists) {
-      throw new Error('User not found')
-    }
-
-    await prisma.post.deleteMany({ where: { userId: id } })
-
-    return prisma.user.delete({ where: { id } })
-  },
-})
-
 export const updateUser = mutationField('updateUser', {
   type: User,
   args: {
@@ -71,5 +53,25 @@ export const updateUser = mutationField('updateUser', {
     }
 
     return prisma.user.update({ where: { id: whereId }, data })
+  },
+})
+
+export const deleteUser = mutationField('deleteUser', {
+  type: User,
+  args: {
+    id: nonNull(idArg()),
+  },
+  async resolve(_root, { id }, { prisma }) {
+    const userExists = await prisma.user.findUnique({ where: { id } })
+
+    if (!userExists) {
+      throw new Error('User not found')
+    }
+
+    await prisma.comment.deleteMany({ where: { userId: id } })
+
+    await prisma.post.deleteMany({ where: { userId: id } })
+
+    return prisma.user.delete({ where: { id } })
   },
 })

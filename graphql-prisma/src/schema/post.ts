@@ -9,12 +9,13 @@ import {
 export const Post = objectType({
   name: 'Post',
   definition(t) {
-    t.model.id(),
-      t.model.title(),
-      t.model.body(),
-      t.model.published(),
-      t.model.author(),
-      t.model.userId()
+    t.model.id()
+    t.model.title()
+    t.model.body()
+    t.model.published()
+    t.model.author()
+    t.model.userId()
+    t.model.comments()
   },
 })
 
@@ -100,6 +101,8 @@ export const deletePost = mutationField('deletePost', {
     if (!postExists) {
       throw new Error('Post not found')
     }
+
+    await prisma.comment.deleteMany({where: {postId: id}})
 
     return prisma.post.delete({ where: { id } })
   },
