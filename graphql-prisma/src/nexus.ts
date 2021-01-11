@@ -130,8 +130,8 @@ export interface NexusGenArgTypes {
       id: string; // ID!
     }
     updateUser: { // args
-      id: string; // ID!
-      name: string; // String!
+      updateName?: string | null; // String
+      whereId: string; // ID!
     }
   }
   Query: {
