@@ -19,6 +19,14 @@ declare global {
 }
 
 export interface NexusGenInputs {
+  BoolFilter: { // input type
+    equals?: boolean | null; // Boolean
+    not?: NexusGenInputs['NestedBoolFilter'] | null; // NestedBoolFilter
+  }
+  NestedBoolFilter: { // input type
+    equals?: boolean | null; // Boolean
+    not?: NexusGenInputs['NestedBoolFilter'] | null; // NestedBoolFilter
+  }
   NestedStringFilter: { // input type
     contains?: string | null; // String
     endsWith?: string | null; // String
@@ -31,6 +39,32 @@ export interface NexusGenInputs {
     not?: NexusGenInputs['NestedStringFilter'] | null; // NestedStringFilter
     notIn?: string[] | null; // [String!]
     startsWith?: string | null; // String
+  }
+  PostListRelationFilter: { // input type
+    every?: NexusGenInputs['PostWhereInput'] | null; // PostWhereInput
+    none?: NexusGenInputs['PostWhereInput'] | null; // PostWhereInput
+    some?: NexusGenInputs['PostWhereInput'] | null; // PostWhereInput
+  }
+  PostOrderByInput: { // input type
+    body?: NexusGenEnums['SortOrder'] | null; // SortOrder
+    id?: NexusGenEnums['SortOrder'] | null; // SortOrder
+    published?: NexusGenEnums['SortOrder'] | null; // SortOrder
+    title?: NexusGenEnums['SortOrder'] | null; // SortOrder
+    userId?: NexusGenEnums['SortOrder'] | null; // SortOrder
+  }
+  PostWhereInput: { // input type
+    AND?: NexusGenInputs['PostWhereInput'][] | null; // [PostWhereInput!]
+    author?: NexusGenInputs['UserWhereInput'] | null; // UserWhereInput
+    body?: NexusGenInputs['StringFilter'] | null; // StringFilter
+    id?: NexusGenInputs['StringFilter'] | null; // StringFilter
+    NOT?: NexusGenInputs['PostWhereInput'][] | null; // [PostWhereInput!]
+    OR?: NexusGenInputs['PostWhereInput'][] | null; // [PostWhereInput!]
+    published?: NexusGenInputs['BoolFilter'] | null; // BoolFilter
+    title?: NexusGenInputs['StringFilter'] | null; // StringFilter
+    userId?: NexusGenInputs['StringFilter'] | null; // StringFilter
+  }
+  PostWhereUniqueInput: { // input type
+    id?: string | null; // String
   }
   StringFilter: { // input type
     contains?: string | null; // String
@@ -46,20 +80,29 @@ export interface NexusGenInputs {
     notIn?: string[] | null; // [String!]
     startsWith?: string | null; // String
   }
+  UserOrderByInput: { // input type
+    email?: NexusGenEnums['SortOrder'] | null; // SortOrder
+    id?: NexusGenEnums['SortOrder'] | null; // SortOrder
+    name?: NexusGenEnums['SortOrder'] | null; // SortOrder
+  }
   UserWhereInput: { // input type
     AND?: NexusGenInputs['UserWhereInput'][] | null; // [UserWhereInput!]
+    email?: NexusGenInputs['StringFilter'] | null; // StringFilter
     id?: NexusGenInputs['StringFilter'] | null; // StringFilter
     name?: NexusGenInputs['StringFilter'] | null; // StringFilter
     NOT?: NexusGenInputs['UserWhereInput'][] | null; // [UserWhereInput!]
     OR?: NexusGenInputs['UserWhereInput'][] | null; // [UserWhereInput!]
+    posts?: NexusGenInputs['PostListRelationFilter'] | null; // PostListRelationFilter
   }
   UserWhereUniqueInput: { // input type
+    email?: string | null; // String
     id?: string | null; // String
   }
 }
 
 export interface NexusGenEnums {
   QueryMode: "default" | "insensitive"
+  SortOrder: "asc" | "desc"
 }
 
 export interface NexusGenScalars {
@@ -72,8 +115,16 @@ export interface NexusGenScalars {
 
 export interface NexusGenObjects {
   Mutation: {};
+  Post: { // root type
+    body: string; // String!
+    id: string; // String!
+    published: boolean; // Boolean!
+    title: string; // String!
+    userId: string; // String!
+  }
   Query: {};
   User: { // root type
+    email: string; // String!
     id: string; // String!
     name: string; // String!
   }
@@ -91,50 +142,108 @@ export type NexusGenAllTypes = NexusGenRootTypes & NexusGenScalars & NexusGenEnu
 
 export interface NexusGenFieldTypes {
   Mutation: { // field return type
+    createPost: NexusGenRootTypes['Post'] | null; // Post
     createUser: NexusGenRootTypes['User'] | null; // User
+    deletePost: NexusGenRootTypes['Post'] | null; // Post
     deleteUser: NexusGenRootTypes['User'] | null; // User
+    updatePost: NexusGenRootTypes['Post'] | null; // Post
     updateUser: NexusGenRootTypes['User'] | null; // User
   }
+  Post: { // field return type
+    author: NexusGenRootTypes['User']; // User!
+    body: string; // String!
+    id: string; // String!
+    published: boolean; // Boolean!
+    title: string; // String!
+    userId: string; // String!
+  }
   Query: { // field return type
+    post: NexusGenRootTypes['Post'] | null; // Post
+    posts: NexusGenRootTypes['Post'][]; // [Post!]!
     user: NexusGenRootTypes['User'] | null; // User
     users: NexusGenRootTypes['User'][]; // [User!]!
   }
   User: { // field return type
+    email: string; // String!
     id: string; // String!
     name: string; // String!
+    posts: NexusGenRootTypes['Post'][]; // [Post!]!
   }
 }
 
 export interface NexusGenFieldTypeNames {
   Mutation: { // field return type name
+    createPost: 'Post'
     createUser: 'User'
+    deletePost: 'Post'
     deleteUser: 'User'
+    updatePost: 'Post'
     updateUser: 'User'
   }
+  Post: { // field return type name
+    author: 'User'
+    body: 'String'
+    id: 'String'
+    published: 'Boolean'
+    title: 'String'
+    userId: 'String'
+  }
   Query: { // field return type name
+    post: 'Post'
+    posts: 'Post'
     user: 'User'
     users: 'User'
   }
   User: { // field return type name
+    email: 'String'
     id: 'String'
     name: 'String'
+    posts: 'Post'
   }
 }
 
 export interface NexusGenArgTypes {
   Mutation: {
+    createPost: { // args
+      body: string; // String!
+      published: boolean; // Boolean!
+      title: string; // String!
+      userId: string; // String!
+    }
     createUser: { // args
+      email: string; // String!
       name: string; // String!
+    }
+    deletePost: { // args
+      id: string; // String!
     }
     deleteUser: { // args
       id: string; // ID!
     }
+    updatePost: { // args
+      updateBody: string; // String!
+      updatePublished: boolean; // Boolean!
+      updateTitle: string; // String!
+      whereId: string; // String!
+    }
     updateUser: { // args
+      updateEmail?: string | null; // String
       updateName?: string | null; // String
       whereId: string; // ID!
     }
   }
   Query: {
+    post: { // args
+      where: NexusGenInputs['PostWhereUniqueInput']; // PostWhereUniqueInput!
+    }
+    posts: { // args
+      after?: NexusGenInputs['PostWhereUniqueInput'] | null; // PostWhereUniqueInput
+      before?: NexusGenInputs['PostWhereUniqueInput'] | null; // PostWhereUniqueInput
+      first: number; // Int!
+      last: number; // Int!
+      orderBy: NexusGenInputs['PostOrderByInput'][]; // [PostOrderByInput!]!
+      where?: NexusGenInputs['PostWhereInput'] | null; // PostWhereInput
+    }
     user: { // args
       where: NexusGenInputs['UserWhereUniqueInput']; // UserWhereUniqueInput!
     }
@@ -143,7 +252,16 @@ export interface NexusGenArgTypes {
       before?: NexusGenInputs['UserWhereUniqueInput'] | null; // UserWhereUniqueInput
       first: number; // Int!
       last: number; // Int!
+      orderBy: NexusGenInputs['UserOrderByInput'][]; // [UserOrderByInput!]!
       where?: NexusGenInputs['UserWhereInput'] | null; // UserWhereInput
+    }
+  }
+  User: {
+    posts: { // args
+      after?: NexusGenInputs['PostWhereUniqueInput'] | null; // PostWhereUniqueInput
+      before?: NexusGenInputs['PostWhereUniqueInput'] | null; // PostWhereUniqueInput
+      first?: number | null; // Int
+      last?: number | null; // Int
     }
   }
 }

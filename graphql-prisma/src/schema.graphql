@@ -2,10 +2,23 @@
 ### Do not make changes to this file directly
 
 
+input BoolFilter {
+  equals: Boolean
+  not: NestedBoolFilter
+}
+
 type Mutation {
-  createUser(name: String!): User
+  createPost(body: String!, published: Boolean!, title: String!, userId: String!): Post
+  createUser(email: String!, name: String!): User
+  deletePost(id: String!): Post
   deleteUser(id: ID!): User
-  updateUser(updateName: String, whereId: ID!): User
+  updatePost(updateBody: String!, updatePublished: Boolean!, updateTitle: String!, whereId: String!): Post
+  updateUser(updateEmail: String, updateName: String, whereId: ID!): User
+}
+
+input NestedBoolFilter {
+  equals: Boolean
+  not: NestedBoolFilter
 }
 
 input NestedStringFilter {
@@ -22,14 +35,60 @@ input NestedStringFilter {
   startsWith: String
 }
 
+type Post {
+  author: User!
+  body: String!
+  id: String!
+  published: Boolean!
+  title: String!
+  userId: String!
+}
+
+input PostListRelationFilter {
+  every: PostWhereInput
+  none: PostWhereInput
+  some: PostWhereInput
+}
+
+input PostOrderByInput {
+  body: SortOrder
+  id: SortOrder
+  published: SortOrder
+  title: SortOrder
+  userId: SortOrder
+}
+
+input PostWhereInput {
+  AND: [PostWhereInput!]
+  author: UserWhereInput
+  body: StringFilter
+  id: StringFilter
+  NOT: [PostWhereInput!]
+  OR: [PostWhereInput!]
+  published: BoolFilter
+  title: StringFilter
+  userId: StringFilter
+}
+
+input PostWhereUniqueInput {
+  id: String
+}
+
 type Query {
+  post(where: PostWhereUniqueInput!): Post
+  posts(after: PostWhereUniqueInput, before: PostWhereUniqueInput, first: Int!, last: Int!, orderBy: [PostOrderByInput!]!, where: PostWhereInput): [Post!]!
   user(where: UserWhereUniqueInput!): User
-  users(after: UserWhereUniqueInput, before: UserWhereUniqueInput, first: Int!, last: Int!, where: UserWhereInput): [User!]!
+  users(after: UserWhereUniqueInput, before: UserWhereUniqueInput, first: Int!, last: Int!, orderBy: [UserOrderByInput!]!, where: UserWhereInput): [User!]!
 }
 
 enum QueryMode {
   default
   insensitive
+}
+
+enum SortOrder {
+  asc
+  desc
 }
 
 input StringFilter {
@@ -48,18 +107,29 @@ input StringFilter {
 }
 
 type User {
+  email: String!
   id: String!
   name: String!
+  posts(after: PostWhereUniqueInput, before: PostWhereUniqueInput, first: Int, last: Int): [Post!]!
+}
+
+input UserOrderByInput {
+  email: SortOrder
+  id: SortOrder
+  name: SortOrder
 }
 
 input UserWhereInput {
   AND: [UserWhereInput!]
+  email: StringFilter
   id: StringFilter
   name: StringFilter
   NOT: [UserWhereInput!]
   OR: [UserWhereInput!]
+  posts: PostListRelationFilter
 }
 
 input UserWhereUniqueInput {
+  email: String
   id: String
 }
