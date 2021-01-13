@@ -2,8 +2,10 @@ import { makeSchema } from 'nexus'
 import { nexusPrisma } from 'nexus-plugin-prisma'
 import path from 'path'
 
-import * as userTypes from './user'
 import { Query } from './query'
+import * as userTypes from './user'
+import * as bookTypes from './book'
+import * as reviewTypes from './review'
 
 
 // makeSchema defines the GraphQL schema, by combining the the GraphQL types defined
@@ -12,6 +14,8 @@ export const schema = makeSchema({
   types: {
     Query,
     userTypes,
+    bookTypes,
+    reviewTypes
   },
   plugins: [nexusPrisma({ experimentalCRUD: true })],
   outputs: {

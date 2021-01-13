@@ -2,6 +2,78 @@
 ### Do not make changes to this file directly
 
 
+type Book {
+  author: User!
+  id: String!
+  isbn: String!
+  title: String!
+  userId: String!
+}
+
+input BookListRelationFilter {
+  every: BookWhereInput
+  none: BookWhereInput
+  some: BookWhereInput
+}
+
+input BookOrderByInput {
+  id: SortOrder
+  isbn: SortOrder
+  title: SortOrder
+  userId: SortOrder
+}
+
+input BookWhereInput {
+  AND: [BookWhereInput!]
+  author: UserWhereInput
+  id: StringFilter
+  isbn: StringFilter
+  NOT: [BookWhereInput!]
+  OR: [BookWhereInput!]
+  title: StringFilter
+  userId: StringFilter
+}
+
+input BookWhereUniqueInput {
+  id: String
+}
+
+input EnumroleFilter {
+  equals: role
+  in: [role!]
+  not: NestedEnumroleFilter
+  notIn: [role!]
+}
+
+input IntFilter {
+  equals: Int
+  gt: Int
+  gte: Int
+  in: [Int!]
+  lt: Int
+  lte: Int
+  not: NestedIntFilter
+  notIn: [Int!]
+}
+
+input NestedEnumroleFilter {
+  equals: role
+  in: [role!]
+  not: NestedEnumroleFilter
+  notIn: [role!]
+}
+
+input NestedIntFilter {
+  equals: Int
+  gt: Int
+  gte: Int
+  in: [Int!]
+  lt: Int
+  lte: Int
+  not: NestedIntFilter
+  notIn: [Int!]
+}
+
 input NestedStringFilter {
   contains: String
   endsWith: String
@@ -16,7 +88,25 @@ input NestedStringFilter {
   startsWith: String
 }
 
+input NestedStringNullableFilter {
+  contains: String
+  endsWith: String
+  equals: String
+  gt: String
+  gte: String
+  in: [String!]
+  lt: String
+  lte: String
+  not: NestedStringNullableFilter
+  notIn: [String!]
+  startsWith: String
+}
+
 type Query {
+  book(where: BookWhereUniqueInput!): Book
+  books(after: BookWhereUniqueInput, before: BookWhereUniqueInput, first: Int, last: Int, orderBy: [BookOrderByInput!], where: BookWhereInput): [Book!]!
+  review(where: ReviewWhereUniqueInput!): Review
+  reviews(after: ReviewWhereUniqueInput, before: ReviewWhereUniqueInput, first: Int, last: Int, orderBy: [ReviewOrderByInput!], where: ReviewWhereInput): [Review!]!
   user(where: UserWhereUniqueInput!): User
   users(after: UserWhereUniqueInput, before: UserWhereUniqueInput, first: Int, last: Int, orderBy: [UserOrderByInput!], where: UserWhereInput): [User!]!
 }
@@ -24,6 +114,47 @@ type Query {
 enum QueryMode {
   default
   insensitive
+}
+
+type Review {
+  author: User!
+  id: String!
+  rating: Int!
+  text: String
+  userId: String!
+}
+
+input ReviewListRelationFilter {
+  every: ReviewWhereInput
+  none: ReviewWhereInput
+  some: ReviewWhereInput
+}
+
+input ReviewOrderByInput {
+  id: SortOrder
+  rating: SortOrder
+  text: SortOrder
+  userId: SortOrder
+}
+
+input ReviewWhereInput {
+  AND: [ReviewWhereInput!]
+  author: UserWhereInput
+  id: StringFilter
+  NOT: [ReviewWhereInput!]
+  OR: [ReviewWhereInput!]
+  rating: IntFilter
+  text: StringNullableFilter
+  userId: StringFilter
+}
+
+input ReviewWhereUniqueInput {
+  id: String
+}
+
+enum role {
+  CONSUMER
+  VENDOR
 }
 
 enum SortOrder {
@@ -46,25 +177,47 @@ input StringFilter {
   startsWith: String
 }
 
+input StringNullableFilter {
+  contains: String
+  endsWith: String
+  equals: String
+  gt: String
+  gte: String
+  in: [String!]
+  lt: String
+  lte: String
+  mode: QueryMode
+  not: NestedStringNullableFilter
+  notIn: [String!]
+  startsWith: String
+}
+
 type User {
+  books(after: BookWhereUniqueInput, before: BookWhereUniqueInput, first: Int, last: Int): [Book!]!
   email: String!
   id: String!
   name: String!
+  reviews(after: ReviewWhereUniqueInput, before: ReviewWhereUniqueInput, first: Int, last: Int): [Review!]!
+  role: role!
 }
 
 input UserOrderByInput {
   email: SortOrder
   id: SortOrder
   name: SortOrder
+  role: SortOrder
 }
 
 input UserWhereInput {
   AND: [UserWhereInput!]
+  books: BookListRelationFilter
   email: StringFilter
   id: StringFilter
   name: StringFilter
   NOT: [UserWhereInput!]
   OR: [UserWhereInput!]
+  reviews: ReviewListRelationFilter
+  role: EnumroleFilter
 }
 
 input UserWhereUniqueInput {
