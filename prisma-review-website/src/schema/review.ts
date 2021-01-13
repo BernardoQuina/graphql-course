@@ -8,5 +8,7 @@ export const Review = objectType({
     t.model.text()
     t.model.author()
     t.model.userId()
+    t.model.book()
+    t.model.bookId()
   }
 })

@@ -6,6 +6,7 @@ type Book {
   author: User!
   id: String!
   isbn: String!
+  reviews(after: ReviewWhereUniqueInput, before: ReviewWhereUniqueInput, first: Int, last: Int): [Review!]!
   title: String!
   userId: String!
 }
@@ -30,6 +31,7 @@ input BookWhereInput {
   isbn: StringFilter
   NOT: [BookWhereInput!]
   OR: [BookWhereInput!]
+  reviews: ReviewListRelationFilter
   title: StringFilter
   userId: StringFilter
 }
@@ -57,8 +59,11 @@ input IntFilter {
 }
 
 type Mutation {
+  createBook(isbn: String!, title: String!, userId: ID!): Book
   createUser(email: String!, name: String!, role: role!): User
+  deleteBook(id: ID!): Book
   deleteUser(id: ID!): User
+  updateBook(updateIsbn: String, updateTitle: String, whereId: ID!): Book
   updateUser(updateEmail: String, updateName: String, whereId: ID!): User
 }
 
@@ -124,6 +129,8 @@ enum QueryMode {
 
 type Review {
   author: User!
+  book: Book!
+  bookId: String!
   id: String!
   rating: Int!
   text: String
@@ -137,6 +144,7 @@ input ReviewListRelationFilter {
 }
 
 input ReviewOrderByInput {
+  bookId: SortOrder
   id: SortOrder
   rating: SortOrder
   text: SortOrder
@@ -146,6 +154,8 @@ input ReviewOrderByInput {
 input ReviewWhereInput {
   AND: [ReviewWhereInput!]
   author: UserWhereInput
+  book: BookWhereInput
+  bookId: StringFilter
   id: StringFilter
   NOT: [ReviewWhereInput!]
   OR: [ReviewWhereInput!]

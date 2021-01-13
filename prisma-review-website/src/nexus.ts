@@ -37,6 +37,7 @@ export interface NexusGenInputs {
     isbn?: NexusGenInputs['StringFilter'] | null; // StringFilter
     NOT?: NexusGenInputs['BookWhereInput'][] | null; // [BookWhereInput!]
     OR?: NexusGenInputs['BookWhereInput'][] | null; // [BookWhereInput!]
+    reviews?: NexusGenInputs['ReviewListRelationFilter'] | null; // ReviewListRelationFilter
     title?: NexusGenInputs['StringFilter'] | null; // StringFilter
     userId?: NexusGenInputs['StringFilter'] | null; // StringFilter
   }
@@ -107,6 +108,7 @@ export interface NexusGenInputs {
     some?: NexusGenInputs['ReviewWhereInput'] | null; // ReviewWhereInput
   }
   ReviewOrderByInput: { // input type
+    bookId?: NexusGenEnums['SortOrder'] | null; // SortOrder
     id?: NexusGenEnums['SortOrder'] | null; // SortOrder
     rating?: NexusGenEnums['SortOrder'] | null; // SortOrder
     text?: NexusGenEnums['SortOrder'] | null; // SortOrder
@@ -115,6 +117,8 @@ export interface NexusGenInputs {
   ReviewWhereInput: { // input type
     AND?: NexusGenInputs['ReviewWhereInput'][] | null; // [ReviewWhereInput!]
     author?: NexusGenInputs['UserWhereInput'] | null; // UserWhereInput
+    book?: NexusGenInputs['BookWhereInput'] | null; // BookWhereInput
+    bookId?: NexusGenInputs['StringFilter'] | null; // StringFilter
     id?: NexusGenInputs['StringFilter'] | null; // StringFilter
     NOT?: NexusGenInputs['ReviewWhereInput'][] | null; // [ReviewWhereInput!]
     OR?: NexusGenInputs['ReviewWhereInput'][] | null; // [ReviewWhereInput!]
@@ -200,6 +204,7 @@ export interface NexusGenObjects {
   Mutation: {};
   Query: {};
   Review: { // root type
+    bookId: string; // String!
     id: string; // String!
     rating: number; // Int!
     text?: string | null; // String
@@ -228,12 +233,16 @@ export interface NexusGenFieldTypes {
     author: NexusGenRootTypes['User']; // User!
     id: string; // String!
     isbn: string; // String!
+    reviews: NexusGenRootTypes['Review'][]; // [Review!]!
     title: string; // String!
     userId: string; // String!
   }
   Mutation: { // field return type
+    createBook: NexusGenRootTypes['Book'] | null; // Book
     createUser: NexusGenRootTypes['User'] | null; // User
+    deleteBook: NexusGenRootTypes['Book'] | null; // Book
     deleteUser: NexusGenRootTypes['User'] | null; // User
+    updateBook: NexusGenRootTypes['Book'] | null; // Book
     updateUser: NexusGenRootTypes['User'] | null; // User
   }
   Query: { // field return type
@@ -246,6 +255,8 @@ export interface NexusGenFieldTypes {
   }
   Review: { // field return type
     author: NexusGenRootTypes['User']; // User!
+    book: NexusGenRootTypes['Book']; // Book!
+    bookId: string; // String!
     id: string; // String!
     rating: number; // Int!
     text: string | null; // String
@@ -266,12 +277,16 @@ export interface NexusGenFieldTypeNames {
     author: 'User'
     id: 'String'
     isbn: 'String'
+    reviews: 'Review'
     title: 'String'
     userId: 'String'
   }
   Mutation: { // field return type name
+    createBook: 'Book'
     createUser: 'User'
+    deleteBook: 'Book'
     deleteUser: 'User'
+    updateBook: 'Book'
     updateUser: 'User'
   }
   Query: { // field return type name
@@ -284,6 +299,8 @@ export interface NexusGenFieldTypeNames {
   }
   Review: { // field return type name
     author: 'User'
+    book: 'Book'
+    bookId: 'String'
     id: 'String'
     rating: 'Int'
     text: 'String'
@@ -300,14 +317,35 @@ export interface NexusGenFieldTypeNames {
 }
 
 export interface NexusGenArgTypes {
+  Book: {
+    reviews: { // args
+      after?: NexusGenInputs['ReviewWhereUniqueInput'] | null; // ReviewWhereUniqueInput
+      before?: NexusGenInputs['ReviewWhereUniqueInput'] | null; // ReviewWhereUniqueInput
+      first?: number | null; // Int
+      last?: number | null; // Int
+    }
+  }
   Mutation: {
+    createBook: { // args
+      isbn: string; // String!
+      title: string; // String!
+      userId: string; // ID!
+    }
     createUser: { // args
       email: string; // String!
       name: string; // String!
       role: NexusGenEnums['role']; // role!
     }
+    deleteBook: { // args
+      id: string; // ID!
+    }
     deleteUser: { // args
       id: string; // ID!
+    }
+    updateBook: { // args
+      updateIsbn?: string | null; // String
+      updateTitle?: string | null; // String
+      whereId: string; // ID!
     }
     updateUser: { // args
       updateEmail?: string | null; // String
