@@ -56,6 +56,12 @@ input IntFilter {
   notIn: [Int!]
 }
 
+type Mutation {
+  createUser(email: String!, name: String!, role: role!): User
+  deleteUser(id: ID!): User
+  updateUser(updateEmail: String, updateName: String, whereId: ID!): User
+}
+
 input NestedEnumroleFilter {
   equals: role
   in: [role!]

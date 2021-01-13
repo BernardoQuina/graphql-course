@@ -197,6 +197,7 @@ export interface NexusGenObjects {
     title: string; // String!
     userId: string; // String!
   }
+  Mutation: {};
   Query: {};
   Review: { // root type
     id: string; // String!
@@ -229,6 +230,11 @@ export interface NexusGenFieldTypes {
     isbn: string; // String!
     title: string; // String!
     userId: string; // String!
+  }
+  Mutation: { // field return type
+    createUser: NexusGenRootTypes['User'] | null; // User
+    deleteUser: NexusGenRootTypes['User'] | null; // User
+    updateUser: NexusGenRootTypes['User'] | null; // User
   }
   Query: { // field return type
     book: NexusGenRootTypes['Book'] | null; // Book
@@ -263,6 +269,11 @@ export interface NexusGenFieldTypeNames {
     title: 'String'
     userId: 'String'
   }
+  Mutation: { // field return type name
+    createUser: 'User'
+    deleteUser: 'User'
+    updateUser: 'User'
+  }
   Query: { // field return type name
     book: 'Book'
     books: 'Book'
@@ -289,6 +300,21 @@ export interface NexusGenFieldTypeNames {
 }
 
 export interface NexusGenArgTypes {
+  Mutation: {
+    createUser: { // args
+      email: string; // String!
+      name: string; // String!
+      role: NexusGenEnums['role']; // role!
+    }
+    deleteUser: { // args
+      id: string; // ID!
+    }
+    updateUser: { // args
+      updateEmail?: string | null; // String
+      updateName?: string | null; // String
+      whereId: string; // ID!
+    }
+  }
   Query: {
     book: { // args
       where: NexusGenInputs['BookWhereUniqueInput']; // BookWhereUniqueInput!
