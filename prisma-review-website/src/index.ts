@@ -5,7 +5,7 @@ import { schema } from './schema/schema'
 const server = new ApolloServer({
   schema,
   context: createContext,
-  tracing: true
+  // tracing: true
 })
 
 server.listen(4001, () => {
