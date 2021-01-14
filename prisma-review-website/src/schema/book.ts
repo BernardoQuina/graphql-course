@@ -25,7 +25,7 @@ export const createBook = mutationField('createBook', {
     })
 
     if (!userExistsAndIsVendor) {
-      throw new Error('User not found or not a vendor')
+      throw new Error('User not found or not a vendor. Only vendors can create listings.')
     }
 
     return prisma.book.create({

@@ -60,10 +60,13 @@ input IntFilter {
 
 type Mutation {
   createBook(isbn: String!, title: String!, userId: ID!): Book
+  createReview(bookId: ID!, rating: Int!, text: String, userId: ID!): Review
   createUser(email: String!, name: String!, role: role!): User
   deleteBook(id: ID!): Book
+  deleteReview(id: ID!): Review
   deleteUser(id: ID!): User
   updateBook(updateIsbn: String, updateTitle: String, whereId: ID!): Book
+  updateReview(updateRating: Int, updateText: String, whereId: ID!): Review
   updateUser(updateEmail: String, updateName: String, whereId: ID!): User
 }
 

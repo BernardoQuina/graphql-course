@@ -239,10 +239,13 @@ export interface NexusGenFieldTypes {
   }
   Mutation: { // field return type
     createBook: NexusGenRootTypes['Book'] | null; // Book
+    createReview: NexusGenRootTypes['Review'] | null; // Review
     createUser: NexusGenRootTypes['User'] | null; // User
     deleteBook: NexusGenRootTypes['Book'] | null; // Book
+    deleteReview: NexusGenRootTypes['Review'] | null; // Review
     deleteUser: NexusGenRootTypes['User'] | null; // User
     updateBook: NexusGenRootTypes['Book'] | null; // Book
+    updateReview: NexusGenRootTypes['Review'] | null; // Review
     updateUser: NexusGenRootTypes['User'] | null; // User
   }
   Query: { // field return type
@@ -283,10 +286,13 @@ export interface NexusGenFieldTypeNames {
   }
   Mutation: { // field return type name
     createBook: 'Book'
+    createReview: 'Review'
     createUser: 'User'
     deleteBook: 'Book'
+    deleteReview: 'Review'
     deleteUser: 'User'
     updateBook: 'Book'
+    updateReview: 'Review'
     updateUser: 'User'
   }
   Query: { // field return type name
@@ -331,6 +337,12 @@ export interface NexusGenArgTypes {
       title: string; // String!
       userId: string; // ID!
     }
+    createReview: { // args
+      bookId: string; // ID!
+      rating: number; // Int!
+      text?: string | null; // String
+      userId: string; // ID!
+    }
     createUser: { // args
       email: string; // String!
       name: string; // String!
@@ -339,12 +351,20 @@ export interface NexusGenArgTypes {
     deleteBook: { // args
       id: string; // ID!
     }
+    deleteReview: { // args
+      id: string; // ID!
+    }
     deleteUser: { // args
       id: string; // ID!
     }
     updateBook: { // args
       updateIsbn?: string | null; // String
       updateTitle?: string | null; // String
+      whereId: string; // ID!
+    }
+    updateReview: { // args
+      updateRating?: number | null; // Int
+      updateText?: string | null; // String
       whereId: string; // ID!
     }
     updateUser: { // args
