@@ -118,10 +118,13 @@ input NestedStringNullableFilter {
 
 type Query {
   book(where: BookWhereUniqueInput!): Book
+  bookCount: Int
   books(after: BookWhereUniqueInput, before: BookWhereUniqueInput, first: Int, last: Int, orderBy: [BookOrderByInput!], where: BookWhereInput): [Book!]!
   review(where: ReviewWhereUniqueInput!): Review
+  reviewCount: Int
   reviews(after: ReviewWhereUniqueInput, before: ReviewWhereUniqueInput, first: Int, last: Int, orderBy: [ReviewOrderByInput!], where: ReviewWhereInput): [Review!]!
   user(where: UserWhereUniqueInput!): User
+  userCount: Int
   users(after: UserWhereUniqueInput, before: UserWhereUniqueInput, first: Int, last: Int, orderBy: [UserOrderByInput!], where: UserWhereInput): [User!]!
 }
 

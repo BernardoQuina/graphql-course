@@ -45,6 +45,10 @@ export const createReview = mutationField('createReview', {
       throw new Error('Book not found.')
     }
 
+    if (rating > 5 || rating < 1) {
+      throw new Error('Rating must be from 1 to 5.')
+    }
+
     return prisma.review.create({
       data: {
         rating,

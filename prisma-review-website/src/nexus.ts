@@ -250,10 +250,13 @@ export interface NexusGenFieldTypes {
   }
   Query: { // field return type
     book: NexusGenRootTypes['Book'] | null; // Book
+    bookCount: number | null; // Int
     books: NexusGenRootTypes['Book'][]; // [Book!]!
     review: NexusGenRootTypes['Review'] | null; // Review
+    reviewCount: number | null; // Int
     reviews: NexusGenRootTypes['Review'][]; // [Review!]!
     user: NexusGenRootTypes['User'] | null; // User
+    userCount: number | null; // Int
     users: NexusGenRootTypes['User'][]; // [User!]!
   }
   Review: { // field return type
@@ -297,10 +300,13 @@ export interface NexusGenFieldTypeNames {
   }
   Query: { // field return type name
     book: 'Book'
+    bookCount: 'Int'
     books: 'Book'
     review: 'Review'
+    reviewCount: 'Int'
     reviews: 'Review'
     user: 'User'
+    userCount: 'Int'
     users: 'User'
   }
   Review: { // field return type name
