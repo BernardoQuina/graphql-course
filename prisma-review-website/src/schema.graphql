@@ -214,6 +214,10 @@ input StringNullableFilter {
   startsWith: String
 }
 
+type Subscription {
+  subscribeToBookChanges(bookId: ID!): Book
+}
+
 type User {
   books(after: BookWhereUniqueInput, before: BookWhereUniqueInput, first: Int, last: Int): [Book!]!
   email: String!

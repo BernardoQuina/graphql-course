@@ -210,6 +210,7 @@ export interface NexusGenObjects {
     text?: string | null; // String
     userId: string; // String!
   }
+  Subscription: {};
   User: { // root type
     email: string; // String!
     id: string; // String!
@@ -268,6 +269,9 @@ export interface NexusGenFieldTypes {
     text: string | null; // String
     userId: string; // String!
   }
+  Subscription: { // field return type
+    subscribeToBookChanges: NexusGenRootTypes['Book'] | null; // Book
+  }
   User: { // field return type
     books: NexusGenRootTypes['Book'][]; // [Book!]!
     email: string; // String!
@@ -317,6 +321,9 @@ export interface NexusGenFieldTypeNames {
     rating: 'Int'
     text: 'String'
     userId: 'String'
+  }
+  Subscription: { // field return type name
+    subscribeToBookChanges: 'Book'
   }
   User: { // field return type name
     books: 'Book'
@@ -412,6 +419,11 @@ export interface NexusGenArgTypes {
       last?: number | null; // Int
       orderBy?: NexusGenInputs['UserOrderByInput'][] | null; // [UserOrderByInput!]
       where?: NexusGenInputs['UserWhereInput'] | null; // UserWhereInput
+    }
+  }
+  Subscription: {
+    subscribeToBookChanges: { // args
+      bookId: string; // ID!
     }
   }
   User: {

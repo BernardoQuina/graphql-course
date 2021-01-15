@@ -1,4 +1,11 @@
-import { idArg, mutationField, nonNull, objectType, stringArg } from 'nexus'
+import {
+  idArg,
+  mutationField,
+  nonNull,
+  objectType,
+  stringArg,
+  subscriptionField,
+} from 'nexus'
 
 export const Book = objectType({
   name: 'Book',
@@ -25,7 +32,9 @@ export const createBook = mutationField('createBook', {
     })
 
     if (!userExistsAndIsVendor) {
-      throw new Error('User not found or not a vendor. Only vendors can create listings.')
+      throw new Error(
+        'User not found or not a vendor. Only vendors can create listings.'
+      )
     }
 
     return prisma.book.create({
@@ -71,7 +80,7 @@ export const deleteBook = mutationField('deleteBook', {
   args: {
     id: nonNull(idArg()),
   },
-  async resolve(_root, { id }, { prisma }) {
+  async resolve(_root, { id }, { prisma, pubsub }) {
     const bookExists = await prisma.book.findUnique({ where: { id } })
 
     if (!bookExists) {
@@ -80,6 +89,36 @@ export const deleteBook = mutationField('deleteBook', {
 
     await prisma.review.deleteMany({ where: { bookId: id } })
 
-    return prisma.book.delete({ where: { id } })
+    const bookToBeDeleted = {...bookExists}
+
+    pubsub.publish(`book ${id}`, bookExists)
+
+    prisma.book.delete({ where: { id } })
+
+    return bookToBeDeleted
   },
 })
+
+export const subscribeToBookChanges = subscriptionField(
+  'subscribeToBookChanges',
+  {
+    type: Book,
+    args: {
+      bookId: nonNull(idArg()),
+    },
+    async subscribe(_root, { bookId }, { prisma, pubsub }) {
+      const bookExists = await prisma.book.findUnique({ where: { id: bookId } })
+
+      if (!bookExists) {
+        throw new Error('Book not found')
+      }
+
+      return pubsub.asyncIterator(`book ${bookId}`)
+
+      
+    },
+    resolve(_, {bookId}, {prisma}) {
+      return prisma.book.findUnique({where: {id: bookId}})
+    }
+  }
+)
