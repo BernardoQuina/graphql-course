@@ -2,20 +2,35 @@ import { makeSchema } from 'nexus'
 import { nexusPrisma } from 'nexus-plugin-prisma'
 import path from 'path'
 
-import { Query } from './query'
-import * as userTypes from './user'
-import * as bookTypes from './book'
-import * as reviewTypes from './review'
+import { User } from './User/type'
+import * as userQueries from './User/queries'
+import * as userMutations from './User/mutations'
+
+import { Book } from './Book/type'
+import * as bookQueries from './Book/queries'
+import * as bookMutations from './Book/mutations'
+import * as bookSubscriptions from './Book/subscriptions'
+
+import { Review } from './Review/type'
+import * as reviewQueries from './Review/queries'
+import * as reviewMutations from './Review/mutations'
 
 
 // makeSchema defines the GraphQL schema, by combining the the GraphQL types defined
 // by the GraphQL Nexus layer or any manually defined GraphQLType objects
 export const schema = makeSchema({
   types: {
-    Query,
-    userTypes,
-    bookTypes,
-    reviewTypes
+    User,
+    userQueries,
+    userMutations,
+    Book,
+    bookQueries,
+    bookMutations,
+    bookSubscriptions,
+    Review,
+    reviewQueries,
+    reviewMutations
+    
   },
   plugins: [nexusPrisma({ experimentalCRUD: true })],
   outputs: {

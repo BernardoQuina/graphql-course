@@ -70,6 +70,12 @@ type Mutation {
   updateUser(updateEmail: String, updateName: String, whereId: ID!): User
 }
 
+enum MutationEnum {
+  CREATED
+  DELETED
+  UPDATED
+}
+
 input NestedEnumroleFilter {
   equals: role
   in: [role!]
@@ -216,6 +222,11 @@ input StringNullableFilter {
 
 type Subscription {
   subscribeToBookChanges(bookId: ID!): Book
+}
+
+type SubscriptionResponse {
+  data: Book
+  Mutation: MutationEnum
 }
 
 type User {

@@ -181,6 +181,7 @@ export interface NexusGenInputs {
 }
 
 export interface NexusGenEnums {
+  MutationEnum: "CREATED" | "DELETED" | "UPDATED"
   QueryMode: "default" | "insensitive"
   SortOrder: "asc" | "desc"
   role: "CONSUMER" | "VENDOR"
@@ -211,6 +212,10 @@ export interface NexusGenObjects {
     userId: string; // String!
   }
   Subscription: {};
+  SubscriptionResponse: { // root type
+    data?: NexusGenRootTypes['Book'] | null; // Book
+    Mutation?: NexusGenEnums['MutationEnum'] | null; // MutationEnum
+  }
   User: { // root type
     email: string; // String!
     id: string; // String!
@@ -272,6 +277,10 @@ export interface NexusGenFieldTypes {
   Subscription: { // field return type
     subscribeToBookChanges: NexusGenRootTypes['Book'] | null; // Book
   }
+  SubscriptionResponse: { // field return type
+    data: NexusGenRootTypes['Book'] | null; // Book
+    Mutation: NexusGenEnums['MutationEnum'] | null; // MutationEnum
+  }
   User: { // field return type
     books: NexusGenRootTypes['Book'][]; // [Book!]!
     email: string; // String!
@@ -324,6 +333,10 @@ export interface NexusGenFieldTypeNames {
   }
   Subscription: { // field return type name
     subscribeToBookChanges: 'Book'
+  }
+  SubscriptionResponse: { // field return type name
+    data: 'Book'
+    Mutation: 'MutationEnum'
   }
   User: { // field return type name
     books: 'Book'

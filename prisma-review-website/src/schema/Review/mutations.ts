@@ -1,27 +1,7 @@
-import {
-  idArg,
-  intArg,
-  mutationField,
-  nonNull,
-  objectType,
-  stringArg,
-} from 'nexus'
-
-export const Review = objectType({
-  name: 'Review',
-  definition(t) {
-    t.model.id()
-    t.model.rating()
-    t.model.text()
-    t.model.author()
-    t.model.userId()
-    t.model.book()
-    t.model.bookId()
-  },
-})
+import { mutationField, nonNull, idArg, intArg, stringArg } from 'nexus'
 
 export const createReview = mutationField('createReview', {
-  type: Review,
+  type: 'Review',
   args: {
     userId: nonNull(idArg()),
     bookId: nonNull(idArg()),
@@ -61,7 +41,7 @@ export const createReview = mutationField('createReview', {
 })
 
 export const updateReview = mutationField('updateReview', {
-  type: Review,
+  type: 'Review',
   args: {
     whereId: nonNull(idArg()),
     updateRating: intArg(),
@@ -95,7 +75,7 @@ export const updateReview = mutationField('updateReview', {
 })
 
 export const deleteReview = mutationField('deleteReview', {
-  type: Review,
+  type: 'Review',
   args: {
     id: nonNull(idArg()),
   },

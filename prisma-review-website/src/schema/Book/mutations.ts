@@ -1,26 +1,7 @@
-import {
-  idArg,
-  mutationField,
-  nonNull,
-  objectType,
-  stringArg,
-  subscriptionField,
-} from 'nexus'
-
-export const Book = objectType({
-  name: 'Book',
-  definition(t) {
-    t.model.id()
-    t.model.title()
-    t.model.isbn()
-    t.model.author()
-    t.model.userId()
-    t.model.reviews()
-  },
-})
+import { mutationField, nonNull, stringArg, idArg } from 'nexus'
 
 export const createBook = mutationField('createBook', {
-  type: Book,
+  type: 'Book',
   args: {
     title: nonNull(stringArg()),
     isbn: nonNull(stringArg()),
@@ -44,7 +25,7 @@ export const createBook = mutationField('createBook', {
 })
 
 export const updateBook = mutationField('updateBook', {
-  type: Book,
+  type: 'Book',
   args: {
     whereId: nonNull(idArg()),
     updateTitle: stringArg(),
@@ -76,7 +57,7 @@ export const updateBook = mutationField('updateBook', {
 })
 
 export const deleteBook = mutationField('deleteBook', {
-  type: Book,
+  type: 'Book',
   args: {
     id: nonNull(idArg()),
   },
@@ -89,36 +70,12 @@ export const deleteBook = mutationField('deleteBook', {
 
     await prisma.review.deleteMany({ where: { bookId: id } })
 
-    const bookToBeDeleted = {...bookExists}
+    const bookToBeDeleted = { ...bookExists }
 
-    pubsub.publish(`book ${id}`, bookExists)
+    pubsub.publish(`book ${id}`, bookToBeDeleted)
 
-    prisma.book.delete({ where: { id } })
+    await prisma.book.delete({ where: { id } })
 
     return bookToBeDeleted
   },
 })
-
-export const subscribeToBookChanges = subscriptionField(
-  'subscribeToBookChanges',
-  {
-    type: Book,
-    args: {
-      bookId: nonNull(idArg()),
-    },
-    async subscribe(_root, { bookId }, { prisma, pubsub }) {
-      const bookExists = await prisma.book.findUnique({ where: { id: bookId } })
-
-      if (!bookExists) {
-        throw new Error('Book not found')
-      }
-
-      return pubsub.asyncIterator(`book ${bookId}`)
-
-      
-    },
-    resolve(_, {bookId}, {prisma}) {
-      return prisma.book.findUnique({where: {id: bookId}})
-    }
-  }
-)
