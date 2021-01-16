@@ -166,6 +166,11 @@ input ReviewOrderByInput {
   userId: SortOrder
 }
 
+type reviewSubResponse {
+  data: Review
+  mutation: String
+}
+
 input ReviewWhereInput {
   AND: [ReviewWhereInput!]
   author: UserWhereInput
@@ -226,6 +231,9 @@ input StringNullableFilter {
 type Subscription {
   bookSub(bookId: ID!): bookSubResponse
   bookSubByUser(userId: ID!): bookSubResponse
+  reviewSub(reviewId: ID!): reviewSubResponse
+  reviewSubByBook(bookId: ID!): reviewSubResponse
+  reviewSubByUser(userId: ID!): reviewSubResponse
 }
 
 type User {
@@ -242,6 +250,11 @@ input UserOrderByInput {
   id: SortOrder
   name: SortOrder
   role: SortOrder
+}
+
+type userSubResponse {
+  data: User
+  mutation: String
 }
 
 input UserWhereInput {

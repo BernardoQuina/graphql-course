@@ -5,6 +5,7 @@ import path from 'path'
 import { User } from './User/type'
 import * as userQueries from './User/queries'
 import * as userMutations from './User/mutations'
+import * as userSubscriptions from './User/subscriptions'
 
 import { Book } from './Book/type'
 import * as bookQueries from './Book/queries'
@@ -14,6 +15,7 @@ import * as bookSubscriptions from './Book/subscriptions'
 import { Review } from './Review/type'
 import * as reviewQueries from './Review/queries'
 import * as reviewMutations from './Review/mutations'
+import * as reviewSubscriptions from './Review/subscriptions'
 
 
 // makeSchema defines the GraphQL schema, by combining the the GraphQL types defined
@@ -23,13 +25,15 @@ export const schema = makeSchema({
     User,
     userQueries,
     userMutations,
+    userSubscriptions,
     Book,
     bookQueries,
     bookMutations,
     bookSubscriptions,
     Review,
     reviewQueries,
-    reviewMutations
+    reviewMutations,
+    reviewSubscriptions
     
   },
   plugins: [nexusPrisma({ experimentalCRUD: true })],

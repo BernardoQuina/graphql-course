@@ -221,6 +221,14 @@ export interface NexusGenObjects {
     data?: NexusGenRootTypes['Book'] | null; // Book
     mutation?: string | null; // String
   }
+  reviewSubResponse: { // root type
+    data?: NexusGenRootTypes['Review'] | null; // Review
+    mutation?: string | null; // String
+  }
+  userSubResponse: { // root type
+    data?: NexusGenRootTypes['User'] | null; // User
+    mutation?: string | null; // String
+  }
 }
 
 export interface NexusGenInterfaces {
@@ -276,6 +284,9 @@ export interface NexusGenFieldTypes {
   Subscription: { // field return type
     bookSub: NexusGenRootTypes['bookSubResponse'] | null; // bookSubResponse
     bookSubByUser: NexusGenRootTypes['bookSubResponse'] | null; // bookSubResponse
+    reviewSub: NexusGenRootTypes['reviewSubResponse'] | null; // reviewSubResponse
+    reviewSubByBook: NexusGenRootTypes['reviewSubResponse'] | null; // reviewSubResponse
+    reviewSubByUser: NexusGenRootTypes['reviewSubResponse'] | null; // reviewSubResponse
   }
   User: { // field return type
     books: NexusGenRootTypes['Book'][]; // [Book!]!
@@ -287,6 +298,14 @@ export interface NexusGenFieldTypes {
   }
   bookSubResponse: { // field return type
     data: NexusGenRootTypes['Book'] | null; // Book
+    mutation: string | null; // String
+  }
+  reviewSubResponse: { // field return type
+    data: NexusGenRootTypes['Review'] | null; // Review
+    mutation: string | null; // String
+  }
+  userSubResponse: { // field return type
+    data: NexusGenRootTypes['User'] | null; // User
     mutation: string | null; // String
   }
 }
@@ -334,6 +353,9 @@ export interface NexusGenFieldTypeNames {
   Subscription: { // field return type name
     bookSub: 'bookSubResponse'
     bookSubByUser: 'bookSubResponse'
+    reviewSub: 'reviewSubResponse'
+    reviewSubByBook: 'reviewSubResponse'
+    reviewSubByUser: 'reviewSubResponse'
   }
   User: { // field return type name
     books: 'Book'
@@ -345,6 +367,14 @@ export interface NexusGenFieldTypeNames {
   }
   bookSubResponse: { // field return type name
     data: 'Book'
+    mutation: 'String'
+  }
+  reviewSubResponse: { // field return type name
+    data: 'Review'
+    mutation: 'String'
+  }
+  userSubResponse: { // field return type name
+    data: 'User'
     mutation: 'String'
   }
 }
@@ -440,6 +470,15 @@ export interface NexusGenArgTypes {
       bookId: string; // ID!
     }
     bookSubByUser: { // args
+      userId: string; // ID!
+    }
+    reviewSub: { // args
+      reviewId: string; // ID!
+    }
+    reviewSubByBook: { // args
+      bookId: string; // ID!
+    }
+    reviewSubByUser: { // args
       userId: string; // ID!
     }
   }

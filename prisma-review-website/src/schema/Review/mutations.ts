@@ -8,7 +8,7 @@ export const createReview = mutationField('createReview', {
     rating: nonNull(intArg()),
     text: stringArg(),
   },
-  async resolve(_root, { userId, bookId, rating, text }, { prisma }) {
+  async resolve(_root, { userId, bookId, rating, text }, { prisma, pubsub }) {
     const userExistsAndIsConsumer = await prisma.user.findFirst({
       where: { id: userId, role: 'CONSUMER' },
     })
@@ -29,7 +29,7 @@ export const createReview = mutationField('createReview', {
       throw new Error('Rating must be from 1 to 5.')
     }
 
-    return prisma.review.create({
+    const createdReview = await prisma.review.create({
       data: {
         rating,
         text,
@@ -37,6 +37,18 @@ export const createReview = mutationField('createReview', {
         book: { connect: { id: bookId } },
       },
     })
+
+    pubsub.publish(`review from user ${userId}`, {
+      mutation: 'CREATED',
+      data: createdReview,
+    })
+
+    pubsub.publish(`review from book ${bookId}`, {
+      mutation: 'CREATED',
+      data: createdReview,
+    })
+
+    return createdReview
   },
 })
 
@@ -47,7 +59,11 @@ export const updateReview = mutationField('updateReview', {
     updateRating: intArg(),
     updateText: stringArg(),
   },
-  async resolve(_root, { whereId, updateRating, updateText }, { prisma }) {
+  async resolve(
+    _root,
+    { whereId, updateRating, updateText },
+    { prisma, pubsub }
+  ) {
     const reviewExists = await prisma.review.findUnique({
       where: { id: whereId },
     })
@@ -70,6 +86,21 @@ export const updateReview = mutationField('updateReview', {
       throw new Error('Please provide something to update.')
     }
 
+    pubsub.publish(`review ${whereId}`, {
+      mutation: 'UPDATED',
+      data: reviewExists,
+    })
+
+    pubsub.publish(`review from book ${reviewExists.bookId}`, {
+      mutation: 'UPDATED',
+      data: reviewExists,
+    })
+
+    pubsub.publish(`review from user ${reviewExists.userId}`, {
+      mutation: 'UPDATED',
+      data: reviewExists,
+    })
+
     return prisma.review.update({ where: { id: whereId }, data })
   },
 })
@@ -79,12 +110,27 @@ export const deleteReview = mutationField('deleteReview', {
   args: {
     id: nonNull(idArg()),
   },
-  async resolve(_root, { id }, { prisma }) {
+  async resolve(_root, { id }, { prisma, pubsub }) {
     const reviewExists = await prisma.review.findUnique({ where: { id } })
 
     if (!reviewExists) {
       throw new Error('Review not found.')
     }
+
+    pubsub.publish(`review ${id}`, {
+      mutation: 'DELETED',
+      data: reviewExists,
+    })
+
+    pubsub.publish(`review from user ${reviewExists.userId}`, {
+      mutation: 'DELETED',
+      data: reviewExists,
+    })
+
+    pubsub.publish(`review from book ${reviewExists.bookId}`, {
+      mutation: 'DELETED',
+      data: reviewExists,
+    })
 
     return prisma.review.delete({ where: { id } })
   },
