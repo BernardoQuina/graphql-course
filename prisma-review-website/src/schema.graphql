@@ -24,6 +24,11 @@ input BookOrderByInput {
   userId: SortOrder
 }
 
+type bookSubResponse {
+  data: Book
+  mutation: String
+}
+
 input BookWhereInput {
   AND: [BookWhereInput!]
   author: UserWhereInput
@@ -62,18 +67,16 @@ type Mutation {
   createBook(isbn: String!, title: String!, userId: ID!): Book
   createReview(bookId: ID!, rating: Int!, text: String, userId: ID!): Review
   createUser(email: String!, name: String!, role: role!): User
+
+  """
+  WARNING: Do not select author field, it will throw an error. Deletion will eliminate connection to user before the data is returned
+  """
   deleteBook(id: ID!): Book
   deleteReview(id: ID!): Review
   deleteUser(id: ID!): User
   updateBook(updateIsbn: String, updateTitle: String, whereId: ID!): Book
   updateReview(updateRating: Int, updateText: String, whereId: ID!): Review
   updateUser(updateEmail: String, updateName: String, whereId: ID!): User
-}
-
-enum MutationEnum {
-  CREATED
-  DELETED
-  UPDATED
 }
 
 input NestedEnumroleFilter {
@@ -221,12 +224,8 @@ input StringNullableFilter {
 }
 
 type Subscription {
-  subscribeToBookChanges(bookId: ID!): Book
-}
-
-type SubscriptionResponse {
-  data: Book
-  Mutation: MutationEnum
+  bookSub(bookId: ID!): bookSubResponse
+  bookSubByUser(userId: ID!): bookSubResponse
 }
 
 type User {

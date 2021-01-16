@@ -181,7 +181,6 @@ export interface NexusGenInputs {
 }
 
 export interface NexusGenEnums {
-  MutationEnum: "CREATED" | "DELETED" | "UPDATED"
   QueryMode: "default" | "insensitive"
   SortOrder: "asc" | "desc"
   role: "CONSUMER" | "VENDOR"
@@ -212,15 +211,15 @@ export interface NexusGenObjects {
     userId: string; // String!
   }
   Subscription: {};
-  SubscriptionResponse: { // root type
-    data?: NexusGenRootTypes['Book'] | null; // Book
-    Mutation?: NexusGenEnums['MutationEnum'] | null; // MutationEnum
-  }
   User: { // root type
     email: string; // String!
     id: string; // String!
     name: string; // String!
     role: NexusGenEnums['role']; // role!
+  }
+  bookSubResponse: { // root type
+    data?: NexusGenRootTypes['Book'] | null; // Book
+    mutation?: string | null; // String
   }
 }
 
@@ -275,11 +274,8 @@ export interface NexusGenFieldTypes {
     userId: string; // String!
   }
   Subscription: { // field return type
-    subscribeToBookChanges: NexusGenRootTypes['Book'] | null; // Book
-  }
-  SubscriptionResponse: { // field return type
-    data: NexusGenRootTypes['Book'] | null; // Book
-    Mutation: NexusGenEnums['MutationEnum'] | null; // MutationEnum
+    bookSub: NexusGenRootTypes['bookSubResponse'] | null; // bookSubResponse
+    bookSubByUser: NexusGenRootTypes['bookSubResponse'] | null; // bookSubResponse
   }
   User: { // field return type
     books: NexusGenRootTypes['Book'][]; // [Book!]!
@@ -288,6 +284,10 @@ export interface NexusGenFieldTypes {
     name: string; // String!
     reviews: NexusGenRootTypes['Review'][]; // [Review!]!
     role: NexusGenEnums['role']; // role!
+  }
+  bookSubResponse: { // field return type
+    data: NexusGenRootTypes['Book'] | null; // Book
+    mutation: string | null; // String
   }
 }
 
@@ -332,11 +332,8 @@ export interface NexusGenFieldTypeNames {
     userId: 'String'
   }
   Subscription: { // field return type name
-    subscribeToBookChanges: 'Book'
-  }
-  SubscriptionResponse: { // field return type name
-    data: 'Book'
-    Mutation: 'MutationEnum'
+    bookSub: 'bookSubResponse'
+    bookSubByUser: 'bookSubResponse'
   }
   User: { // field return type name
     books: 'Book'
@@ -345,6 +342,10 @@ export interface NexusGenFieldTypeNames {
     name: 'String'
     reviews: 'Review'
     role: 'role'
+  }
+  bookSubResponse: { // field return type name
+    data: 'Book'
+    mutation: 'String'
   }
 }
 
@@ -435,8 +436,11 @@ export interface NexusGenArgTypes {
     }
   }
   Subscription: {
-    subscribeToBookChanges: { // args
+    bookSub: { // args
       bookId: string; // ID!
+    }
+    bookSubByUser: { // args
+      userId: string; // ID!
     }
   }
   User: {

@@ -7,7 +7,7 @@ export const createBook = mutationField('createBook', {
     isbn: nonNull(stringArg()),
     userId: nonNull(idArg()),
   },
-  async resolve(_root, { title, isbn, userId }, { prisma }) {
+  async resolve(_root, { title, isbn, userId }, { prisma, pubsub }) {
     const userExistsAndIsVendor = await prisma.user.findFirst({
       where: { id: userId, role: 'VENDOR' },
     })
@@ -18,9 +18,16 @@ export const createBook = mutationField('createBook', {
       )
     }
 
-    return prisma.book.create({
+    const createdBook = await prisma.book.create({
       data: { title, isbn, author: { connect: { id: userId } } },
     })
+
+    pubsub.publish(`book from user ${userId}`, {
+      mutation: 'CREATED',
+      data: createdBook,
+    })
+
+    return createdBook
   },
 })
 
@@ -31,7 +38,11 @@ export const updateBook = mutationField('updateBook', {
     updateTitle: stringArg(),
     updateIsbn: stringArg(),
   },
-  async resolve(_root, { whereId, updateTitle, updateIsbn }, { prisma }) {
+  async resolve(
+    _root,
+    { whereId, updateTitle, updateIsbn },
+    { prisma, pubsub }
+  ) {
     const bookExists = await prisma.book.findUnique({ where: { id: whereId } })
 
     if (!bookExists) {
@@ -52,12 +63,25 @@ export const updateBook = mutationField('updateBook', {
       throw new Error('Please provide something to update')
     }
 
+    pubsub.publish(`book ${whereId}`, {
+      mutation: 'UPDATED',
+      data: bookExists,
+    })
+
+
+    pubsub.publish(`book from user ${bookExists.userId}`, {
+      mutation: 'UPDATED',
+      data: bookExists,
+    })
+
     return prisma.book.update({ where: { id: whereId }, data })
   },
 })
 
 export const deleteBook = mutationField('deleteBook', {
   type: 'Book',
+  description:
+    'WARNING: Do not select author field, it will throw an error. Deletion will eliminate connection to user before the data is returned',
   args: {
     id: nonNull(idArg()),
   },
@@ -70,12 +94,16 @@ export const deleteBook = mutationField('deleteBook', {
 
     await prisma.review.deleteMany({ where: { bookId: id } })
 
-    const bookToBeDeleted = { ...bookExists }
+    pubsub.publish(`book ${id}`, {
+      mutation: 'DELETED',
+      data: bookExists,
+    })
 
-    pubsub.publish(`book ${id}`, bookToBeDeleted)
+    pubsub.publish(`book from user ${bookExists.userId}`, {
+      mutation: 'DELETED',
+      data: bookExists,
+    })
 
-    await prisma.book.delete({ where: { id } })
-
-    return bookToBeDeleted
+    return prisma.book.delete({ where: { id } })
   },
 })
