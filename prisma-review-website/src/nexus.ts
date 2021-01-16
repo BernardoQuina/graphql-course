@@ -287,6 +287,7 @@ export interface NexusGenFieldTypes {
     reviewSub: NexusGenRootTypes['reviewSubResponse'] | null; // reviewSubResponse
     reviewSubByBook: NexusGenRootTypes['reviewSubResponse'] | null; // reviewSubResponse
     reviewSubByUser: NexusGenRootTypes['reviewSubResponse'] | null; // reviewSubResponse
+    userSub: NexusGenRootTypes['userSubResponse'] | null; // userSubResponse
   }
   User: { // field return type
     books: NexusGenRootTypes['Book'][]; // [Book!]!
@@ -356,6 +357,7 @@ export interface NexusGenFieldTypeNames {
     reviewSub: 'reviewSubResponse'
     reviewSubByBook: 'reviewSubResponse'
     reviewSubByUser: 'reviewSubResponse'
+    userSub: 'userSubResponse'
   }
   User: { // field return type name
     books: 'Book'
@@ -479,6 +481,9 @@ export interface NexusGenArgTypes {
       bookId: string; // ID!
     }
     reviewSubByUser: { // args
+      userId: string; // ID!
+    }
+    userSub: { // args
       userId: string; // ID!
     }
   }

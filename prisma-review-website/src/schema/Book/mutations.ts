@@ -63,18 +63,20 @@ export const updateBook = mutationField('updateBook', {
       throw new Error('Please provide something to update')
     }
 
+    const updatedBook = await prisma.book.update({ where: { id: whereId }, data })
+
     pubsub.publish(`book ${whereId}`, {
       mutation: 'UPDATED',
-      data: bookExists,
+      data: updatedBook,
     })
 
 
-    pubsub.publish(`book from user ${bookExists.userId}`, {
+    pubsub.publish(`book from user ${updatedBook.userId}`, {
       mutation: 'UPDATED',
-      data: bookExists,
+      data: updatedBook,
     })
 
-    return prisma.book.update({ where: { id: whereId }, data })
+    return updatedBook
   },
 })
 

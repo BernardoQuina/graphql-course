@@ -25,7 +25,7 @@ export const updateUser = mutationField('updateUser', {
     updateName: stringArg(),
     updateEmail: stringArg(),
   },
-  async resolve(_root, { whereId, updateEmail, updateName }, { prisma }) {
+  async resolve(_root, { whereId, updateEmail, updateName }, { prisma, pubsub }) {
     const userExists = await prisma.user.findUnique({ where: { id: whereId } })
 
     if (!userExists) {
@@ -46,7 +46,14 @@ export const updateUser = mutationField('updateUser', {
       throw new Error('Please provide something to update')
     }
 
-    return prisma.user.update({ where: { id: whereId }, data })
+    const updatedUser = await prisma.user.update({ where: { id: whereId }, data })
+
+    pubsub.publish(`user ${whereId}`, {
+      mutation: 'UPDATED',
+      data: updatedUser
+    })
+
+    return updatedUser
   },
 })
 
@@ -55,7 +62,7 @@ export const deleteUser = mutationField('deleteUser', {
   args: {
     id: nonNull(idArg()),
   },
-  async resolve(_root, { id }, { prisma }) {
+  async resolve(_root, { id }, { prisma, pubsub }) {
     const userExists = await prisma.user.findUnique({ where: { id } })
 
     if (!userExists) {
@@ -69,6 +76,11 @@ export const deleteUser = mutationField('deleteUser', {
     if (userExists.role === 'VENDOR') {
       await prisma.book.deleteMany({ where: { userId: id } })
     }
+
+    pubsub.publish(`user ${id}`, {
+      mutation: 'DELETED',
+      data: userExists
+    })
 
     return prisma.user.delete({ where: { id } })
   },

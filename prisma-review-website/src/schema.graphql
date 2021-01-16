@@ -234,6 +234,7 @@ type Subscription {
   reviewSub(reviewId: ID!): reviewSubResponse
   reviewSubByBook(bookId: ID!): reviewSubResponse
   reviewSubByUser(userId: ID!): reviewSubResponse
+  userSub(userId: ID!): userSubResponse
 }
 
 type User {
