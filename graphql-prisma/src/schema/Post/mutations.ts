@@ -1,4 +1,5 @@
 import { mutationField, nonNull, stringArg, booleanArg } from 'nexus'
+import { pubsubPublishMany } from '../../util/pubsubMany'
 
 export const createPost = mutationField('createPost', {
   type: 'Post',
@@ -8,14 +9,14 @@ export const createPost = mutationField('createPost', {
     published: nonNull(booleanArg()),
     userId: nonNull(stringArg()),
   },
-  async resolve(_root, { title, body, published, userId }, { prisma }) {
+  async resolve(_root, { title, body, published, userId }, { prisma, pubsub }) {
     const user = await prisma.user.findUnique({ where: { id: userId } })
 
     if (!user) {
       throw new Error('Invalid credentials. Please login to post')
     }
 
-    return prisma.post.create({
+    const createdPost = await prisma.post.create({
       data: {
         title,
         body,
@@ -27,6 +28,13 @@ export const createPost = mutationField('createPost', {
         },
       },
     })
+
+    pubsub.publish(`post from user ${userId}`, {
+      mutation: 'CREATED',
+      data: createdPost,
+    })
+
+    return createdPost
   },
 })
 
@@ -41,7 +49,7 @@ export const updatePost = mutationField('updatePost', {
   async resolve(
     _root,
     { whereId, updateTitle, updateBody, updatePublished },
-    { prisma }
+    { prisma, pubsub }
   ) {
     const postExists = await prisma.post.findUnique({ where: { id: whereId } })
 
@@ -67,7 +75,18 @@ export const updatePost = mutationField('updatePost', {
       throw new Error('Please provide something to update')
     }
 
-    return prisma.post.update({ where: { id: whereId }, data })
+    const updatedPost = await prisma.post.update({
+      where: { id: whereId },
+      data,
+    })
+
+    pubsubPublishMany(
+      pubsub,
+      [`post ${whereId}`, `post from user ${updatedPost.userId}`],
+      { mutation: 'UPDATED', data: updatedPost }
+    )
+
+    return updatedPost
   },
 })
 
@@ -76,14 +95,20 @@ export const deletePost = mutationField('deletePost', {
   args: {
     id: nonNull(stringArg()),
   },
-  async resolve(_root, { id }, { prisma }) {
+  async resolve(_root, { id }, { prisma, pubsub }) {
     const postExists = await prisma.post.findUnique({ where: { id } })
 
     if (!postExists) {
       throw new Error('Post not found')
     }
 
-    await prisma.comment.deleteMany({where: {postId: id}})
+    await prisma.comment.deleteMany({ where: { postId: id } })
+
+    pubsubPublishMany(
+      pubsub,
+      [`post ${id}`, `post from user ${postExists.userId}`],
+      { mutation: 'DELETED', data: postExists }
+    )
 
     return prisma.post.delete({ where: { id } })
   },

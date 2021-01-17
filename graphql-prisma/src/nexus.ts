@@ -156,10 +156,15 @@ export interface NexusGenObjects {
     userId: string; // String!
   }
   Query: {};
+  Subscription: {};
   User: { // root type
     email: string; // String!
     id: string; // String!
     name: string; // String!
+  }
+  postSubResponse: { // root type
+    data?: NexusGenRootTypes['Post'] | null; // Post
+    mutation?: string | null; // String
   }
 }
 
@@ -213,11 +218,19 @@ export interface NexusGenFieldTypes {
     userCount: number | null; // Int
     users: NexusGenRootTypes['User'][]; // [User!]!
   }
+  Subscription: { // field return type
+    postSub: NexusGenRootTypes['postSubResponse'] | null; // postSubResponse
+    postSubByUser: NexusGenRootTypes['postSubResponse'] | null; // postSubResponse
+  }
   User: { // field return type
     email: string; // String!
     id: string; // String!
     name: string; // String!
     posts: NexusGenRootTypes['Post'][]; // [Post!]!
+  }
+  postSubResponse: { // field return type
+    data: NexusGenRootTypes['Post'] | null; // Post
+    mutation: string | null; // String
   }
 }
 
@@ -261,11 +274,19 @@ export interface NexusGenFieldTypeNames {
     userCount: 'Int'
     users: 'User'
   }
+  Subscription: { // field return type name
+    postSub: 'postSubResponse'
+    postSubByUser: 'postSubResponse'
+  }
   User: { // field return type name
     email: 'String'
     id: 'String'
     name: 'String'
     posts: 'Post'
+  }
+  postSubResponse: { // field return type name
+    data: 'Post'
+    mutation: 'String'
   }
 }
 
@@ -352,6 +373,14 @@ export interface NexusGenArgTypes {
       last?: number | null; // Int
       orderBy?: NexusGenInputs['UserOrderByInput'][] | null; // [UserOrderByInput!]
       where?: NexusGenInputs['UserWhereInput'] | null; // UserWhereInput
+    }
+  }
+  Subscription: {
+    postSub: { // args
+      postId: string; // ID!
+    }
+    postSubByUser: { // args
+      userId: string; // ID!
     }
   }
   User: {

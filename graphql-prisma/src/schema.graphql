@@ -100,6 +100,11 @@ input PostOrderByInput {
   userId: SortOrder
 }
 
+type postSubResponse {
+  data: Post
+  mutation: String
+}
+
 input PostWhereInput {
   AND: [PostWhereInput!]
   author: UserWhereInput
@@ -152,6 +157,11 @@ input StringFilter {
   not: NestedStringFilter
   notIn: [String!]
   startsWith: String
+}
+
+type Subscription {
+  postSub(postId: ID!): postSubResponse
+  postSubByUser(userId: ID!): postSubResponse
 }
 
 type User {

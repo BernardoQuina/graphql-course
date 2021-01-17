@@ -10,7 +10,7 @@ import * as userMutations from './User/mutations'
 import { Post } from './Post/type'
 import * as postQueries from './Post/queries'
 import * as postMutations from './Post/mutations'
-// import * as postSubscriptions from './Post/subscriptions'
+import * as postSubscriptions from './Post/subscriptions'
 
 import { Comment } from './Comment/type'
 import * as commentQueries from './Comment/queries'
@@ -27,6 +27,7 @@ export const schema = makeSchema({
     Post,
     postQueries,
     postMutations,
+    postSubscriptions,
     Comment,
     commentQueries,
     commentMutations
