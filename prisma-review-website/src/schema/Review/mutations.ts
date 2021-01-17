@@ -26,6 +26,14 @@ export const createReview = mutationField('createReview', {
       throw new Error('Book not found.')
     }
 
+    const alreadyReviewed = await prisma.review.findFirst({
+      where: { userId, bookId },
+    })
+
+    if (alreadyReviewed) {
+      throw new Error('You can only review each book once.')
+    }
+
     if (rating > 5 || rating < 1) {
       throw new Error('Rating must be from 1 to 5.')
     }
