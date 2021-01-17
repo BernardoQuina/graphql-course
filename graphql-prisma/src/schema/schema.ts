@@ -15,7 +15,7 @@ import * as postSubscriptions from './Post/subscriptions'
 import { Comment } from './Comment/type'
 import * as commentQueries from './Comment/queries'
 import * as commentMutations from './Comment/mutations'
-// import * as commentSubscriptions from './Comment/subscriptions'
+import * as commentSubscriptions from './Comment/subscriptions'
 
 // makeSchema defines the GraphQL schema, by combining the GraphQL types defined 
 // by the GraphQL Nexus layer or any manually defined GraphQLType objects
@@ -30,7 +30,8 @@ export const schema = makeSchema({
     postSubscriptions,
     Comment,
     commentQueries,
-    commentMutations
+    commentMutations,
+    commentSubscriptions
   },
   plugins: [nexusPrisma({ experimentalCRUD: true })],
   outputs: {

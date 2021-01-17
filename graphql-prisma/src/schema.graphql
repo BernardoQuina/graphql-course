@@ -29,6 +29,11 @@ input CommentOrderByInput {
   userId: SortOrder
 }
 
+type commentSubResponse {
+  data: Comment
+  mutation: String
+}
+
 input CommentWhereInput {
   AND: [CommentWhereInput!]
   author: UserWhereInput
@@ -160,6 +165,9 @@ input StringFilter {
 }
 
 type Subscription {
+  commentSub(commentId: ID!): commentSubResponse
+  commentSubByPost(postId: ID!): commentSubResponse
+  commentSubByUser(userId: ID!): commentSubResponse
   postSub(postId: ID!): postSubResponse
   postSubByUser(userId: ID!): postSubResponse
 }

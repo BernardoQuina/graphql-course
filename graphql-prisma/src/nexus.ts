@@ -162,6 +162,10 @@ export interface NexusGenObjects {
     id: string; // String!
     name: string; // String!
   }
+  commentSubResponse: { // root type
+    data?: NexusGenRootTypes['Comment'] | null; // Comment
+    mutation?: string | null; // String
+  }
   postSubResponse: { // root type
     data?: NexusGenRootTypes['Post'] | null; // Post
     mutation?: string | null; // String
@@ -219,6 +223,9 @@ export interface NexusGenFieldTypes {
     users: NexusGenRootTypes['User'][]; // [User!]!
   }
   Subscription: { // field return type
+    commentSub: NexusGenRootTypes['commentSubResponse'] | null; // commentSubResponse
+    commentSubByPost: NexusGenRootTypes['commentSubResponse'] | null; // commentSubResponse
+    commentSubByUser: NexusGenRootTypes['commentSubResponse'] | null; // commentSubResponse
     postSub: NexusGenRootTypes['postSubResponse'] | null; // postSubResponse
     postSubByUser: NexusGenRootTypes['postSubResponse'] | null; // postSubResponse
   }
@@ -227,6 +234,10 @@ export interface NexusGenFieldTypes {
     id: string; // String!
     name: string; // String!
     posts: NexusGenRootTypes['Post'][]; // [Post!]!
+  }
+  commentSubResponse: { // field return type
+    data: NexusGenRootTypes['Comment'] | null; // Comment
+    mutation: string | null; // String
   }
   postSubResponse: { // field return type
     data: NexusGenRootTypes['Post'] | null; // Post
@@ -275,6 +286,9 @@ export interface NexusGenFieldTypeNames {
     users: 'User'
   }
   Subscription: { // field return type name
+    commentSub: 'commentSubResponse'
+    commentSubByPost: 'commentSubResponse'
+    commentSubByUser: 'commentSubResponse'
     postSub: 'postSubResponse'
     postSubByUser: 'postSubResponse'
   }
@@ -283,6 +297,10 @@ export interface NexusGenFieldTypeNames {
     id: 'String'
     name: 'String'
     posts: 'Post'
+  }
+  commentSubResponse: { // field return type name
+    data: 'Comment'
+    mutation: 'String'
   }
   postSubResponse: { // field return type name
     data: 'Post'
@@ -376,6 +394,15 @@ export interface NexusGenArgTypes {
     }
   }
   Subscription: {
+    commentSub: { // args
+      commentId: string; // ID!
+    }
+    commentSubByPost: { // args
+      postId: string; // ID!
+    }
+    commentSubByUser: { // args
+      userId: string; // ID!
+    }
     postSub: { // args
       postId: string; // ID!
     }
