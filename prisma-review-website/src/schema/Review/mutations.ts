@@ -1,5 +1,5 @@
 import { mutationField, nonNull, idArg, intArg, stringArg } from 'nexus'
-import { pubsubPublishMany } from '../../util/pubsubmany'
+import { pubsubPublishMany } from '../../util/pubsubMany'
 
 export const createReview = mutationField('createReview', {
   type: 'Review',

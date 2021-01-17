@@ -2,28 +2,34 @@ import { makeSchema } from 'nexus'
 import { nexusPrisma } from 'nexus-plugin-prisma'
 import path from 'path'
 
-import { Query } from './query'
-import { User, createUser, deleteUser, updateUser } from './user'
-import { Post, createPost, updatePost, deletePost } from './post'
-import { Comment, createComment, updateComment, deleteComment } from './comment'
+import { User } from './User/type'
+import * as userQueries from './User/queries'
+import * as userMutations from './User/mutations'
+// import * as userSubscriptions from './User/subscriptions'
+
+import { Post } from './Post/type'
+import * as postQueries from './Post/queries'
+import * as postMutations from './Post/mutations'
+// import * as postSubscriptions from './Post/subscriptions'
+
+import { Comment } from './Comment/type'
+import * as commentQueries from './Comment/queries'
+import * as commentMutations from './Comment/mutations'
+// import * as commentSubscriptions from './Comment/subscriptions'
 
 // makeSchema defines the GraphQL schema, by combining the GraphQL types defined 
 // by the GraphQL Nexus layer or any manually defined GraphQLType objects
 export const schema = makeSchema({
   types: {
-    Query,
     User,
+    userQueries,
+    userMutations,
     Post,
+    postQueries,
+    postMutations,
     Comment,
-    createUser,
-    deleteUser,
-    updateUser,
-    createPost,
-    updatePost,
-    deletePost,
-    createComment,
-    updateComment,
-    deleteComment,
+    commentQueries,
+    commentMutations
   },
   plugins: [nexusPrisma({ experimentalCRUD: true })],
   outputs: {

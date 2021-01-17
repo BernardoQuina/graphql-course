@@ -1,17 +1,7 @@
-import { idArg, mutationField, nonNull, objectType, stringArg } from 'nexus'
-
-export const User = objectType({
-  name: 'User',
-  definition(t) {
-    t.model.id()
-    t.model.name()
-    t.model.email()
-    t.model.posts()
-  },
-})
+import { mutationField, nonNull, stringArg, idArg } from 'nexus'
 
 export const createUser = mutationField('createUser', {
-  type: User,
+  type: 'User',
   args: { name: nonNull(stringArg()), email: nonNull(stringArg()) },
   async resolve(_root, { name, email }, { prisma }) {
     const emailTaken = await prisma.user.findUnique({ where: { email } })
@@ -25,7 +15,7 @@ export const createUser = mutationField('createUser', {
 })
 
 export const updateUser = mutationField('updateUser', {
-  type: User,
+  type: 'User',
   args: {
     whereId: nonNull(idArg()),
     updateName: stringArg(),
@@ -57,7 +47,7 @@ export const updateUser = mutationField('updateUser', {
 })
 
 export const deleteUser = mutationField('deleteUser', {
-  type: User,
+  type: 'User',
   args: {
     id: nonNull(idArg()),
   },

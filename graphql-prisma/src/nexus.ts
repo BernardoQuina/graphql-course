@@ -204,10 +204,13 @@ export interface NexusGenFieldTypes {
   }
   Query: { // field return type
     comment: NexusGenRootTypes['Comment'] | null; // Comment
+    commentCount: number | null; // Int
     comments: NexusGenRootTypes['Comment'][]; // [Comment!]!
     post: NexusGenRootTypes['Post'] | null; // Post
+    postCount: number | null; // Int
     posts: NexusGenRootTypes['Post'][]; // [Post!]!
     user: NexusGenRootTypes['User'] | null; // User
+    userCount: number | null; // Int
     users: NexusGenRootTypes['User'][]; // [User!]!
   }
   User: { // field return type
@@ -249,10 +252,13 @@ export interface NexusGenFieldTypeNames {
   }
   Query: { // field return type name
     comment: 'Comment'
+    commentCount: 'Int'
     comments: 'Comment'
     post: 'Post'
+    postCount: 'Int'
     posts: 'Post'
     user: 'User'
+    userCount: 'Int'
     users: 'User'
   }
   User: { // field return type name
@@ -320,9 +326,9 @@ export interface NexusGenArgTypes {
     comments: { // args
       after?: NexusGenInputs['CommentWhereUniqueInput'] | null; // CommentWhereUniqueInput
       before?: NexusGenInputs['CommentWhereUniqueInput'] | null; // CommentWhereUniqueInput
-      first: number; // Int!
-      last: number; // Int!
-      orderBy: NexusGenInputs['CommentOrderByInput'][]; // [CommentOrderByInput!]!
+      first?: number | null; // Int
+      last?: number | null; // Int
+      orderBy?: NexusGenInputs['CommentOrderByInput'][] | null; // [CommentOrderByInput!]
       where?: NexusGenInputs['CommentWhereInput'] | null; // CommentWhereInput
     }
     post: { // args
@@ -331,9 +337,9 @@ export interface NexusGenArgTypes {
     posts: { // args
       after?: NexusGenInputs['PostWhereUniqueInput'] | null; // PostWhereUniqueInput
       before?: NexusGenInputs['PostWhereUniqueInput'] | null; // PostWhereUniqueInput
-      first: number; // Int!
-      last: number; // Int!
-      orderBy: NexusGenInputs['PostOrderByInput'][]; // [PostOrderByInput!]!
+      first?: number | null; // Int
+      last?: number | null; // Int
+      orderBy?: NexusGenInputs['PostOrderByInput'][] | null; // [PostOrderByInput!]
       where?: NexusGenInputs['PostWhereInput'] | null; // PostWhereInput
     }
     user: { // args
@@ -342,9 +348,9 @@ export interface NexusGenArgTypes {
     users: { // args
       after?: NexusGenInputs['UserWhereUniqueInput'] | null; // UserWhereUniqueInput
       before?: NexusGenInputs['UserWhereUniqueInput'] | null; // UserWhereUniqueInput
-      first: number; // Int!
-      last: number; // Int!
-      orderBy: NexusGenInputs['UserOrderByInput'][]; // [UserOrderByInput!]!
+      first?: number | null; // Int
+      last?: number | null; // Int
+      orderBy?: NexusGenInputs['UserOrderByInput'][] | null; // [UserOrderByInput!]
       where?: NexusGenInputs['UserWhereInput'] | null; // UserWhereInput
     }
   }

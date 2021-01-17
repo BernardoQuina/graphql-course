@@ -1,5 +1,5 @@
 import { mutationField, nonNull, stringArg, idArg } from 'nexus'
-import { pubsubPublishMany } from '../../util/pubsubmany'
+import { pubsubPublishMany } from '../../util/pubsubMany'
 
 export const createBook = mutationField('createBook', {
   type: 'Book',

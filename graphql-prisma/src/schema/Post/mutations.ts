@@ -1,26 +1,7 @@
-import {
-  booleanArg,
-  mutationField,
-  nonNull,
-  objectType,
-  stringArg,
-} from 'nexus'
-
-export const Post = objectType({
-  name: 'Post',
-  definition(t) {
-    t.model.id()
-    t.model.title()
-    t.model.body()
-    t.model.published()
-    t.model.author()
-    t.model.userId()
-    t.model.comments()
-  },
-})
+import { mutationField, nonNull, stringArg, booleanArg } from 'nexus'
 
 export const createPost = mutationField('createPost', {
-  type: Post,
+  type: 'Post',
   args: {
     title: nonNull(stringArg()),
     body: nonNull(stringArg()),
@@ -50,7 +31,7 @@ export const createPost = mutationField('createPost', {
 })
 
 export const updatePost = mutationField('updatePost', {
-  type: Post,
+  type: 'Post',
   args: {
     whereId: nonNull(stringArg()),
     updateTitle: nonNull(stringArg()),
@@ -91,7 +72,7 @@ export const updatePost = mutationField('updatePost', {
 })
 
 export const deletePost = mutationField('deletePost', {
-  type: Post,
+  type: 'Post',
   args: {
     id: nonNull(stringArg()),
   },

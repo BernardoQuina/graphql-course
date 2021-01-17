@@ -1,24 +1,7 @@
-import {
-  mutationField,
-  nonNull,
-  objectType,
-  stringArg,
-} from 'nexus'
-
-export const Comment = objectType({
-  name: 'Comment',
-  definition(t) {
-    t.model.id()
-    t.model.text()
-    t.model.author()
-    t.model.userId()
-    t.model.post()
-    t.model.postId()
-  },
-})
+import { mutationField, nonNull, stringArg } from 'nexus'
 
 export const createComment = mutationField('createComment', {
-  type: Comment,
+  type: 'Comment',
   args: {
     userId: nonNull(stringArg()),
     postId: nonNull(stringArg()),
@@ -48,7 +31,7 @@ export const createComment = mutationField('createComment', {
 })
 
 export const updateComment = mutationField('updateComment', {
-  type: Comment,
+  type: 'Comment',
   args: {
     whereId: nonNull(stringArg()),
     updateText: nonNull(stringArg()),
@@ -70,7 +53,7 @@ export const updateComment = mutationField('updateComment', {
 })
 
 export const deleteComment = mutationField('deleteComment', {
-  type: Comment,
+  type: 'Comment',
   args: {
     id: nonNull(stringArg())
   },
