@@ -170,6 +170,7 @@ type Subscription {
   commentSubByUser(userId: ID!): commentSubResponse
   postSub(postId: ID!): postSubResponse
   postSubByUser(userId: ID!): postSubResponse
+  userSub(userId: ID!): userSubResponse
 }
 
 type User {
@@ -183,6 +184,11 @@ input UserOrderByInput {
   email: SortOrder
   id: SortOrder
   name: SortOrder
+}
+
+type userSubResponse {
+  data: User
+  mutation: String
 }
 
 input UserWhereInput {

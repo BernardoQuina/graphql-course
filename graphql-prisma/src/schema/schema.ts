@@ -5,7 +5,7 @@ import path from 'path'
 import { User } from './User/type'
 import * as userQueries from './User/queries'
 import * as userMutations from './User/mutations'
-// import * as userSubscriptions from './User/subscriptions'
+import * as userSubscriptions from './User/subscriptions'
 
 import { Post } from './Post/type'
 import * as postQueries from './Post/queries'
@@ -24,6 +24,7 @@ export const schema = makeSchema({
     User,
     userQueries,
     userMutations,
+    userSubscriptions,
     Post,
     postQueries,
     postMutations,

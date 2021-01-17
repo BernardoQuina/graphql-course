@@ -170,6 +170,10 @@ export interface NexusGenObjects {
     data?: NexusGenRootTypes['Post'] | null; // Post
     mutation?: string | null; // String
   }
+  userSubResponse: { // root type
+    data?: NexusGenRootTypes['User'] | null; // User
+    mutation?: string | null; // String
+  }
 }
 
 export interface NexusGenInterfaces {
@@ -228,6 +232,7 @@ export interface NexusGenFieldTypes {
     commentSubByUser: NexusGenRootTypes['commentSubResponse'] | null; // commentSubResponse
     postSub: NexusGenRootTypes['postSubResponse'] | null; // postSubResponse
     postSubByUser: NexusGenRootTypes['postSubResponse'] | null; // postSubResponse
+    userSub: NexusGenRootTypes['userSubResponse'] | null; // userSubResponse
   }
   User: { // field return type
     email: string; // String!
@@ -241,6 +246,10 @@ export interface NexusGenFieldTypes {
   }
   postSubResponse: { // field return type
     data: NexusGenRootTypes['Post'] | null; // Post
+    mutation: string | null; // String
+  }
+  userSubResponse: { // field return type
+    data: NexusGenRootTypes['User'] | null; // User
     mutation: string | null; // String
   }
 }
@@ -291,6 +300,7 @@ export interface NexusGenFieldTypeNames {
     commentSubByUser: 'commentSubResponse'
     postSub: 'postSubResponse'
     postSubByUser: 'postSubResponse'
+    userSub: 'userSubResponse'
   }
   User: { // field return type name
     email: 'String'
@@ -304,6 +314,10 @@ export interface NexusGenFieldTypeNames {
   }
   postSubResponse: { // field return type name
     data: 'Post'
+    mutation: 'String'
+  }
+  userSubResponse: { // field return type name
+    data: 'User'
     mutation: 'String'
   }
 }
@@ -407,6 +421,9 @@ export interface NexusGenArgTypes {
       postId: string; // ID!
     }
     postSubByUser: { // args
+      userId: string; // ID!
+    }
+    userSub: { // args
       userId: string; // ID!
     }
   }
