@@ -1,4 +1,5 @@
 import { mutationField, nonNull, idArg, intArg, stringArg } from 'nexus'
+import { pubsubPublishMany } from '../../util/pubsubmany'
 
 export const createReview = mutationField('createReview', {
   type: 'Review',
@@ -38,15 +39,11 @@ export const createReview = mutationField('createReview', {
       },
     })
 
-    pubsub.publish(`review from user ${userId}`, {
-      mutation: 'CREATED',
-      data: createdReview,
-    })
-
-    pubsub.publish(`review from book ${bookId}`, {
-      mutation: 'CREATED',
-      data: createdReview,
-    })
+    pubsubPublishMany(
+      [`review from user ${userId}`, `review from book ${bookId}`],
+      pubsub,
+      { mutation: 'CREATED', data: createdReview }
+    )
 
     return createdReview
   },
@@ -86,22 +83,20 @@ export const updateReview = mutationField('updateReview', {
       throw new Error('Please provide something to update.')
     }
 
-    const updatedReview = await prisma.review.update({ where: { id: whereId }, data })
-
-    pubsub.publish(`review ${whereId}`, {
-      mutation: 'UPDATED',
-      data: updatedReview,
+    const updatedReview = await prisma.review.update({
+      where: { id: whereId },
+      data,
     })
 
-    pubsub.publish(`review from book ${updatedReview.bookId}`, {
-      mutation: 'UPDATED',
-      data: updatedReview,
-    })
-
-    pubsub.publish(`review from user ${updatedReview.userId}`, {
-      mutation: 'UPDATED',
-      data: updatedReview,
-    })
+    pubsubPublishMany(
+      [
+        `review ${whereId}`,
+        `review from book ${updatedReview.bookId}`,
+        `review from user ${updatedReview.userId}`,
+      ],
+      pubsub,
+      { mutation: 'UPDATED', data: updatedReview }
+    )
 
     return updatedReview
   },
@@ -119,20 +114,15 @@ export const deleteReview = mutationField('deleteReview', {
       throw new Error('Review not found.')
     }
 
-    pubsub.publish(`review ${id}`, {
-      mutation: 'DELETED',
-      data: reviewExists,
-    })
-
-    pubsub.publish(`review from user ${reviewExists.userId}`, {
-      mutation: 'DELETED',
-      data: reviewExists,
-    })
-
-    pubsub.publish(`review from book ${reviewExists.bookId}`, {
-      mutation: 'DELETED',
-      data: reviewExists,
-    })
+    pubsubPublishMany(
+      [
+        `review ${id}`,
+        `review from user ${reviewExists.userId}`,
+        `review from book ${reviewExists.bookId}`,
+      ],
+      pubsub,
+      { mutation: 'DELETED', data: reviewExists }
+    )
 
     return prisma.review.delete({ where: { id } })
   },

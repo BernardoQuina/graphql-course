@@ -1,4 +1,5 @@
 import { mutationField, nonNull, stringArg, idArg } from 'nexus'
+import { pubsubPublishMany } from '../../util/pubsubmany'
 
 export const createBook = mutationField('createBook', {
   type: 'Book',
@@ -63,18 +64,16 @@ export const updateBook = mutationField('updateBook', {
       throw new Error('Please provide something to update')
     }
 
-    const updatedBook = await prisma.book.update({ where: { id: whereId }, data })
-
-    pubsub.publish(`book ${whereId}`, {
-      mutation: 'UPDATED',
-      data: updatedBook,
+    const updatedBook = await prisma.book.update({
+      where: { id: whereId },
+      data,
     })
 
-
-    pubsub.publish(`book from user ${updatedBook.userId}`, {
-      mutation: 'UPDATED',
-      data: updatedBook,
-    })
+    pubsubPublishMany(
+      [`book ${whereId}`, `book from user ${updatedBook.userId}`],
+      pubsub,
+      { mutation: 'UPDATED', data: updatedBook }
+    )
 
     return updatedBook
   },
@@ -96,15 +95,11 @@ export const deleteBook = mutationField('deleteBook', {
 
     await prisma.review.deleteMany({ where: { bookId: id } })
 
-    pubsub.publish(`book ${id}`, {
-      mutation: 'DELETED',
-      data: bookExists,
-    })
-
-    pubsub.publish(`book from user ${bookExists.userId}`, {
-      mutation: 'DELETED',
-      data: bookExists,
-    })
+    pubsubPublishMany(
+      [`book ${id}`, `book from user ${bookExists.userId}`],
+      pubsub,
+      { mutation: 'DELETED', data: bookExists }
+    )
 
     return prisma.book.delete({ where: { id } })
   },
