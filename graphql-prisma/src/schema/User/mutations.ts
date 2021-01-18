@@ -1,5 +1,8 @@
 import { mutationField, nonNull, stringArg, idArg } from 'nexus'
 import bcrypt from 'bcryptjs'
+import jwt from 'jsonwebtoken'
+
+jwt.sign({ id: 46 }, process.env.JWT_SECRET)
 
 export const createUser = mutationField('createUser', {
   type: 'User',
