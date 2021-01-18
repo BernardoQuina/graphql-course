@@ -35,6 +35,32 @@ export const createUser = mutationField('createUser', {
   },
 })
 
+export const loginUser = mutationField('loginUser', {
+  type: 'AuthPayload',
+  args: {
+    email: nonNull(stringArg()),
+    password: nonNull(stringArg())
+  },
+  async resolve(_root, { email, password }, { prisma }) {
+    const userExists = await prisma.user.findUnique({where: {email}})
+
+    if (!userExists) {
+      throw new Error('Invalid credentials.')
+    }
+
+    const isMatch = await bcrypt.compare(password, userExists.password)
+
+    if (!isMatch) {
+      throw new Error('Invalid credentials.')
+    }
+
+    return {
+      user: userExists,
+      token: jwt.sign({ userId: userExists.id }, process.env.JWT_SECRET)
+    }
+  }
+})
+
 export const updateUser = mutationField('updateUser', {
   type: 'User',
   args: {

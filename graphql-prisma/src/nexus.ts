@@ -213,6 +213,7 @@ export interface NexusGenFieldTypes {
     deleteComment: NexusGenRootTypes['Comment'] | null; // Comment
     deletePost: NexusGenRootTypes['Post'] | null; // Post
     deleteUser: NexusGenRootTypes['User'] | null; // User
+    loginUser: NexusGenRootTypes['AuthPayload'] | null; // AuthPayload
     updateComment: NexusGenRootTypes['Comment'] | null; // Comment
     updatePost: NexusGenRootTypes['Post'] | null; // Post
     updateUser: NexusGenRootTypes['User'] | null; // User
@@ -287,6 +288,7 @@ export interface NexusGenFieldTypeNames {
     deleteComment: 'Comment'
     deletePost: 'Post'
     deleteUser: 'User'
+    loginUser: 'AuthPayload'
     updateComment: 'Comment'
     updatePost: 'Post'
     updateUser: 'User'
@@ -367,6 +369,10 @@ export interface NexusGenArgTypes {
     }
     deleteUser: { // args
       id: string; // ID!
+    }
+    loginUser: { // args
+      email: string; // String!
+      password: string; // String!
     }
     updateComment: { // args
       updateText: string; // String!

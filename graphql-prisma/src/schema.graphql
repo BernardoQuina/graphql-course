@@ -62,6 +62,7 @@ type Mutation {
   deleteComment(id: String!): Comment
   deletePost(id: String!): Post
   deleteUser(id: ID!): User
+  loginUser(email: String!, password: String!): AuthPayload
   updateComment(updateText: String!, whereId: String!): Comment
   updatePost(updateBody: String!, updatePublished: Boolean!, updateTitle: String!, whereId: String!): Post
   updateUser(updateEmail: String, updateName: String, whereId: ID!): User
@@ -183,6 +184,8 @@ type User {
   email: String!
   id: String!
   name: String!
+
+  """Its hashed... obviously"""
   password: String!
   posts(after: PostWhereUniqueInput, before: PostWhereUniqueInput, first: Int, last: Int): [Post!]!
 }
