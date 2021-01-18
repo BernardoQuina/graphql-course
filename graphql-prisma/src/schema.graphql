@@ -53,7 +53,7 @@ input CommentWhereUniqueInput {
 type Mutation {
   createComment(postId: String!, text: String!, userId: String!): Comment
   createPost(body: String!, published: Boolean!, title: String!, userId: String!): Post
-  createUser(email: String!, name: String!): User
+  createUser(email: String!, name: String!, password: String!): User
   deleteComment(id: String!): Comment
   deletePost(id: String!): Post
   deleteUser(id: ID!): User
@@ -174,9 +174,11 @@ type Subscription {
 }
 
 type User {
+  comments(after: CommentWhereUniqueInput, before: CommentWhereUniqueInput, first: Int, last: Int): [Comment!]!
   email: String!
   id: String!
   name: String!
+  password: String!
   posts(after: PostWhereUniqueInput, before: PostWhereUniqueInput, first: Int, last: Int): [Post!]!
 }
 
@@ -184,6 +186,7 @@ input UserOrderByInput {
   email: SortOrder
   id: SortOrder
   name: SortOrder
+  password: SortOrder
 }
 
 type userSubResponse {
@@ -199,6 +202,7 @@ input UserWhereInput {
   name: StringFilter
   NOT: [UserWhereInput!]
   OR: [UserWhereInput!]
+  password: StringFilter
   posts: PostListRelationFilter
 }
 

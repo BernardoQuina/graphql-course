@@ -110,6 +110,7 @@ export interface NexusGenInputs {
     email?: NexusGenEnums['SortOrder'] | null; // SortOrder
     id?: NexusGenEnums['SortOrder'] | null; // SortOrder
     name?: NexusGenEnums['SortOrder'] | null; // SortOrder
+    password?: NexusGenEnums['SortOrder'] | null; // SortOrder
   }
   UserWhereInput: { // input type
     AND?: NexusGenInputs['UserWhereInput'][] | null; // [UserWhereInput!]
@@ -119,6 +120,7 @@ export interface NexusGenInputs {
     name?: NexusGenInputs['StringFilter'] | null; // StringFilter
     NOT?: NexusGenInputs['UserWhereInput'][] | null; // [UserWhereInput!]
     OR?: NexusGenInputs['UserWhereInput'][] | null; // [UserWhereInput!]
+    password?: NexusGenInputs['StringFilter'] | null; // StringFilter
     posts?: NexusGenInputs['PostListRelationFilter'] | null; // PostListRelationFilter
   }
   UserWhereUniqueInput: { // input type
@@ -161,6 +163,7 @@ export interface NexusGenObjects {
     email: string; // String!
     id: string; // String!
     name: string; // String!
+    password: string; // String!
   }
   commentSubResponse: { // root type
     data?: NexusGenRootTypes['Comment'] | null; // Comment
@@ -235,9 +238,11 @@ export interface NexusGenFieldTypes {
     userSub: NexusGenRootTypes['userSubResponse'] | null; // userSubResponse
   }
   User: { // field return type
+    comments: NexusGenRootTypes['Comment'][]; // [Comment!]!
     email: string; // String!
     id: string; // String!
     name: string; // String!
+    password: string; // String!
     posts: NexusGenRootTypes['Post'][]; // [Post!]!
   }
   commentSubResponse: { // field return type
@@ -303,9 +308,11 @@ export interface NexusGenFieldTypeNames {
     userSub: 'userSubResponse'
   }
   User: { // field return type name
+    comments: 'Comment'
     email: 'String'
     id: 'String'
     name: 'String'
+    password: 'String'
     posts: 'Post'
   }
   commentSubResponse: { // field return type name
@@ -338,6 +345,7 @@ export interface NexusGenArgTypes {
     createUser: { // args
       email: string; // String!
       name: string; // String!
+      password: string; // String!
     }
     deleteComment: { // args
       id: string; // String!
@@ -428,6 +436,12 @@ export interface NexusGenArgTypes {
     }
   }
   User: {
+    comments: { // args
+      after?: NexusGenInputs['CommentWhereUniqueInput'] | null; // CommentWhereUniqueInput
+      before?: NexusGenInputs['CommentWhereUniqueInput'] | null; // CommentWhereUniqueInput
+      first?: number | null; // Int
+      last?: number | null; // Int
+    }
     posts: { // args
       after?: NexusGenInputs['PostWhereUniqueInput'] | null; // PostWhereUniqueInput
       before?: NexusGenInputs['PostWhereUniqueInput'] | null; // PostWhereUniqueInput

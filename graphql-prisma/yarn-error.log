@@ -1,5 +1,5 @@
 Arguments: 
-  C:\Program Files\nodejs\node.exe C:\Users\Quinaiza\AppData\Roaming\npm\node_modules\yarn\bin\yarn.js add -D @prisma cli @types/node
+  C:\Program Files\nodejs\node.exe C:\Users\Quinaiza\AppData\Roaming\npm\node_modules\yarn\bin\yarn.js add bcriptjs
 
 PATH: 
   C:\Program Files\Git\mingw64\bin;C:\Program Files\Git\usr\bin;C:\Users\Quinaiza\bin;C:\Python39\Scripts;C:\Python39;C:\Program Files (x86)\Intel\iCLS Client;C:\Program Files\Intel\iCLS Client;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0;C:\Program Files (x86)\Intel\Intel(R) Management Engine Components\DAL;C:\Program Files\Intel\Intel(R) Management Engine Components\DAL;C:\Program Files (x86)\Intel\Intel(R) Management Engine Components\IPT;C:\Program Files\Intel\Intel(R) Management Engine Components\IPT;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0;C:\Program Files\Intel\WiFi\bin;C:\Program Files\Common Files\Intel\WirelessCommon;C:\WINDOWS\System32\OpenSSH;C:\Program Files\NVIDIA Corporation\NVIDIA NvDLISR;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0;C:\WINDOWS\System32\OpenSSH;C:\Program Files\Git\cmd;C:\Program Files(x86)\Sqlite3;C:\Program Files\Redis;C:\Program Files\Docker\Docker\resources\bin;C:\ProgramData\DockerDesktop\version-bin;C:\Program Files\nodejs;C:\ProgramData\chocolatey\bin;C:\Program Files\Git\usr\bin;C:\Users\Quinaiza\anaconda3;C:\Users\Quinaiza\anaconda3\Library\mingw-w64\bin;C:\Users\Quinaiza\anaconda3\Library\usr\bin;C:\Users\Quinaiza\anaconda3\Library\bin;C:\Users\Quinaiza\anaconda3\Scripts;C:\Users\Quinaiza\AppData\Local\Microsoft\WindowsApps;C:\Users\Quinaiza\AppData\Local\Programs\Microsoft VS Code\bin;C:\Program Files\heroku\bin;C:\Users\Quinaiza\AppData\Roaming\npm
@@ -14,8 +14,8 @@ Platform:
   win32 x64
 
 Trace: 
-  Error: https://registry.yarnpkg.com/@prisma: Request "https://registry.yarnpkg.com/@prisma" returned a 405
-      at Request.params.callback [as _callback] (C:\Users\Quinaiza\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:66997:18)
+  Error: https://registry.yarnpkg.com/bcriptjs: Not found
+      at Request.params.callback [as _callback] (C:\Users\Quinaiza\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:66988:18)
       at Request.self.callback (C:\Users\Quinaiza\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:140662:22)
       at Request.emit (events.js:315:20)
       at Request.<anonymous> (C:\Users\Quinaiza\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:141634:10)
@@ -30,21 +30,24 @@ npm manifest:
   {
     "name": "graphql-prisma",
     "version": "1.0.0",
-    "main": "index.js",
+    "main": "dist/index.js",
     "author": "Bernardo Quina",
     "license": "MIT",
     "scripts": {
       "watch": "tsc -w",
-      "start": "nodemon dist/index.js --ext js,graphql",
+      "start": "nodemon dist/index.js",
       "update": "yarn upgrade-interactive --latest"
     },
     "dependencies": {
-      "@nexus/schema": "^0.20.1",
+      "@prisma/client": "2.14.0",
       "apollo-server": "^2.19.1",
       "graphql": "^15.4.0",
+      "nexus": "^1.0.0",
       "nexus-plugin-prisma": "^0.28.0"
     },
     "devDependencies": {
+      "@prisma/cli": "2.14.0",
+      "@types/node": "^14.14.20",
       "nodemon": "^2.0.7"
     }
   }
@@ -90,13 +93,35 @@ Lockfile:
     dependencies:
       xss "^1.0.6"
   
-  "@nexus/schema@^0.20.1":
-    version "0.20.1"
-    resolved "https://registry.yarnpkg.com/@nexus/schema/-/schema-0.20.1.tgz#12f82304c54c287b8f1e94ac074a52f57af32f00"
-    integrity sha512-8J9On+L1aS7a17tOCJ2l0prA9tltEmla3lV3lpAjL3HCih5DGYCOkmExMS5dVVRKxOu9QjoOEP2bl8qy2Gc36g==
+  "@prisma/bar@^0.0.1":
+    version "0.0.1"
+    resolved "https://registry.yarnpkg.com/@prisma/bar/-/bar-0.0.1.tgz#088c4fbbb79c588391437ade9fd3a85527e753b3"
+    integrity sha512-FVLhwVkbfhXlBhroWfIXMLi+3Jh9IEzYp+9z+MUUiw3ZsbcoAil7CN9/QIjHc4/TcCRyRfuSmT7qCnn4O+TjJw==
+  
+  "@prisma/cli@2.14.0":
+    version "2.14.0"
+    resolved "https://registry.yarnpkg.com/@prisma/cli/-/cli-2.14.0.tgz#6aa298a389fb899730ee68d3487633e19677d416"
+    integrity sha512-zKYiOGlc/Y0VVRQew0jMR2sGSFnKnNGlgY4ToB5K1JMv7jCg51w+FJe2FwTOF4uWv+0Yp2KC1b0TAP8KUbNJ3A==
     dependencies:
-      iterall "^1.3.0"
-      tslib "^2.0.3"
+      "@prisma/bar" "^0.0.1"
+      "@prisma/engines" "2.14.0-28.5d491261d382a2a5ffdc71de17072b0e409f1cc1"
+  
+  "@prisma/client@2.14.0":
+    version "2.14.0"
+    resolved "https://registry.yarnpkg.com/@prisma/client/-/client-2.14.0.tgz#a57ef8f3c41127f84ebe5f69bd01a966b204cdc2"
+    integrity sha512-0PiiZ2maM9OP/G5mynzftvD4DFrtibeyvZf5U7Be360mtSvgLHQhZ/CHbChb0BVeWeyJuTmAqqni98LcdVgttw==
+    dependencies:
+      "@prisma/engines-version" "2.14.0-28.5d491261d382a2a5ffdc71de17072b0e409f1cc1"
+  
+  "@prisma/engines-version@2.14.0-28.5d491261d382a2a5ffdc71de17072b0e409f1cc1":
+    version "2.14.0-28.5d491261d382a2a5ffdc71de17072b0e409f1cc1"
+    resolved "https://registry.yarnpkg.com/@prisma/engines-version/-/engines-version-2.14.0-28.5d491261d382a2a5ffdc71de17072b0e409f1cc1.tgz#ffd22601a18d74040653f6f8f518026cbc1bee3e"
+    integrity sha512-Oz3yNV//9UTJ+ral5tF6Ryb/MLfOE3+2F3/bH4waTbNRDd/zXKoS3jTI3ViU8yRQ1AsOQa9/pV/kXSlxgtAh8Q==
+  
+  "@prisma/engines@2.14.0-28.5d491261d382a2a5ffdc71de17072b0e409f1cc1":
+    version "2.14.0-28.5d491261d382a2a5ffdc71de17072b0e409f1cc1"
+    resolved "https://registry.yarnpkg.com/@prisma/engines/-/engines-2.14.0-28.5d491261d382a2a5ffdc71de17072b0e409f1cc1.tgz#dee16f1c648cd291540937ad5d69062526368946"
+    integrity sha512-t5/Mq0VtL7khYQtbap8myr7RwyIvmruCFxsph6oTi8QZaklmuxSp7FAC2DWBz8r/KoZFngMpmliKfDrWN7uwzQ==
   
   "@protobufjs/aspromise@^1.1.1", "@protobufjs/aspromise@^1.1.2":
     version "1.1.2"
@@ -307,7 +332,7 @@ Lockfile:
       "@types/node" "*"
       form-data "^3.0.0"
   
-  "@types/node@*":
+  "@types/node@*", "@types/node@^14.14.20":
     version "14.14.20"
     resolved "https://registry.yarnpkg.com/@types/node/-/node-14.14.20.tgz#f7974863edd21d1f8a494a73e8e2b3658615c340"
     integrity sha512-Y93R97Ouif9JEOWPIUyU+eyIdyRqQR0I8Ez1dzku4hDx34NWh4HbtIc3WNzwB1Y9ULvNGeu5B8h8bVL5cAk4/A==
@@ -1597,6 +1622,14 @@ Lockfile:
       lodash "^4.17.20"
       pluralize "^8.0.0"
       semver "^7.3.4"
+  
+  nexus@^1.0.0:
+    version "1.0.0"
+    resolved "https://registry.yarnpkg.com/nexus/-/nexus-1.0.0.tgz#633b39abae1d7e9472ca40e37bb5d3e1263f6aa3"
+    integrity sha512-Toa91s9BJsX8pDX34QkOyKdnw8MmuOQkEboZMKSxvF9mWuAFkY74Zj1ssaexeV7yTQ7HoLQYUQ00FaWzXPmggQ==
+    dependencies:
+      iterall "^1.3.0"
+      tslib "^2.0.3"
   
   node-fetch@^2.1.2, node-fetch@^2.2.0:
     version "2.6.1"
