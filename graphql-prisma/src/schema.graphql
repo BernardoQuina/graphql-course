@@ -2,6 +2,11 @@
 ### Do not make changes to this file directly
 
 
+type AuthPayload {
+  token: String
+  user: User
+}
+
 input BoolFilter {
   equals: Boolean
   not: NestedBoolFilter
@@ -53,7 +58,7 @@ input CommentWhereUniqueInput {
 type Mutation {
   createComment(postId: String!, text: String!, userId: String!): Comment
   createPost(body: String!, published: Boolean!, title: String!, userId: String!): Post
-  createUser(email: String!, name: String!, password: String!): User
+  createUser(email: String!, name: String!, password: String!): AuthPayload
   deleteComment(id: String!): Comment
   deletePost(id: String!): Post
   deleteUser(id: ID!): User

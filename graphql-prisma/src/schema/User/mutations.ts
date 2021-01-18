@@ -2,10 +2,8 @@ import { mutationField, nonNull, stringArg, idArg } from 'nexus'
 import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
 
-jwt.sign({ id: 46 }, process.env.JWT_SECRET)
-
 export const createUser = mutationField('createUser', {
-  type: 'User',
+  type: 'AuthPayload',
   args: {
     name: nonNull(stringArg()),
     email: nonNull(stringArg()),
@@ -24,9 +22,16 @@ export const createUser = mutationField('createUser', {
       throw new Error('An account is already using this email')
     }
 
-    return prisma.user.create({
+    const newUser = await prisma.user.create({
       data: { name, email, password: hashedPassword },
     })
+
+
+
+    return {
+      user: newUser,
+      token: jwt.sign({ userId: newUser.id }, process.env.JWT_SECRET),
+    }
   },
 })
 

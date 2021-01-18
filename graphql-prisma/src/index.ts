@@ -8,7 +8,7 @@ dotenv.config()
 const server = new ApolloServer({
   schema,
   context: createContext,
-  tracing: true,
+  tracing: process.env.NODE_ENV === 'development',
 })
 
 server.listen(4000, () => {

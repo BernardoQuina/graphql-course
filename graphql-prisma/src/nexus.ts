@@ -143,6 +143,10 @@ export interface NexusGenScalars {
 }
 
 export interface NexusGenObjects {
+  AuthPayload: { // root type
+    token?: string | null; // String
+    user?: NexusGenRootTypes['User'] | null; // User
+  }
   Comment: { // root type
     id: string; // String!
     postId: string; // String!
@@ -190,6 +194,10 @@ export type NexusGenRootTypes = NexusGenObjects
 export type NexusGenAllTypes = NexusGenRootTypes & NexusGenScalars & NexusGenEnums
 
 export interface NexusGenFieldTypes {
+  AuthPayload: { // field return type
+    token: string | null; // String
+    user: NexusGenRootTypes['User'] | null; // User
+  }
   Comment: { // field return type
     author: NexusGenRootTypes['User']; // User!
     id: string; // String!
@@ -201,7 +209,7 @@ export interface NexusGenFieldTypes {
   Mutation: { // field return type
     createComment: NexusGenRootTypes['Comment'] | null; // Comment
     createPost: NexusGenRootTypes['Post'] | null; // Post
-    createUser: NexusGenRootTypes['User'] | null; // User
+    createUser: NexusGenRootTypes['AuthPayload'] | null; // AuthPayload
     deleteComment: NexusGenRootTypes['Comment'] | null; // Comment
     deletePost: NexusGenRootTypes['Post'] | null; // Post
     deleteUser: NexusGenRootTypes['User'] | null; // User
@@ -260,6 +268,10 @@ export interface NexusGenFieldTypes {
 }
 
 export interface NexusGenFieldTypeNames {
+  AuthPayload: { // field return type name
+    token: 'String'
+    user: 'User'
+  }
   Comment: { // field return type name
     author: 'User'
     id: 'String'
@@ -271,7 +283,7 @@ export interface NexusGenFieldTypeNames {
   Mutation: { // field return type name
     createComment: 'Comment'
     createPost: 'Post'
-    createUser: 'User'
+    createUser: 'AuthPayload'
     deleteComment: 'Comment'
     deletePost: 'Post'
     deleteUser: 'User'

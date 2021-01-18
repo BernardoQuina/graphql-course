@@ -2,7 +2,7 @@ import { makeSchema } from 'nexus'
 import { nexusPrisma } from 'nexus-plugin-prisma'
 import path from 'path'
 
-import { User } from './User/type'
+import * as UserTypes from './User/type'
 import * as userQueries from './User/queries'
 import * as userMutations from './User/mutations'
 import * as userSubscriptions from './User/subscriptions'
@@ -21,7 +21,7 @@ import * as commentSubscriptions from './Comment/subscriptions'
 // by the GraphQL Nexus layer or any manually defined GraphQLType objects
 export const schema = makeSchema({
   types: {
-    User,
+    UserTypes,
     userQueries,
     userMutations,
     userSubscriptions,
