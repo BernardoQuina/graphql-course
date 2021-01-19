@@ -348,7 +348,6 @@ export interface NexusGenArgTypes {
     createComment: { // args
       postId: string; // String!
       text: string; // String!
-      userId: string; // String!
     }
     createPost: { // args
       body: string; // String!
@@ -378,9 +377,9 @@ export interface NexusGenArgTypes {
       whereId: string; // String!
     }
     updatePost: { // args
-      updateBody: string; // String!
-      updatePublished: boolean; // Boolean!
-      updateTitle: string; // String!
+      updateBody?: string | null; // String
+      updatePublished?: boolean | null; // Boolean
+      updateTitle?: string | null; // String
       whereId: string; // String!
     }
     updateUser: { // args

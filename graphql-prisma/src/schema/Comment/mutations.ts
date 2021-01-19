@@ -1,25 +1,22 @@
 import { mutationField, nonNull, stringArg } from 'nexus'
+import { getUserId } from '../../util/getUserId'
 import { pubsubPublishMany } from '../../util/pubsubMany'
 
 export const createComment = mutationField('createComment', {
   type: 'Comment',
   args: {
-    userId: nonNull(stringArg()),
     postId: nonNull(stringArg()),
     text: nonNull(stringArg()),
   },
-  async resolve(_root, { userId, postId, text }, { prisma, pubsub }) {
-    const userExists = await prisma.user.findUnique({ where: { id: userId } })
-
-    if (!userExists) {
-      throw new Error('User not found')
-    }
-
+  async resolve(_root, { postId, text }, { prisma, pubsub, request }) {
+    
     const postExists = await prisma.post.findUnique({ where: { id: postId } })
-
+    
     if (!postExists) {
       throw new Error('Post not found')
     }
+    
+    const userId = getUserId(request)
 
     const createdComment = await prisma.comment.create({
       data: {
@@ -45,13 +42,19 @@ export const updateComment = mutationField('updateComment', {
     whereId: nonNull(stringArg()),
     updateText: nonNull(stringArg()),
   },
-  async resolve(_root, { whereId, updateText }, { prisma, pubsub }) {
+  async resolve(_root, { whereId, updateText }, { prisma, pubsub, request }) {
     const commentExists = await prisma.comment.findUnique({
       where: { id: whereId },
     })
 
     if (!commentExists) {
       throw new Error('Comment not found')
+    }
+
+    const userId = getUserId(request)
+
+    if (userId !== commentExists.userId) {
+      throw new Error('Invalid credentials.')
     }
 
     const updatedComment = await prisma.comment.update({
@@ -78,11 +81,17 @@ export const deleteComment = mutationField('deleteComment', {
   args: {
     id: nonNull(stringArg()),
   },
-  async resolve(_root, { id }, { prisma, pubsub }) {
+  async resolve(_root, { id }, { prisma, pubsub, request }) {
     const commentExists = await prisma.comment.findUnique({ where: { id } })
 
     if (!commentExists) {
       throw new Error('Comment not found')
+    }
+
+    const userId = getUserId(request)
+
+    if (userId !== commentExists.userId) {
+      throw new Error('Invalid credentials.')
     }
 
     pubsubPublishMany(

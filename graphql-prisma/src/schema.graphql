@@ -56,7 +56,7 @@ input CommentWhereUniqueInput {
 }
 
 type Mutation {
-  createComment(postId: String!, text: String!, userId: String!): Comment
+  createComment(postId: String!, text: String!): Comment
   createPost(body: String!, published: Boolean!, title: String!): Post
   createUser(email: String!, name: String!, password: String!): AuthPayload
   deleteComment(id: String!): Comment
@@ -64,7 +64,7 @@ type Mutation {
   deleteUser(password: String!): User
   loginUser(email: String!, password: String!): AuthPayload
   updateComment(updateText: String!, whereId: String!): Comment
-  updatePost(updateBody: String!, updatePublished: Boolean!, updateTitle: String!, whereId: String!): Post
+  updatePost(updateBody: String, updatePublished: Boolean, updateTitle: String, whereId: String!): Post
   updateUser(confirmNewPassword: String, password: String!, updateEmail: String, updateName: String, updatePassword: String): User
 }
 

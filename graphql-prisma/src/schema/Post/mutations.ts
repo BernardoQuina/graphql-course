@@ -12,12 +12,6 @@ export const createPost = mutationField('createPost', {
   async resolve(_root, { title, body, published }, { prisma, pubsub, request }) {
     const userId = getUserId(request)
 
-    const user = await prisma.user.findUnique({ where: { id: userId } })
-
-    if (!user) {
-      throw new Error('Invalid credentials. Please login to post')
-    }
-
     const createdPost = await prisma.post.create({
       data: {
         title,
@@ -44,19 +38,25 @@ export const updatePost = mutationField('updatePost', {
   type: 'Post',
   args: {
     whereId: nonNull(stringArg()),
-    updateTitle: nonNull(stringArg()),
-    updateBody: nonNull(stringArg()),
-    updatePublished: nonNull(booleanArg()),
+    updateTitle:stringArg(),
+    updateBody: stringArg(),
+    updatePublished: booleanArg(),
   },
   async resolve(
     _root,
     { whereId, updateTitle, updateBody, updatePublished },
-    { prisma, pubsub }
+    { prisma, pubsub, request }
   ) {
+    const userId = getUserId(request)
+
     const postExists = await prisma.post.findUnique({ where: { id: whereId } })
 
     if (!postExists) {
       throw new Error('The post you are trying to update does not exist')
+    }
+
+    if (userId !== postExists.userId) {
+      throw new Error('Invalid credentials.')
     }
 
     let data: { title?: string; body?: string; published?: boolean } = {}
@@ -97,11 +97,17 @@ export const deletePost = mutationField('deletePost', {
   args: {
     id: nonNull(stringArg()),
   },
-  async resolve(_root, { id }, { prisma, pubsub }) {
+  async resolve(_root, { id }, { prisma, pubsub, request }) {
+    const userId = getUserId(request)
+
     const postExists = await prisma.post.findUnique({ where: { id } })
 
     if (!postExists) {
       throw new Error('Post not found')
+    }
+
+    if (userId !== postExists.userId) {
+      throw new Error('Invalid credentials.')
     }
 
     await prisma.comment.deleteMany({ where: { postId: id } })
