@@ -1,6 +1,7 @@
-import { mutationField, nonNull, stringArg, idArg } from 'nexus'
+import { mutationField, nonNull, stringArg } from 'nexus'
 import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
+import { getUserId } from '../../util/getUserId'
 
 export const createUser = mutationField('createUser', {
   type: 'AuthPayload',
@@ -26,8 +27,6 @@ export const createUser = mutationField('createUser', {
       data: { name, email, password: hashedPassword },
     })
 
-
-
     return {
       user: newUser,
       token: jwt.sign({ userId: newUser.id }, process.env.JWT_SECRET),
@@ -39,10 +38,10 @@ export const loginUser = mutationField('loginUser', {
   type: 'AuthPayload',
   args: {
     email: nonNull(stringArg()),
-    password: nonNull(stringArg())
+    password: nonNull(stringArg()),
   },
   async resolve(_root, { email, password }, { prisma }) {
-    const userExists = await prisma.user.findUnique({where: {email}})
+    const userExists = await prisma.user.findUnique({ where: { email } })
 
     if (!userExists) {
       throw new Error('Invalid credentials.')
@@ -56,30 +55,40 @@ export const loginUser = mutationField('loginUser', {
 
     return {
       user: userExists,
-      token: jwt.sign({ userId: userExists.id }, process.env.JWT_SECRET)
+      token: jwt.sign({ userId: userExists.id }, process.env.JWT_SECRET),
     }
-  }
+  },
 })
 
 export const updateUser = mutationField('updateUser', {
   type: 'User',
   args: {
-    whereId: nonNull(idArg()),
+    password: nonNull(stringArg()),
     updateName: stringArg(),
     updateEmail: stringArg(),
+    updatePassword: stringArg(),
+    confirmNewPassword: stringArg(),
   },
   async resolve(
     _root,
-    { whereId, updateName, updateEmail },
-    { prisma, pubsub }
+    { password, updateName, updateEmail, updatePassword, confirmNewPassword },
+    { prisma, pubsub, request }
   ) {
-    const userExists = await prisma.user.findUnique({ where: { id: whereId } })
+    const userId = getUserId(request)
+
+    const userExists = await prisma.user.findUnique({ where: { id: userId } })
 
     if (!userExists) {
       throw new Error('User not found')
     }
 
-    let data: { email?: string; name?: string } = {}
+    const isMatch = await bcrypt.compare(password, userExists.password)
+
+    if (!isMatch) {
+      throw new Error('Invalid credentials.')
+    }
+
+    let data: { email?: string; name?: string; password?: string } = {}
 
     if (updateEmail) {
       data.email = updateEmail
@@ -89,16 +98,30 @@ export const updateUser = mutationField('updateUser', {
       data.name = updateName
     }
 
-    if (!updateName && !updateEmail) {
+    if (updatePassword) {
+      if (updatePassword !== confirmNewPassword) {
+        throw new Error('Passwords do not match.')
+      }
+
+      if (updatePassword.length < 8) {
+        throw new Error('Password must be 8 characters or longer.')
+      }
+
+      const newHashedPassword = await bcrypt.hash(updatePassword, 10)
+
+      data.password = newHashedPassword
+    }
+
+    if (!updateName && !updateEmail && !updatePassword) {
       throw new Error('Please provide something to update')
     }
 
     const updatedUser = await prisma.user.update({
-      where: { id: whereId },
+      where: { id: userId },
       data,
     })
 
-    pubsub.publish(`user ${whereId}`, {
+    pubsub.publish(`user ${userId}`, {
       mutation: 'UPDATED',
       data: updatedUser,
     })
@@ -110,24 +133,32 @@ export const updateUser = mutationField('updateUser', {
 export const deleteUser = mutationField('deleteUser', {
   type: 'User',
   args: {
-    id: nonNull(idArg()),
+    password: nonNull(stringArg()),
   },
-  async resolve(_root, { id }, { prisma, pubsub }) {
-    const userExists = await prisma.user.findUnique({ where: { id } })
+  async resolve(_root, { password }, { prisma, pubsub, request }) {
+    const userId = getUserId(request)
+
+    const userExists = await prisma.user.findUnique({ where: { id: userId } })
 
     if (!userExists) {
       throw new Error('User not found')
     }
 
-    await prisma.comment.deleteMany({ where: { userId: id } })
+    const isMatch = await bcrypt.compare(password, userExists.password)
 
-    await prisma.post.deleteMany({ where: { userId: id } })
+    if (!isMatch) {
+      throw new Error('Invalid credentials')
+    }
 
-    pubsub.publish(`user ${id}`, {
+    await prisma.comment.deleteMany({ where: { userId } })
+
+    await prisma.post.deleteMany({ where: { userId } })
+
+    pubsub.publish(`user ${userId}`, {
       mutation: 'DELETED',
       data: userExists,
     })
 
-    return prisma.user.delete({ where: { id } })
+    return prisma.user.delete({ where: { id: userId } })
   },
 })

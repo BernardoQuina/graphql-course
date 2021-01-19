@@ -367,7 +367,7 @@ export interface NexusGenArgTypes {
       id: string; // String!
     }
     deleteUser: { // args
-      id: string; // ID!
+      password: string; // String!
     }
     loginUser: { // args
       email: string; // String!
@@ -384,9 +384,11 @@ export interface NexusGenArgTypes {
       whereId: string; // String!
     }
     updateUser: { // args
+      confirmNewPassword?: string | null; // String
+      password: string; // String!
       updateEmail?: string | null; // String
       updateName?: string | null; // String
-      whereId: string; // ID!
+      updatePassword?: string | null; // String
     }
   }
   Post: {

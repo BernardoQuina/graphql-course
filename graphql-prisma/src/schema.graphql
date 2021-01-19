@@ -61,11 +61,11 @@ type Mutation {
   createUser(email: String!, name: String!, password: String!): AuthPayload
   deleteComment(id: String!): Comment
   deletePost(id: String!): Post
-  deleteUser(id: ID!): User
+  deleteUser(password: String!): User
   loginUser(email: String!, password: String!): AuthPayload
   updateComment(updateText: String!, whereId: String!): Comment
   updatePost(updateBody: String!, updatePublished: Boolean!, updateTitle: String!, whereId: String!): Post
-  updateUser(updateEmail: String, updateName: String, whereId: ID!): User
+  updateUser(confirmNewPassword: String, password: String!, updateEmail: String, updateName: String, updatePassword: String): User
 }
 
 input NestedBoolFilter {
