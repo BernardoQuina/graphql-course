@@ -354,7 +354,6 @@ export interface NexusGenArgTypes {
       body: string; // String!
       published: boolean; // Boolean!
       title: string; // String!
-      userId: string; // String!
     }
     createUser: { // args
       email: string; // String!

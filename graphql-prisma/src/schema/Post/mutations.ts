@@ -1,15 +1,17 @@
 import { mutationField, nonNull, stringArg, booleanArg } from 'nexus'
 import { pubsubPublishMany } from '../../util/pubsubMany'
+import { getUserId } from '../../util/getUserId'
 
 export const createPost = mutationField('createPost', {
   type: 'Post',
   args: {
     title: nonNull(stringArg()),
     body: nonNull(stringArg()),
-    published: nonNull(booleanArg()),
-    userId: nonNull(stringArg()),
+    published: nonNull(booleanArg())
   },
-  async resolve(_root, { title, body, published, userId }, { prisma, pubsub }) {
+  async resolve(_root, { title, body, published }, { prisma, pubsub, request }) {
+    const userId = getUserId(request)
+
     const user = await prisma.user.findUnique({ where: { id: userId } })
 
     if (!user) {
