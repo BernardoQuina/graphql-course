@@ -10,6 +10,7 @@ export const postQueries = queryField((t) => {
       if (!id) {
         throw new Error('Please provide a post id.')
       }
+
       const postExists = await prisma.post.findUnique({ where: { id } })
 
       if (!postExists) {

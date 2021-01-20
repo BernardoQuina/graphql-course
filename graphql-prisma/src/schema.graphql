@@ -13,12 +13,12 @@ input BoolFilter {
 }
 
 type Comment {
-  author: User!
-  id: String!
-  post: Post!
-  postId: String!
-  text: String!
-  userId: String!
+  author: User
+  id: String
+  post: Post
+  postId: String
+  text: String
+  userId: String
 }
 
 input CommentListRelationFilter {
@@ -88,13 +88,13 @@ input NestedStringFilter {
 }
 
 type Post {
-  author: User!
-  body: String!
+  author: User
+  body: String
   comments(after: CommentWhereUniqueInput, before: CommentWhereUniqueInput, first: Int, last: Int): [Comment!]!
-  id: String!
-  published: Boolean!
-  title: String!
-  userId: String!
+  id: String
+  published: Boolean
+  title: String
+  userId: String
 }
 
 input PostListRelationFilter {
@@ -182,12 +182,12 @@ type Subscription {
 
 type User {
   comments(after: CommentWhereUniqueInput, before: CommentWhereUniqueInput, first: Int, last: Int): [Comment!]!
-  email: String!
-  id: String!
-  name: String!
+  email: String
+  id: String
+  name: String
 
   """Its hashed... obviously"""
-  password: String!
+  password: String
   posts(after: PostWhereUniqueInput, before: PostWhereUniqueInput, first: Int, last: Int): [Post!]!
 }
 
