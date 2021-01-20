@@ -69,7 +69,7 @@ export const updatePost = mutationField('updatePost', {
       data.body = updateBody
     }
 
-    if (updatePublished) {
+    if (updatePublished !== postExists.published && updatePublished !== null) {
       data.published = updatePublished
     }
 

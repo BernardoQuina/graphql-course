@@ -231,6 +231,7 @@ export interface NexusGenFieldTypes {
     comment: NexusGenRootTypes['Comment'] | null; // Comment
     commentCount: number | null; // Int
     comments: NexusGenRootTypes['Comment'][]; // [Comment!]!
+    me: NexusGenRootTypes['User'] | null; // User
     post: NexusGenRootTypes['Post'] | null; // Post
     postCount: number | null; // Int
     posts: NexusGenRootTypes['Post'][]; // [Post!]!
@@ -306,6 +307,7 @@ export interface NexusGenFieldTypeNames {
     comment: 'Comment'
     commentCount: 'Int'
     comments: 'Comment'
+    me: 'User'
     post: 'Post'
     postCount: 'Int'
     posts: 'Post'

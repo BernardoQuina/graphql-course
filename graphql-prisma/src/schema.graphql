@@ -137,6 +137,7 @@ type Query {
   comment(where: CommentWhereUniqueInput!): Comment
   commentCount: Int
   comments(after: CommentWhereUniqueInput, before: CommentWhereUniqueInput, first: Int, last: Int, orderBy: [CommentOrderByInput!], where: CommentWhereInput): [Comment!]!
+  me: User
   post(where: PostWhereUniqueInput!): Post
   postCount: Int
   posts(after: PostWhereUniqueInput, before: PostWhereUniqueInput, first: Int, last: Int, orderBy: [PostOrderByInput!], where: PostWhereInput): [Post!]!
