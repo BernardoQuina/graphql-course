@@ -1,7 +1,7 @@
 import { mutationField, nonNull, stringArg } from 'nexus'
 import bcrypt from 'bcryptjs'
-import jwt from 'jsonwebtoken'
 import { getUserId } from '../../util/getUserId'
+import { generateToken } from '../../util/generateToken'
 
 export const createUser = mutationField('createUser', {
   type: 'AuthPayload',
@@ -29,7 +29,7 @@ export const createUser = mutationField('createUser', {
 
     return {
       user: newUser,
-      token: jwt.sign({ userId: newUser.id }, process.env.JWT_SECRET),
+      token: generateToken(newUser.id)
     }
   },
 })
@@ -55,7 +55,7 @@ export const loginUser = mutationField('loginUser', {
 
     return {
       user: userExists,
-      token: jwt.sign({ userId: userExists.id }, process.env.JWT_SECRET),
+      token: generateToken(userExists.id)
     }
   },
 })
