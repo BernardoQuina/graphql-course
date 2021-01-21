@@ -164,10 +164,8 @@ export interface NexusGenObjects {
   Query: {};
   Subscription: {};
   User: { // root type
-    email?: string | null; // String
     id?: string | null; // String
     name?: string | null; // String
-    password?: string | null; // String
   }
   commentSubResponse: { // root type
     data?: NexusGenRootTypes['Comment'] | null; // Comment

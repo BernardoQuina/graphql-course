@@ -186,7 +186,7 @@ type User {
   id: String
   name: String
 
-  """Its hashed... obviously"""
+  """Only logged in user can query it but its hashed anyway"""
   password: String
   posts(after: PostWhereUniqueInput, before: PostWhereUniqueInput, first: Int, last: Int): [Post!]!
 }
