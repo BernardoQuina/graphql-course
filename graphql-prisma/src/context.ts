@@ -7,10 +7,11 @@ const pubsub = new PubSub()
 
 export type Request = {
   req: { headers: { authorization?: string } }
+  connection: { context: { Authorization: string } }
 }
 export interface Context {
-  prisma: PrismaClient,
-  pubsub: PubSub,
+  prisma: PrismaClient
+  pubsub: PubSub
   request: Request
 }
 

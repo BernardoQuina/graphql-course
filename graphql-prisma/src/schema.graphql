@@ -175,6 +175,7 @@ type Subscription {
   commentSub(commentId: ID!): commentSubResponse
   commentSubByPost(postId: ID!): commentSubResponse
   commentSubByUser(userId: ID!): commentSubResponse
+  myPostSub: postSubResponse
   postSub(postId: ID!): postSubResponse
   postSubByUser(userId: ID!): postSubResponse
   userSub(userId: ID!): userSubResponse

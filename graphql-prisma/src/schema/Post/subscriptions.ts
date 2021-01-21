@@ -1,5 +1,6 @@
-import { Post } from '@prisma/client';
-import { idArg, nonNull, objectType, subscriptionField } from 'nexus';
+import { Post } from '@prisma/client'
+import { idArg, nonNull, objectType, subscriptionField } from 'nexus'
+import { getUserId } from '../../util/getUserId'
 
 export const postSubResponse = objectType({
   name: 'postSubResponse',
@@ -7,29 +8,29 @@ export const postSubResponse = objectType({
     t.field('mutation', {
       type: 'String',
     }),
-    t.field('data', {
-      type: 'Post'
-    })
-  }
+      t.field('data', {
+        type: 'Post',
+      })
+  },
 })
 
 export const postSubByUser = subscriptionField('postSubByUser', {
   type: 'postSubResponse',
   args: {
-    userId: nonNull(idArg())
+    userId: nonNull(idArg()),
   },
   async subscribe(_, { userId }, { prisma, pubsub }) {
-    const userExists = await prisma.user.findUnique({where: {id: userId}})
+    const userExists = await prisma.user.findUnique({ where: { id: userId } })
 
     if (!userExists) {
       throw new Error('User not found.')
     }
 
     return pubsub.asyncIterator(`post from user ${userId}`)
-  }, 
-  resolve(payload: {mutation: string, data: Post}) {
+  },
+  resolve(payload: { mutation: string; data: Post }) {
     return payload
-  }
+  },
 })
 
 export const postSub = subscriptionField('postSub', {
@@ -46,7 +47,19 @@ export const postSub = subscriptionField('postSub', {
 
     return pubsub.asyncIterator(`post ${postId}`)
   },
-  resolve(payload: {mutation: string, data: Post}) {
+  resolve(payload: { mutation: string; data: Post }) {
+    return payload
+  },
+})
+
+export const myPostSub = subscriptionField('myPostSub', {
+  type: 'postSubResponse',
+  async subscribe(_root, _args, { pubsub, request }) {
+    const userId = getUserId(request)
+
+    return pubsub.asyncIterator(`post from user ${userId}`)
+  },
+  resolve(payload: { mutation: string; data: Post }) {
     return payload
   },
 })

@@ -7,9 +7,13 @@ export const createPost = mutationField('createPost', {
   args: {
     title: nonNull(stringArg()),
     body: nonNull(stringArg()),
-    published: nonNull(booleanArg())
+    published: nonNull(booleanArg()),
   },
-  async resolve(_root, { title, body, published }, { prisma, pubsub, request }) {
+  async resolve(
+    _root,
+    { title, body, published },
+    { prisma, pubsub, request }
+  ) {
     const userId = getUserId(request)
 
     const createdPost = await prisma.post.create({
@@ -38,7 +42,7 @@ export const updatePost = mutationField('updatePost', {
   type: 'Post',
   args: {
     whereId: nonNull(stringArg()),
-    updateTitle:stringArg(),
+    updateTitle: stringArg(),
     updateBody: stringArg(),
     updatePublished: booleanArg(),
   },
@@ -78,7 +82,7 @@ export const updatePost = mutationField('updatePost', {
     }
 
     if (data.published === false) {
-      await prisma.comment.deleteMany({where: {postId: whereId}})
+      await prisma.comment.deleteMany({ where: { postId: whereId } })
     }
 
     const updatedPost = await prisma.post.update({

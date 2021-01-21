@@ -241,6 +241,7 @@ export interface NexusGenFieldTypes {
     commentSub: NexusGenRootTypes['commentSubResponse'] | null; // commentSubResponse
     commentSubByPost: NexusGenRootTypes['commentSubResponse'] | null; // commentSubResponse
     commentSubByUser: NexusGenRootTypes['commentSubResponse'] | null; // commentSubResponse
+    myPostSub: NexusGenRootTypes['postSubResponse'] | null; // postSubResponse
     postSub: NexusGenRootTypes['postSubResponse'] | null; // postSubResponse
     postSubByUser: NexusGenRootTypes['postSubResponse'] | null; // postSubResponse
     userSub: NexusGenRootTypes['userSubResponse'] | null; // userSubResponse
@@ -317,6 +318,7 @@ export interface NexusGenFieldTypeNames {
     commentSub: 'commentSubResponse'
     commentSubByPost: 'commentSubResponse'
     commentSubByUser: 'commentSubResponse'
+    myPostSub: 'postSubResponse'
     postSub: 'postSubResponse'
     postSubByUser: 'postSubResponse'
     userSub: 'userSubResponse'
