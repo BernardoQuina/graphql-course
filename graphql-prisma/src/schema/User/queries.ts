@@ -2,7 +2,13 @@ import { queryField } from 'nexus';
 import { getUserId } from '../../util/getUserId';
 
 export const userQueries = queryField((t) => {
-  t.crud.user()
+  t.crud.user({async resolve(_root, args, ctx, info, originalResolver) {
+    if (args.where.email) {
+      throw new Error('Cannot query by email.')
+    }
+    const res = await originalResolver(_root, args, ctx, info)
+    return res
+  }})
 
   t.crud.users({ pagination: true, filtering: true, ordering: true })
 

@@ -73,8 +73,12 @@ export const updatePost = mutationField('updatePost', {
       data.published = updatePublished
     }
 
-    if (!updateTitle && !updateBody && !updatePublished) {
+    if (!updateTitle && !updateBody && updatePublished === null) {
       throw new Error('Please provide something to update')
+    }
+
+    if (data.published === false) {
+      await prisma.comment.deleteMany({where: {postId: whereId}})
     }
 
     const updatedPost = await prisma.post.update({

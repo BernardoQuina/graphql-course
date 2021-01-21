@@ -9,14 +9,16 @@ export const createComment = mutationField('createComment', {
     text: nonNull(stringArg()),
   },
   async resolve(_root, { postId, text }, { prisma, pubsub, request }) {
-    
     const postExists = await prisma.post.findUnique({ where: { id: postId } })
-    
-    if (!postExists) {
+
+    const userId = getUserId(request)
+
+    if (
+      !postExists ||
+      (!postExists.published && postExists.userId !== userId)
+    ) {
       throw new Error('Post not found')
     }
-    
-    const userId = getUserId(request)
 
     const createdComment = await prisma.comment.create({
       data: {
