@@ -21,6 +21,7 @@ export const createPost = mutationField('createPost', {
         title,
         body,
         published,
+        updatedAt: new Date(),
         author: {
           connect: {
             id: userId,

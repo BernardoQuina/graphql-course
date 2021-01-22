@@ -29,28 +29,52 @@ export interface NexusGenInputs {
     some?: NexusGenInputs['CommentWhereInput'] | null; // CommentWhereInput
   }
   CommentOrderByInput: { // input type
+    createdAt?: NexusGenEnums['SortOrder'] | null; // SortOrder
     id?: NexusGenEnums['SortOrder'] | null; // SortOrder
     postId?: NexusGenEnums['SortOrder'] | null; // SortOrder
     text?: NexusGenEnums['SortOrder'] | null; // SortOrder
+    updatedAt?: NexusGenEnums['SortOrder'] | null; // SortOrder
     userId?: NexusGenEnums['SortOrder'] | null; // SortOrder
   }
   CommentWhereInput: { // input type
     AND?: NexusGenInputs['CommentWhereInput'][] | null; // [CommentWhereInput!]
     author?: NexusGenInputs['UserWhereInput'] | null; // UserWhereInput
+    createdAt?: NexusGenInputs['DateTimeFilter'] | null; // DateTimeFilter
     id?: NexusGenInputs['StringFilter'] | null; // StringFilter
     NOT?: NexusGenInputs['CommentWhereInput'][] | null; // [CommentWhereInput!]
     OR?: NexusGenInputs['CommentWhereInput'][] | null; // [CommentWhereInput!]
     post?: NexusGenInputs['PostWhereInput'] | null; // PostWhereInput
     postId?: NexusGenInputs['StringFilter'] | null; // StringFilter
     text?: NexusGenInputs['StringFilter'] | null; // StringFilter
+    updatedAt?: NexusGenInputs['DateTimeFilter'] | null; // DateTimeFilter
     userId?: NexusGenInputs['StringFilter'] | null; // StringFilter
   }
   CommentWhereUniqueInput: { // input type
     id?: string | null; // String
   }
+  DateTimeFilter: { // input type
+    equals?: NexusGenScalars['DateTime'] | null; // DateTime
+    gt?: NexusGenScalars['DateTime'] | null; // DateTime
+    gte?: NexusGenScalars['DateTime'] | null; // DateTime
+    in?: NexusGenScalars['DateTime'][] | null; // [DateTime!]
+    lt?: NexusGenScalars['DateTime'] | null; // DateTime
+    lte?: NexusGenScalars['DateTime'] | null; // DateTime
+    not?: NexusGenInputs['NestedDateTimeFilter'] | null; // NestedDateTimeFilter
+    notIn?: NexusGenScalars['DateTime'][] | null; // [DateTime!]
+  }
   NestedBoolFilter: { // input type
     equals?: boolean | null; // Boolean
     not?: NexusGenInputs['NestedBoolFilter'] | null; // NestedBoolFilter
+  }
+  NestedDateTimeFilter: { // input type
+    equals?: NexusGenScalars['DateTime'] | null; // DateTime
+    gt?: NexusGenScalars['DateTime'] | null; // DateTime
+    gte?: NexusGenScalars['DateTime'] | null; // DateTime
+    in?: NexusGenScalars['DateTime'][] | null; // [DateTime!]
+    lt?: NexusGenScalars['DateTime'] | null; // DateTime
+    lte?: NexusGenScalars['DateTime'] | null; // DateTime
+    not?: NexusGenInputs['NestedDateTimeFilter'] | null; // NestedDateTimeFilter
+    notIn?: NexusGenScalars['DateTime'][] | null; // [DateTime!]
   }
   NestedStringFilter: { // input type
     contains?: string | null; // String
@@ -72,9 +96,11 @@ export interface NexusGenInputs {
   }
   PostOrderByInput: { // input type
     body?: NexusGenEnums['SortOrder'] | null; // SortOrder
+    createdAt?: NexusGenEnums['SortOrder'] | null; // SortOrder
     id?: NexusGenEnums['SortOrder'] | null; // SortOrder
     published?: NexusGenEnums['SortOrder'] | null; // SortOrder
     title?: NexusGenEnums['SortOrder'] | null; // SortOrder
+    updatedAt?: NexusGenEnums['SortOrder'] | null; // SortOrder
     userId?: NexusGenEnums['SortOrder'] | null; // SortOrder
   }
   PostWhereInput: { // input type
@@ -82,11 +108,13 @@ export interface NexusGenInputs {
     author?: NexusGenInputs['UserWhereInput'] | null; // UserWhereInput
     body?: NexusGenInputs['StringFilter'] | null; // StringFilter
     comments?: NexusGenInputs['CommentListRelationFilter'] | null; // CommentListRelationFilter
+    createdAt?: NexusGenInputs['DateTimeFilter'] | null; // DateTimeFilter
     id?: NexusGenInputs['StringFilter'] | null; // StringFilter
     NOT?: NexusGenInputs['PostWhereInput'][] | null; // [PostWhereInput!]
     OR?: NexusGenInputs['PostWhereInput'][] | null; // [PostWhereInput!]
     published?: NexusGenInputs['BoolFilter'] | null; // BoolFilter
     title?: NexusGenInputs['StringFilter'] | null; // StringFilter
+    updatedAt?: NexusGenInputs['DateTimeFilter'] | null; // DateTimeFilter
     userId?: NexusGenInputs['StringFilter'] | null; // StringFilter
   }
   PostWhereUniqueInput: { // input type
@@ -107,14 +135,17 @@ export interface NexusGenInputs {
     startsWith?: string | null; // String
   }
   UserOrderByInput: { // input type
+    createdAt?: NexusGenEnums['SortOrder'] | null; // SortOrder
     email?: NexusGenEnums['SortOrder'] | null; // SortOrder
     id?: NexusGenEnums['SortOrder'] | null; // SortOrder
     name?: NexusGenEnums['SortOrder'] | null; // SortOrder
     password?: NexusGenEnums['SortOrder'] | null; // SortOrder
+    updatedAt?: NexusGenEnums['SortOrder'] | null; // SortOrder
   }
   UserWhereInput: { // input type
     AND?: NexusGenInputs['UserWhereInput'][] | null; // [UserWhereInput!]
     comments?: NexusGenInputs['CommentListRelationFilter'] | null; // CommentListRelationFilter
+    createdAt?: NexusGenInputs['DateTimeFilter'] | null; // DateTimeFilter
     email?: NexusGenInputs['StringFilter'] | null; // StringFilter
     id?: NexusGenInputs['StringFilter'] | null; // StringFilter
     name?: NexusGenInputs['StringFilter'] | null; // StringFilter
@@ -122,6 +153,7 @@ export interface NexusGenInputs {
     OR?: NexusGenInputs['UserWhereInput'][] | null; // [UserWhereInput!]
     password?: NexusGenInputs['StringFilter'] | null; // StringFilter
     posts?: NexusGenInputs['PostListRelationFilter'] | null; // PostListRelationFilter
+    updatedAt?: NexusGenInputs['DateTimeFilter'] | null; // DateTimeFilter
   }
   UserWhereUniqueInput: { // input type
     email?: string | null; // String
@@ -140,6 +172,7 @@ export interface NexusGenScalars {
   Float: number
   Boolean: boolean
   ID: string
+  DateTime: any
 }
 
 export interface NexusGenObjects {
@@ -148,24 +181,30 @@ export interface NexusGenObjects {
     user?: NexusGenRootTypes['User'] | null; // User
   }
   Comment: { // root type
+    createdAt?: NexusGenScalars['DateTime'] | null; // DateTime
     id?: string | null; // String
     postId?: string | null; // String
     text?: string | null; // String
+    updatedAt?: NexusGenScalars['DateTime'] | null; // DateTime
     userId?: string | null; // String
   }
   Mutation: {};
   Post: { // root type
     body?: string | null; // String
+    createdAt?: NexusGenScalars['DateTime'] | null; // DateTime
     id?: string | null; // String
     published?: boolean | null; // Boolean
     title?: string | null; // String
+    updatedAt?: NexusGenScalars['DateTime'] | null; // DateTime
     userId?: string | null; // String
   }
   Query: {};
   Subscription: {};
   User: { // root type
+    createdAt?: NexusGenScalars['DateTime'] | null; // DateTime
     id?: string | null; // String
     name?: string | null; // String
+    updatedAt?: NexusGenScalars['DateTime'] | null; // DateTime
   }
   commentSubResponse: { // root type
     data?: NexusGenRootTypes['Comment'] | null; // Comment
@@ -198,10 +237,12 @@ export interface NexusGenFieldTypes {
   }
   Comment: { // field return type
     author: NexusGenRootTypes['User'] | null; // User
+    createdAt: NexusGenScalars['DateTime'] | null; // DateTime
     id: string | null; // String
     post: NexusGenRootTypes['Post'] | null; // Post
     postId: string | null; // String
     text: string | null; // String
+    updatedAt: NexusGenScalars['DateTime'] | null; // DateTime
     userId: string | null; // String
   }
   Mutation: { // field return type
@@ -220,9 +261,11 @@ export interface NexusGenFieldTypes {
     author: NexusGenRootTypes['User'] | null; // User
     body: string | null; // String
     comments: NexusGenRootTypes['Comment'][]; // [Comment!]!
+    createdAt: NexusGenScalars['DateTime'] | null; // DateTime
     id: string | null; // String
     published: boolean | null; // Boolean
     title: string | null; // String
+    updatedAt: NexusGenScalars['DateTime'] | null; // DateTime
     userId: string | null; // String
   }
   Query: { // field return type
@@ -248,11 +291,13 @@ export interface NexusGenFieldTypes {
   }
   User: { // field return type
     comments: NexusGenRootTypes['Comment'][]; // [Comment!]!
+    createdAt: NexusGenScalars['DateTime'] | null; // DateTime
     email: string | null; // String
     id: string | null; // String
     name: string | null; // String
     password: string | null; // String
     posts: NexusGenRootTypes['Post'][]; // [Post!]!
+    updatedAt: NexusGenScalars['DateTime'] | null; // DateTime
   }
   commentSubResponse: { // field return type
     data: NexusGenRootTypes['Comment'] | null; // Comment
@@ -275,10 +320,12 @@ export interface NexusGenFieldTypeNames {
   }
   Comment: { // field return type name
     author: 'User'
+    createdAt: 'DateTime'
     id: 'String'
     post: 'Post'
     postId: 'String'
     text: 'String'
+    updatedAt: 'DateTime'
     userId: 'String'
   }
   Mutation: { // field return type name
@@ -297,9 +344,11 @@ export interface NexusGenFieldTypeNames {
     author: 'User'
     body: 'String'
     comments: 'Comment'
+    createdAt: 'DateTime'
     id: 'String'
     published: 'Boolean'
     title: 'String'
+    updatedAt: 'DateTime'
     userId: 'String'
   }
   Query: { // field return type name
@@ -325,11 +374,13 @@ export interface NexusGenFieldTypeNames {
   }
   User: { // field return type name
     comments: 'Comment'
+    createdAt: 'DateTime'
     email: 'String'
     id: 'String'
     name: 'String'
     password: 'String'
     posts: 'Post'
+    updatedAt: 'DateTime'
   }
   commentSubResponse: { // field return type name
     data: 'Comment'

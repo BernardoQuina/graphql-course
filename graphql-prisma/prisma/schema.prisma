@@ -11,12 +11,14 @@ generator client {
 }
 
 model User {
-  id       String    @id @default(uuid())
-  name     String
-  password String
-  email    String    @unique
-  posts    Post[]
-  comments Comment[]
+  id        String    @id @default(uuid())
+  name      String
+  password  String
+  email     String    @unique
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  posts     Post[]
+  comments  Comment[]
 }
 
 model Post {
@@ -24,16 +26,20 @@ model Post {
   title     String
   body      String
   published Boolean
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
   author    User      @relation(fields: [userId], references: [id])
   userId    String
   comments  Comment[]
 }
 
 model Comment {
-  id     String @id @default(uuid())
-  text   String
-  author User   @relation(fields: [userId], references: [id])
-  userId String
-  post   Post   @relation(fields: [postId], references: [id])
-  postId String
+  id        String   @id @default(uuid())
+  text      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  author    User     @relation(fields: [userId], references: [id])
+  userId    String
+  post      Post     @relation(fields: [postId], references: [id])
+  postId    String
 }

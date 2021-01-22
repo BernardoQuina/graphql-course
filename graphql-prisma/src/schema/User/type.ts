@@ -30,6 +30,8 @@ export const User = objectType({
         return null
       }
     })
+    t.model.createdAt()
+    t.model.updatedAt()
     t.model.posts()
     t.model.comments()
   },

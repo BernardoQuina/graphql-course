@@ -7,6 +7,8 @@ export const Post = objectType({
     t.model.title()
     t.model.body()
     t.model.published()
+    t.model.createdAt()
+    t.model.updatedAt()
     t.model.author()
     t.model.userId()
     t.model.comments()

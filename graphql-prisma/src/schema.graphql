@@ -14,10 +14,12 @@ input BoolFilter {
 
 type Comment {
   author: User
+  createdAt: DateTime
   id: String
   post: Post
   postId: String
   text: String
+  updatedAt: DateTime
   userId: String
 }
 
@@ -28,9 +30,11 @@ input CommentListRelationFilter {
 }
 
 input CommentOrderByInput {
+  createdAt: SortOrder
   id: SortOrder
   postId: SortOrder
   text: SortOrder
+  updatedAt: SortOrder
   userId: SortOrder
 }
 
@@ -42,17 +46,32 @@ type commentSubResponse {
 input CommentWhereInput {
   AND: [CommentWhereInput!]
   author: UserWhereInput
+  createdAt: DateTimeFilter
   id: StringFilter
   NOT: [CommentWhereInput!]
   OR: [CommentWhereInput!]
   post: PostWhereInput
   postId: StringFilter
   text: StringFilter
+  updatedAt: DateTimeFilter
   userId: StringFilter
 }
 
 input CommentWhereUniqueInput {
   id: String
+}
+
+scalar DateTime
+
+input DateTimeFilter {
+  equals: DateTime
+  gt: DateTime
+  gte: DateTime
+  in: [DateTime!]
+  lt: DateTime
+  lte: DateTime
+  not: NestedDateTimeFilter
+  notIn: [DateTime!]
 }
 
 type Mutation {
@@ -73,6 +92,17 @@ input NestedBoolFilter {
   not: NestedBoolFilter
 }
 
+input NestedDateTimeFilter {
+  equals: DateTime
+  gt: DateTime
+  gte: DateTime
+  in: [DateTime!]
+  lt: DateTime
+  lte: DateTime
+  not: NestedDateTimeFilter
+  notIn: [DateTime!]
+}
+
 input NestedStringFilter {
   contains: String
   endsWith: String
@@ -91,9 +121,11 @@ type Post {
   author: User
   body: String
   comments(after: CommentWhereUniqueInput, before: CommentWhereUniqueInput, first: Int, last: Int): [Comment!]!
+  createdAt: DateTime
   id: String
   published: Boolean
   title: String
+  updatedAt: DateTime
   userId: String
 }
 
@@ -105,9 +137,11 @@ input PostListRelationFilter {
 
 input PostOrderByInput {
   body: SortOrder
+  createdAt: SortOrder
   id: SortOrder
   published: SortOrder
   title: SortOrder
+  updatedAt: SortOrder
   userId: SortOrder
 }
 
@@ -121,11 +155,13 @@ input PostWhereInput {
   author: UserWhereInput
   body: StringFilter
   comments: CommentListRelationFilter
+  createdAt: DateTimeFilter
   id: StringFilter
   NOT: [PostWhereInput!]
   OR: [PostWhereInput!]
   published: BoolFilter
   title: StringFilter
+  updatedAt: DateTimeFilter
   userId: StringFilter
 }
 
@@ -183,6 +219,7 @@ type Subscription {
 
 type User {
   comments(after: CommentWhereUniqueInput, before: CommentWhereUniqueInput, first: Int, last: Int): [Comment!]!
+  createdAt: DateTime
   email: String
   id: String
   name: String
@@ -190,13 +227,16 @@ type User {
   """Only logged in user can query it but its hashed anyway"""
   password: String
   posts(after: PostWhereUniqueInput, before: PostWhereUniqueInput, first: Int, last: Int): [Post!]!
+  updatedAt: DateTime
 }
 
 input UserOrderByInput {
+  createdAt: SortOrder
   email: SortOrder
   id: SortOrder
   name: SortOrder
   password: SortOrder
+  updatedAt: SortOrder
 }
 
 type userSubResponse {
@@ -207,6 +247,7 @@ type userSubResponse {
 input UserWhereInput {
   AND: [UserWhereInput!]
   comments: CommentListRelationFilter
+  createdAt: DateTimeFilter
   email: StringFilter
   id: StringFilter
   name: StringFilter
@@ -214,6 +255,7 @@ input UserWhereInput {
   OR: [UserWhereInput!]
   password: StringFilter
   posts: PostListRelationFilter
+  updatedAt: DateTimeFilter
 }
 
 input UserWhereUniqueInput {
