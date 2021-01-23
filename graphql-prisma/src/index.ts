@@ -11,6 +11,8 @@ const server = new ApolloServer({
   tracing: process.env.NODE_ENV === 'development',
 })
 
-server.listen(4000, () => {
-  console.log('Server started on port: 4000')
+const PORT = process.env.PORT
+
+server.listen(PORT, () => {
+  console.log(`Server started on PORT: ${PORT}`)
 })
