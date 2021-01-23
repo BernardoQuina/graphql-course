@@ -34,6 +34,7 @@ export const schema = makeSchema({
     commentMutations,
     commentSubscriptions
   },
+  shouldGenerateArtifacts: process.env.NODE_ENV === 'development',
   plugins: [nexusPrisma({ experimentalCRUD: true })],
   outputs: {
     // GraphQL SDL file generation
