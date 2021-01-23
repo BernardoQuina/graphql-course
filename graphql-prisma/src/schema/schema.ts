@@ -39,6 +39,9 @@ export const schema = makeSchema({
     nexusPrisma({
       experimentalCRUD: true,
       shouldGenerateArtifacts: process.env.NODE_ENV === 'development',
+      outputs: {
+        typegen: path.join(process.cwd(), 'src/typegenNexusPluginPrisma.d.ts'),
+      },
     }),
   ],
   outputs: {
