@@ -6,7 +6,7 @@
   "license": "MIT",
   "scripts": {
     "watch": "tsc -w",
-    "postinstall": "tsc",,
+    "postinstall": "tsc",
     "prepare": "npx prisma generate",
     "dev": "nodemon dist/index.js",
     "start": "node dist/index.js",
