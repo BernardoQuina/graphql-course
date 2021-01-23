@@ -17,7 +17,7 @@ import * as commentQueries from './Comment/queries'
 import * as commentMutations from './Comment/mutations'
 import * as commentSubscriptions from './Comment/subscriptions'
 
-// makeSchema defines the GraphQL schema, by combining the GraphQL types defined 
+// makeSchema defines the GraphQL schema, by combining the GraphQL types defined
 // by the GraphQL Nexus layer or any manually defined GraphQLType objects
 export const schema = makeSchema({
   types: {
@@ -32,10 +32,15 @@ export const schema = makeSchema({
     Comment,
     commentQueries,
     commentMutations,
-    commentSubscriptions
+    commentSubscriptions,
   },
   shouldGenerateArtifacts: process.env.NODE_ENV === 'development',
-  plugins: [nexusPrisma({ experimentalCRUD: true })],
+  plugins: [
+    nexusPrisma({
+      experimentalCRUD: true,
+      shouldGenerateArtifacts: process.env.NODE_ENV === 'development',
+    }),
+  ],
   outputs: {
     // GraphQL SDL file generation
     schema: path.join(process.cwd(), 'src/schema.graphql'),
