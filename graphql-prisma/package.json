@@ -6,9 +6,10 @@
   "license": "MIT",
   "scripts": {
     "watch": "tsc -w",
+    "dev": "nodemon dist/index.js",
+    "test": "jest --watch",
     "postinstall": "tsc",
     "prepare": "npx prisma generate",
-    "dev": "nodemon dist/index.js",
     "start": "node dist/index.js",
     "update": "yarn upgrade-interactive --latest"
   },
@@ -26,9 +27,12 @@
   "devDependencies": {
     "@prisma/cli": "2.15.0",
     "@types/bcryptjs": "^2.4.2",
+    "@types/jest": "^26.0.20",
     "@types/jsonwebtoken": "^8.5.0",
     "@types/node": "^14.14.22",
-    "nodemon": "^2.0.7"
+    "jest": "^26.6.3",
+    "nodemon": "^2.0.7",
+    "ts-jest": "^26.4.4"
   },
   "engines": {
     "node": "14.15.4"

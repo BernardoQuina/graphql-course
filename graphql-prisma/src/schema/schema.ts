@@ -40,6 +40,7 @@ export const schema = makeSchema({
       experimentalCRUD: true,
       shouldGenerateArtifacts: process.env.NODE_ENV === 'development',
       outputs: {
+        // We need it in src because production build will crash at tsc compiling
         typegen: path.join(process.cwd(), 'src/typegenNexusPluginPrisma.d.ts'),
       },
     }),
