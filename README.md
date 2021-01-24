@@ -6,10 +6,10 @@ Please read the docs since its quite different from prisma 1:
 
 https://www.prisma.io/docs/getting-started/setup-prisma/start-from-scratch-typescript-postgres
 
-Note that you don't need docker anymore or to install prisma globally. Instead you install @prisma/cli as dev dependency and invoke prisma via *npx* or *yarn*.
+Note that you don't need docker anymore or to install prisma globally. Instead you install @prisma/cli as dev dependency and invoke prisma via **npx** or **yarn**.
 
 ### Prisma Migrate
-Also to create database tables via prisma now you need to use prisma migrate but if you are developing against a cloud-based database (for example, on Heroku like we do in the course) and are currently prototyping such that you don't care about generated migration files and only need to apply your Prisma data model to the database schema, you can run *prisma db push* instead of the *prisma migrate dev* command.
+Also to create database tables via prisma now you need to use prisma migrate but if you are developing against a cloud-based database (for example, on Heroku like we do in the course) and are currently prototyping such that you don't care about generated migration files and only need to apply your Prisma data model to the database schema, you can run **prisma db push** instead of the **prisma migrate dev** command.
 
 ## Source of truth & auto-generated files
 The source of truth is schema.prisma and as we define object types according to it and the queries, mutations and subscriptions necessary nexus will auto generate a typescript types file (nexus schema) and a graphql file (graphql schema).
