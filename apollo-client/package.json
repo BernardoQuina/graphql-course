@@ -5,6 +5,14 @@
   "author": "Bernardo Quina",
   "license": "MIT",
   "scripts": {
-    "watch": "tsc -w"
+    "watch": "tsc -w",
+    "start": "parcel index.html"
+  },
+  "dependencies": {
+    "@apollo/client": "^3.3.7",
+    "graphql": "^15.4.0"
+  },
+  "devDependencies": {
+    "parcel-bundler": "^1.12.4"
   }
 }
