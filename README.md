@@ -1,5 +1,5 @@
 ## OVERVIEW
-Each folder is its own project in accordance with the course, being graphql-prisma the main project witch is deployed to heroku
+Each folder is its own project in accordance with the course, being graphql-prisma the main project which is deployed to heroku
 
 ## Prisma 2 Setup
 Please read the docs since its quite different from prisma 1:
