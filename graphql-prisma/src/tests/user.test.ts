@@ -15,7 +15,7 @@ const client = new ApolloClient({
   cache: new InMemoryCache(),
 })
 
-beforeAll(async () => {
+beforeEach(async () => {
   // clear database
   await prisma.comment.deleteMany()
   await prisma.post.deleteMany()
@@ -63,11 +63,54 @@ test('Should create a new user', async () => {
     }
   `
 
-  await client.mutate({
+  const response = await client.mutate({
     mutation: createUser,
   })
+
+  const exists = await prisma.user.findUnique({
+    where: { id: response.data.createUser.user.id },
+  })
+
+  expect(exists).toBeTruthy()
 })
 
+test('Should expose author profile', async () => {
+  const getUsers = gql`
+    query {
+      users {
+        id
+        name
+        email
+      }
+    }
+  `
+
+  const response = await client.query({
+    query: getUsers,
+  })
+
+  expect(response.data.users.length).toBe(1)
+  expect(response.data.users[0].email).toBeNull()
+  expect(response.data.users[0].name).toBe('jen')
+})
+
+test('Should only query published post', async () => {
+  const getPosts = gql`
+    query {
+      posts {
+        id
+        published
+      }
+    }
+  `
+
+  const response = await client.query({
+    query: getPosts
+  })
+
+  expect(response.data.posts.length).toBe(1)
+  expect(response.data.posts[0].published).toBe(true)
+})
 
 afterAll(() => {
   return prisma.$disconnect()
