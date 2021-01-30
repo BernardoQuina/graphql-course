@@ -38,11 +38,11 @@ export interface NexusGenInputs {
   }
   CommentWhereInput: { // input type
     AND?: NexusGenInputs['CommentWhereInput'][] | null; // [CommentWhereInput!]
+    NOT?: NexusGenInputs['CommentWhereInput'][] | null; // [CommentWhereInput!]
+    OR?: NexusGenInputs['CommentWhereInput'][] | null; // [CommentWhereInput!]
     author?: NexusGenInputs['UserWhereInput'] | null; // UserWhereInput
     createdAt?: NexusGenInputs['DateTimeFilter'] | null; // DateTimeFilter
     id?: NexusGenInputs['StringFilter'] | null; // StringFilter
-    NOT?: NexusGenInputs['CommentWhereInput'][] | null; // [CommentWhereInput!]
-    OR?: NexusGenInputs['CommentWhereInput'][] | null; // [CommentWhereInput!]
     post?: NexusGenInputs['PostWhereInput'] | null; // PostWhereInput
     postId?: NexusGenInputs['StringFilter'] | null; // StringFilter
     text?: NexusGenInputs['StringFilter'] | null; // StringFilter
@@ -105,13 +105,13 @@ export interface NexusGenInputs {
   }
   PostWhereInput: { // input type
     AND?: NexusGenInputs['PostWhereInput'][] | null; // [PostWhereInput!]
+    NOT?: NexusGenInputs['PostWhereInput'][] | null; // [PostWhereInput!]
+    OR?: NexusGenInputs['PostWhereInput'][] | null; // [PostWhereInput!]
     author?: NexusGenInputs['UserWhereInput'] | null; // UserWhereInput
     body?: NexusGenInputs['StringFilter'] | null; // StringFilter
     comments?: NexusGenInputs['CommentListRelationFilter'] | null; // CommentListRelationFilter
     createdAt?: NexusGenInputs['DateTimeFilter'] | null; // DateTimeFilter
     id?: NexusGenInputs['StringFilter'] | null; // StringFilter
-    NOT?: NexusGenInputs['PostWhereInput'][] | null; // [PostWhereInput!]
-    OR?: NexusGenInputs['PostWhereInput'][] | null; // [PostWhereInput!]
     published?: NexusGenInputs['BoolFilter'] | null; // BoolFilter
     title?: NexusGenInputs['StringFilter'] | null; // StringFilter
     updatedAt?: NexusGenInputs['DateTimeFilter'] | null; // DateTimeFilter
@@ -144,13 +144,13 @@ export interface NexusGenInputs {
   }
   UserWhereInput: { // input type
     AND?: NexusGenInputs['UserWhereInput'][] | null; // [UserWhereInput!]
+    NOT?: NexusGenInputs['UserWhereInput'][] | null; // [UserWhereInput!]
+    OR?: NexusGenInputs['UserWhereInput'][] | null; // [UserWhereInput!]
     comments?: NexusGenInputs['CommentListRelationFilter'] | null; // CommentListRelationFilter
     createdAt?: NexusGenInputs['DateTimeFilter'] | null; // DateTimeFilter
     email?: NexusGenInputs['StringFilter'] | null; // StringFilter
     id?: NexusGenInputs['StringFilter'] | null; // StringFilter
     name?: NexusGenInputs['StringFilter'] | null; // StringFilter
-    NOT?: NexusGenInputs['UserWhereInput'][] | null; // [UserWhereInput!]
-    OR?: NexusGenInputs['UserWhereInput'][] | null; // [UserWhereInput!]
     password?: NexusGenInputs['StringFilter'] | null; // StringFilter
     posts?: NexusGenInputs['PostListRelationFilter'] | null; // PostListRelationFilter
     updatedAt?: NexusGenInputs['DateTimeFilter'] | null; // DateTimeFilter

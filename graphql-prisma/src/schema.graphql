@@ -38,18 +38,13 @@ input CommentOrderByInput {
   userId: SortOrder
 }
 
-type commentSubResponse {
-  data: Comment
-  mutation: String
-}
-
 input CommentWhereInput {
   AND: [CommentWhereInput!]
+  NOT: [CommentWhereInput!]
+  OR: [CommentWhereInput!]
   author: UserWhereInput
   createdAt: DateTimeFilter
   id: StringFilter
-  NOT: [CommentWhereInput!]
-  OR: [CommentWhereInput!]
   post: PostWhereInput
   postId: StringFilter
   text: StringFilter
@@ -145,20 +140,15 @@ input PostOrderByInput {
   userId: SortOrder
 }
 
-type postSubResponse {
-  data: Post
-  mutation: String
-}
-
 input PostWhereInput {
   AND: [PostWhereInput!]
+  NOT: [PostWhereInput!]
+  OR: [PostWhereInput!]
   author: UserWhereInput
   body: StringFilter
   comments: CommentListRelationFilter
   createdAt: DateTimeFilter
   id: StringFilter
-  NOT: [PostWhereInput!]
-  OR: [PostWhereInput!]
   published: BoolFilter
   title: StringFilter
   updatedAt: DateTimeFilter
@@ -239,20 +229,15 @@ input UserOrderByInput {
   updatedAt: SortOrder
 }
 
-type userSubResponse {
-  data: User
-  mutation: String
-}
-
 input UserWhereInput {
   AND: [UserWhereInput!]
+  NOT: [UserWhereInput!]
+  OR: [UserWhereInput!]
   comments: CommentListRelationFilter
   createdAt: DateTimeFilter
   email: StringFilter
   id: StringFilter
   name: StringFilter
-  NOT: [UserWhereInput!]
-  OR: [UserWhereInput!]
   password: StringFilter
   posts: PostListRelationFilter
   updatedAt: DateTimeFilter
@@ -261,4 +246,19 @@ input UserWhereInput {
 input UserWhereUniqueInput {
   email: String
   id: String
+}
+
+type commentSubResponse {
+  data: Comment
+  mutation: String
+}
+
+type postSubResponse {
+  data: Post
+  mutation: String
+}
+
+type userSubResponse {
+  data: User
+  mutation: String
 }

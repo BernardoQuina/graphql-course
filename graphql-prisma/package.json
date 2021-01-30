@@ -7,21 +7,23 @@
   "scripts": {
     "watch": "tsc -w",
     "dev": "nodemon dist/index.js",
-    "test": "jest --watch",
+    "test": "jest --watch --testPathIgnorePatterns dist",
     "postinstall": "tsc",
     "prepare": "npx prisma generate",
     "start": "node dist/index.js",
     "update": "yarn upgrade-interactive --latest"
   },
   "dependencies": {
+    "@apollo/client": "^3.3.7",
     "@prisma/client": "2.15.0",
     "apollo-server": "^2.19.2",
     "bcryptjs": "^2.4.3",
     "dotenv": "^8.2.0",
-    "graphql": "^15.4.0",
+    "graphql": "^15.5.0",
     "jsonwebtoken": "^8.5.1",
     "nexus": "^1.0.0",
     "nexus-plugin-prisma": "^0.28.0",
+    "node-fetch": "^2.6.1",
     "typescript": "^4.1.3"
   },
   "devDependencies": {
@@ -36,13 +38,5 @@
   },
   "engines": {
     "node": "14.15.4"
-  },
-  "jest": {
-    "modulePathIgnorePatterns": [
-      "dist"
-    ],
-    "collectCoverageFrom": [
-      "!dist/**/*.js"
-    ]
   }
 }

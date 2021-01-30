@@ -1,25 +1,32 @@
-import { getFirstName, isValidPassword } from '../util/user'
+import { ApolloClient, gql, InMemoryCache, createHttpLink } from '@apollo/client/core'
+import fetch from 'node-fetch'
 
-test('Should return first name when given full name', () => {
-  const firstName = getFirstName('Bernardo Quina')
-
-  expect(firstName).toBe('Bernardo')
+const client = new ApolloClient({
+  link: createHttpLink({
+    uri: 'http://localhost:4000/',
+    fetch: fetch
+  }),
+  cache: new InMemoryCache(),
 })
 
-test('Should return first name when given first name', () => {
-  const firstName = getFirstName('Jen')
+test('Should create a new user', async () => {
+  const createUser = gql`
+    mutation {
+      createUser(
+        name: "bernardo"
+        email: "bernardo@example.com"
+        password: "bernardobernardo"
+      ) {
+        token
+        user {
+          id
+          name
+        }
+      }
+    }
+  `
 
-  expect(firstName).toBe('Jen')
-})
-
-test('Should reject password shorter than 8 characters', () => {
-  const isValid = isValidPassword('short')
-
-  expect(isValid).toBe(false)
-})
-
-test('Should reject password that contains word password',() => {
-  const isValid = isValidPassword('password')
-
-  expect(isValid).toBe(false)
+  await client.mutate({
+    mutation: createUser
+  })
 })
