@@ -7,7 +7,7 @@
   "scripts": {
     "watch": "tsc -w",
     "dev": "nodemon dist/index.js",
-    "test": "jest --watch --testPathIgnorePatterns dist",
+    "test": "jest --testPathIgnorePatterns dist --silent",
     "postinstall": "tsc",
     "prepare": "npx prisma generate",
     "start": "node dist/index.js",
