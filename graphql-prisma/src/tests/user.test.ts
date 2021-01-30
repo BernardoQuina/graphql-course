@@ -6,6 +6,7 @@ import {
 } from '@apollo/client/core'
 import fetch from 'node-fetch'
 import { prisma } from '../context'
+import bcrypt from 'bcryptjs'
 
 const client = new ApolloClient({
   link: createHttpLink({
@@ -23,7 +24,11 @@ beforeEach(async () => {
 
   // create dummy user
   await prisma.user.create({
-    data: { name: 'jen', email: 'jen@example.com', password: 'jenjenjen' },
+    data: {
+      name: 'jen',
+      email: 'jen@example.com',
+      password: bcrypt.hashSync('jenjenjen'),
+    },
   })
 
   // create dummy posts
@@ -105,11 +110,42 @@ test('Should only query published post', async () => {
   `
 
   const response = await client.query({
-    query: getPosts
+    query: getPosts,
   })
 
   expect(response.data.posts.length).toBe(1)
   expect(response.data.posts[0].published).toBe(true)
+})
+
+test('Should not login with bad credentials', async () => {
+  const loginUser = gql`
+    mutation {
+      loginUser(email: "jen@example.com", password: "wrongPassword") {
+        token
+      }
+    }
+  `
+
+  await expect(client.mutate({ mutation: loginUser })).rejects.toThrow()
+})
+
+test('Should not sign up user with invalid password', async () => {
+  const createUser = gql`
+    mutation {
+      createUser(
+        name: "rita"
+        email: "rita@example.com"
+        password: "rita"
+      ) {
+        token
+        user {
+          id
+        }
+      }
+    }
+  `
+
+  await expect(client.mutate({mutation: createUser})).rejects.toThrow()
 })
 
 afterAll(() => {
