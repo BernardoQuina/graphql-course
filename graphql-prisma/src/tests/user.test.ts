@@ -2,11 +2,11 @@ import { gql } from '@apollo/client/core'
 
 import { prisma } from '../context'
 import { getClient } from './utils/getClient'
-import { seedDatabase } from './utils/seedDatabase'
+import { seedDatabase, userOne } from './utils/seedDatabase'
 
 const client = getClient()
 
-beforeEach(seedDatabase)
+beforeAll(seedDatabase)
 
 test('Should create a new user', async () => {
   const createUser = gql`
@@ -51,7 +51,7 @@ test('Should expose author profile', async () => {
     query: getUsers,
   })
 
-  expect(response.data.users.length).toBe(1)
+  expect(response.data.users.length).toBe(2) // Jen + Bernardo
   expect(response.data.users[0].email).toBeNull()
   expect(response.data.users[0].name).toBe('jen')
 })
@@ -81,6 +81,26 @@ test('Should not sign up user with invalid password', async () => {
   `
 
   await expect(client.mutate({ mutation: createUser })).rejects.toThrow()
+})
+
+test('Should fetch user profile via token', async () => {
+  const client = getClient(userOne.jwt)
+  const getProfile = gql`
+    query {
+      me {
+        name
+        email
+      }
+    }
+  `
+
+  const response = await client.query({ query: getProfile })
+
+  expect(response.data.me).toEqual({
+    __typename: 'User',
+    name: 'jen',
+    email: 'jen@example.com',
+  })
 })
 
 afterAll(() => {
