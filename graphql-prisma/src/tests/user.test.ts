@@ -51,7 +51,7 @@ test('Should expose author profile', async () => {
     query: getUsers,
   })
 
-  expect(response.data.users.length).toBe(2) // Jen + Bernardo
+  expect(response.data.users.length).toBe(3) // Jen + +Sam + Bernardo
   expect(response.data.users[0].email).toBeNull()
   expect(response.data.users[0].name).toBe('jen')
 })
