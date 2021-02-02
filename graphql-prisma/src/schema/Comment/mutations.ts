@@ -87,7 +87,7 @@ export const deleteComment = mutationField('deleteComment', {
     const commentExists = await prisma.comment.findUnique({ where: { id } })
 
     if (!commentExists) {
-      throw new Error('Comment not found')
+      throw new Error('Comment not found.')
     }
 
     const userId = getUserId(request)

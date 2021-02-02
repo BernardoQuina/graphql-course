@@ -48,6 +48,15 @@ export const commentOne: {
   },
 }
 
+export const commentTwo: {
+  input: { text: string }
+  comment?: Comment
+} = {
+  input: {
+    text: 'dummy comment 2',
+  },
+}
+
 // ****** Seed database ****** //
 
 export const seedDatabase = async () => {
@@ -95,9 +104,9 @@ export const seedDatabase = async () => {
     },
   })
 
-  await prisma.comment.create({
+  commentTwo.comment = await prisma.comment.create({
     data: {
-      text: 'dummy comment 2',
+      ...commentTwo.input,
       author: { connect: { id: userOne.user.id } },
       post: { connect: { id: postOne.post.id } },
     },

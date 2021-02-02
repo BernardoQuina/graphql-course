@@ -45,6 +45,8 @@ test('Should query my posts, including unpublished ones', async () => {
 
   expect(response.data.posts.length).toBe(2)
   expect(response.data.posts[1].published).toBe(false) // authenticated only
+
+  client.stop()
 })
 
 test('Should be able to update own post', async () => {
@@ -73,6 +75,8 @@ test('Should be able to update own post', async () => {
   expect(response.data.updatePost.title).toBe('new title')
   expect(response.data.updatePost.body).toBe('new post body')
   expect(response.data.updatePost.published).toBe(false)
+
+  client.stop()
 })
 
 test('Should create post', async () => {
@@ -97,6 +101,8 @@ test('Should create post', async () => {
   expect(response.data.createPost.title).toBe('created title')
   expect(response.data.createPost.body).toBe('created body')
   expect(response.data.createPost.published).toBe(true)
+
+  client.stop()
 })
 
 test('Should delete post', async () => {
@@ -120,8 +126,11 @@ test('Should delete post', async () => {
   expect(
     await prisma.post.findUnique({ where: { id: postOne.post?.id } })
   ).toBe(null)
+
+  client.stop()
 })
 
-afterAll(() => {
-  return prisma.$disconnect()
+afterAll(async () => {
+  await prisma.$disconnect()
+  client.stop()
 })

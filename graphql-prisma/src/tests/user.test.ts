@@ -101,8 +101,11 @@ test('Should fetch user profile via token', async () => {
     name: 'jen',
     email: 'jen@example.com',
   })
+
+  client.stop()
 })
 
-afterAll(() => {
-  return prisma.$disconnect()
+afterAll(async () => {
+  await prisma.$disconnect()
+  client.stop()
 })
