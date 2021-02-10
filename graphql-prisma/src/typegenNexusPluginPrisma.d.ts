@@ -3,10 +3,9 @@ import * as Prisma from '@prisma/client';
 
 // Pagination type
 type Pagination = {
-    first?: boolean
-    last?: boolean
-    before?: boolean
-    after?: boolean
+    take?: boolean
+    skip?: boolean
+    cursor?: boolean
 }
 
 // Prisma custom scalar names

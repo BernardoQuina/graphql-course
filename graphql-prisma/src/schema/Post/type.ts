@@ -12,5 +12,17 @@ export const Post = objectType({
     t.model.author()
     t.model.userId()
     t.model.comments()
+
+    t.field('textSnippet', {type: 'String', resolve(root, _args, _ctx) {
+      if (root.body!.length < 30) {
+        const snippet = root.body?.slice(0, 30) as string
+
+        return snippet
+      }
+
+      const snippet = root.body?.slice(0, 30) as string + '...'
+      
+      return snippet
+    }})
   },
 })

@@ -115,10 +115,11 @@ input NestedStringFilter {
 type Post {
   author: User
   body: String
-  comments(after: CommentWhereUniqueInput, before: CommentWhereUniqueInput, first: Int, last: Int): [Comment!]!
+  comments(cursor: CommentWhereUniqueInput, skip: Int, take: Int): [Comment!]!
   createdAt: DateTime
   id: String
   published: Boolean
+  textSnippet: String
   title: String
   updatedAt: DateTime
   userId: String
@@ -162,14 +163,14 @@ input PostWhereUniqueInput {
 type Query {
   comment(where: CommentWhereUniqueInput!): Comment
   commentCount: Int
-  comments(after: CommentWhereUniqueInput, before: CommentWhereUniqueInput, first: Int, last: Int, orderBy: [CommentOrderByInput!], where: CommentWhereInput): [Comment!]!
+  comments(cursor: CommentWhereUniqueInput, orderBy: [CommentOrderByInput!], skip: Int, take: Int, where: CommentWhereInput): [Comment!]!
   me: User
   post(where: PostWhereUniqueInput!): Post
   postCount: Int
-  posts(after: PostWhereUniqueInput, before: PostWhereUniqueInput, first: Int, last: Int, orderBy: [PostOrderByInput!], where: PostWhereInput): [Post!]!
+  posts(cursor: PostWhereUniqueInput, orderBy: [PostOrderByInput!], skip: Int, take: Int, where: PostWhereInput): [Post!]!
   user(where: UserWhereUniqueInput!): User
   userCount: Int
-  users(after: UserWhereUniqueInput, before: UserWhereUniqueInput, first: Int, last: Int, orderBy: [UserOrderByInput!], where: UserWhereInput): [User!]!
+  users(cursor: UserWhereUniqueInput, orderBy: [UserOrderByInput!], skip: Int, take: Int, where: UserWhereInput): [User!]!
 }
 
 enum QueryMode {
@@ -208,7 +209,7 @@ type Subscription {
 }
 
 type User {
-  comments(after: CommentWhereUniqueInput, before: CommentWhereUniqueInput, first: Int, last: Int): [Comment!]!
+  comments(cursor: CommentWhereUniqueInput, skip: Int, take: Int): [Comment!]!
   createdAt: DateTime
   email: String
   id: String
@@ -216,7 +217,7 @@ type User {
 
   """Only logged in user can query it but its hashed anyway"""
   password: String
-  posts(after: PostWhereUniqueInput, before: PostWhereUniqueInput, first: Int, last: Int): [Post!]!
+  posts(cursor: PostWhereUniqueInput, skip: Int, take: Int): [Post!]!
   updatedAt: DateTime
 }
 

@@ -43,6 +43,7 @@ export const schema = makeSchema({
         // We need it in src because production build will crash at tsc compiling
         typegen: path.join(process.cwd(), 'src/typegenNexusPluginPrisma.d.ts'),
       },
+      paginationStrategy: 'prisma'
     }),
   ],
   outputs: {

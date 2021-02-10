@@ -264,6 +264,7 @@ export interface NexusGenFieldTypes {
     createdAt: NexusGenScalars['DateTime'] | null; // DateTime
     id: string | null; // String
     published: boolean | null; // Boolean
+    textSnippet: string | null; // String
     title: string | null; // String
     updatedAt: NexusGenScalars['DateTime'] | null; // DateTime
     userId: string | null; // String
@@ -347,6 +348,7 @@ export interface NexusGenFieldTypeNames {
     createdAt: 'DateTime'
     id: 'String'
     published: 'Boolean'
+    textSnippet: 'String'
     title: 'String'
     updatedAt: 'DateTime'
     userId: 'String'
@@ -445,10 +447,9 @@ export interface NexusGenArgTypes {
   }
   Post: {
     comments: { // args
-      after?: NexusGenInputs['CommentWhereUniqueInput'] | null; // CommentWhereUniqueInput
-      before?: NexusGenInputs['CommentWhereUniqueInput'] | null; // CommentWhereUniqueInput
-      first?: number | null; // Int
-      last?: number | null; // Int
+      cursor?: NexusGenInputs['CommentWhereUniqueInput'] | null; // CommentWhereUniqueInput
+      skip?: number | null; // Int
+      take?: number | null; // Int
     }
   }
   Query: {
@@ -456,33 +457,30 @@ export interface NexusGenArgTypes {
       where: NexusGenInputs['CommentWhereUniqueInput']; // CommentWhereUniqueInput!
     }
     comments: { // args
-      after?: NexusGenInputs['CommentWhereUniqueInput'] | null; // CommentWhereUniqueInput
-      before?: NexusGenInputs['CommentWhereUniqueInput'] | null; // CommentWhereUniqueInput
-      first?: number | null; // Int
-      last?: number | null; // Int
+      cursor?: NexusGenInputs['CommentWhereUniqueInput'] | null; // CommentWhereUniqueInput
       orderBy?: NexusGenInputs['CommentOrderByInput'][] | null; // [CommentOrderByInput!]
+      skip?: number | null; // Int
+      take?: number | null; // Int
       where?: NexusGenInputs['CommentWhereInput'] | null; // CommentWhereInput
     }
     post: { // args
       where: NexusGenInputs['PostWhereUniqueInput']; // PostWhereUniqueInput!
     }
     posts: { // args
-      after?: NexusGenInputs['PostWhereUniqueInput'] | null; // PostWhereUniqueInput
-      before?: NexusGenInputs['PostWhereUniqueInput'] | null; // PostWhereUniqueInput
-      first?: number | null; // Int
-      last?: number | null; // Int
+      cursor?: NexusGenInputs['PostWhereUniqueInput'] | null; // PostWhereUniqueInput
       orderBy?: NexusGenInputs['PostOrderByInput'][] | null; // [PostOrderByInput!]
+      skip?: number | null; // Int
+      take?: number | null; // Int
       where?: NexusGenInputs['PostWhereInput'] | null; // PostWhereInput
     }
     user: { // args
       where: NexusGenInputs['UserWhereUniqueInput']; // UserWhereUniqueInput!
     }
     users: { // args
-      after?: NexusGenInputs['UserWhereUniqueInput'] | null; // UserWhereUniqueInput
-      before?: NexusGenInputs['UserWhereUniqueInput'] | null; // UserWhereUniqueInput
-      first?: number | null; // Int
-      last?: number | null; // Int
+      cursor?: NexusGenInputs['UserWhereUniqueInput'] | null; // UserWhereUniqueInput
       orderBy?: NexusGenInputs['UserOrderByInput'][] | null; // [UserOrderByInput!]
+      skip?: number | null; // Int
+      take?: number | null; // Int
       where?: NexusGenInputs['UserWhereInput'] | null; // UserWhereInput
     }
   }
@@ -508,16 +506,14 @@ export interface NexusGenArgTypes {
   }
   User: {
     comments: { // args
-      after?: NexusGenInputs['CommentWhereUniqueInput'] | null; // CommentWhereUniqueInput
-      before?: NexusGenInputs['CommentWhereUniqueInput'] | null; // CommentWhereUniqueInput
-      first?: number | null; // Int
-      last?: number | null; // Int
+      cursor?: NexusGenInputs['CommentWhereUniqueInput'] | null; // CommentWhereUniqueInput
+      skip?: number | null; // Int
+      take?: number | null; // Int
     }
     posts: { // args
-      after?: NexusGenInputs['PostWhereUniqueInput'] | null; // PostWhereUniqueInput
-      before?: NexusGenInputs['PostWhereUniqueInput'] | null; // PostWhereUniqueInput
-      first?: number | null; // Int
-      last?: number | null; // Int
+      cursor?: NexusGenInputs['PostWhereUniqueInput'] | null; // PostWhereUniqueInput
+      skip?: number | null; // Int
+      take?: number | null; // Int
     }
   }
 }
