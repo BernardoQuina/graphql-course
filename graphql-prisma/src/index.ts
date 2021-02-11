@@ -10,7 +10,8 @@ const server = new ApolloServer({
   context: createContext,
   tracing: process.env.NODE_ENV === 'development',
   introspection: true, // REMOVE WHEN PROD IS READY
-  playground: true     // REMOVE WHEN PROD IS READY
+  playground: true, // REMOVE WHEN PROD IS READY
+  cors: { origin: 'http://localhost:3000', credentials: true },
 })
 
 const port = process.env.PORT || 4000
