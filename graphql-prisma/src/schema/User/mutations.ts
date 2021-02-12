@@ -9,10 +9,15 @@ export const createUser = mutationField('createUser', {
     name: nonNull(stringArg()),
     email: nonNull(stringArg()),
     password: nonNull(stringArg()),
+    confirmPassword: nonNull(stringArg())
   },
-  async resolve(_root, { name, email, password }, { prisma }) {
+  async resolve(_root, { name, email, password, confirmPassword }, { prisma }) {
     if (password.length < 8) {
       throw new Error('Password must be 8 characters or longer.')
+    }
+
+    if (password !== confirmPassword) {
+      throw new Error('Passwords do not match')
     }
 
     const hashedPassword = await bcrypt.hash(password, 10)

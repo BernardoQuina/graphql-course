@@ -410,6 +410,7 @@ export interface NexusGenArgTypes {
       title: string; // String!
     }
     createUser: { // args
+      confirmPassword: string; // String!
       email: string; // String!
       name: string; // String!
       password: string; // String!
