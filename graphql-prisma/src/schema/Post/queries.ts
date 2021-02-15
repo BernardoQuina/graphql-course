@@ -59,15 +59,21 @@ export const postQueries = queryField((t) => {
       take: nonNull(intArg()),
       skip: nonNull(intArg()),
     },
-    resolve(_root, { take, skip }, { prisma, request }) {
+    async resolve(_root, { take, skip }, { prisma, request }) {
       const userId = getUserId(request, true)
 
-      return prisma.post.findMany({
+      const myPosts = await prisma.post.findMany({
         where: { userId },
         take,
         skip,
         orderBy: { createdAt: 'desc' },
       })
+
+      if (myPosts.length === 0) {
+        throw new Error('Could not find any posts.')
+      }
+
+      return myPosts
     },
   })
 })
