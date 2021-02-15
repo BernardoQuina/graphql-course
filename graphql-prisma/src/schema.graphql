@@ -165,6 +165,7 @@ type Query {
   commentCount: Int
   comments(cursor: CommentWhereUniqueInput, orderBy: [CommentOrderByInput!], skip: Int, take: Int, where: CommentWhereInput): [Comment!]!
   me: User
+  myPosts(skip: Int!, take: Int!): [Post]
   post(where: PostWhereUniqueInput!): Post
   postCount: Int
   posts(cursor: PostWhereUniqueInput, orderBy: [PostOrderByInput!], skip: Int, take: Int, where: PostWhereInput): [Post!]!

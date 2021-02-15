@@ -1,5 +1,5 @@
 import { Post } from '@prisma/client'
-import { queryField } from 'nexus'
+import { intArg, list, nonNull, queryField } from 'nexus'
 import { getUserId } from '../../util/getUserId'
 
 export const postQueries = queryField((t) => {
@@ -50,6 +50,24 @@ export const postQueries = queryField((t) => {
     type: 'Int',
     resolve(_root, _, { prisma }) {
       return prisma.post.count({})
+    },
+  })
+
+  t.field('myPosts', {
+    type: list('Post'),
+    args: {
+      take: nonNull(intArg()),
+      skip: nonNull(intArg()),
+    },
+    resolve(_root, { take, skip }, { prisma, request }) {
+      const userId = getUserId(request, true)
+
+      return prisma.post.findMany({
+        where: { userId },
+        take,
+        skip,
+        orderBy: { createdAt: 'desc' },
+      })
     },
   })
 })
