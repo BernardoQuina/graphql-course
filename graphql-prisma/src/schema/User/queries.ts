@@ -22,7 +22,11 @@ export const userQueries = queryField((t) => {
   t.field('me', {
     type: 'User',
     resolve(_root, _args, { prisma, request }) {
-      const userId = getUserId(request)
+      const userId = getUserId(request, false)
+
+      if (userId === undefined) {
+        return null
+      }
 
       return prisma.user.findUnique({where: {id: userId}})
     }
