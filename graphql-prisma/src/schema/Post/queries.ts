@@ -54,7 +54,7 @@ export const postQueries = queryField((t) => {
   })
 
   t.field('myPosts', {
-    type: list('Post'),
+    type: nonNull(list('Post')),
     args: {
       take: nonNull(intArg()),
       skip: nonNull(intArg()),

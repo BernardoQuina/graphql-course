@@ -274,7 +274,7 @@ export interface NexusGenFieldTypes {
     commentCount: number | null; // Int
     comments: NexusGenRootTypes['Comment'][]; // [Comment!]!
     me: NexusGenRootTypes['User'] | null; // User
-    myPosts: Array<NexusGenRootTypes['Post'] | null> | null; // [Post]
+    myPosts: Array<NexusGenRootTypes['Post'] | null>; // [Post]!
     post: NexusGenRootTypes['Post'] | null; // Post
     postCount: number | null; // Int
     posts: NexusGenRootTypes['Post'][]; // [Post!]!
