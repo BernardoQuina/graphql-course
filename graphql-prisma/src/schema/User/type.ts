@@ -7,28 +7,33 @@ export const User = objectType({
   definition(t) {
     t.model.id()
     t.model.name()
-    t.model.email({ 
+    t.model.email({
       async resolve(_root: UserDef, args, ctx, info, originalResolver) {
-      const res = await originalResolver(_root, args, ctx, info) 
-      const userId = getUserId(ctx.request, false)
-      
-      if (userId === _root.id) {
-        return res
-      }
-      return null
-    } 
-  })
+        const res = await originalResolver(_root, args, ctx, info)
+        const userId = getUserId(ctx.request, false)
+
+        // info.operation.selectionSet.selections[0].name.value
+
+        const operation = (info.operation.selectionSet.selections[0] as any)
+          .name.value as string
+
+        if (userId === _root.id || operation === 'loginUser') {
+          return res
+        }
+        return null
+      },
+    })
     t.model.password({
       description: 'Only logged in user can query it but its hashed anyway',
       async resolve(_root: UserDef, args, ctx, info, originalResolver) {
-        const res = await originalResolver(_root, args, ctx, info) 
+        const res = await originalResolver(_root, args, ctx, info)
         const userId = getUserId(ctx.request, false)
-  
+
         if (userId === _root.id) {
           return res
         }
         return null
-      }
+      },
     })
     t.model.createdAt()
     t.model.updatedAt()
