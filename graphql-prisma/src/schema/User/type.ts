@@ -17,7 +17,11 @@ export const User = objectType({
         const operation = (info.operation.selectionSet.selections[0] as any)
           .name.value as string
 
-        if (userId === _root.id || operation === 'loginUser') {
+        if (
+          userId === _root.id ||
+          operation === 'loginUser' ||
+          operation === 'createUser'
+        ) {
           return res
         }
         return null
