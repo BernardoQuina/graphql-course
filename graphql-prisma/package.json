@@ -5,11 +5,10 @@
   "author": "Bernardo Quina",
   "license": "MIT",
   "scripts": {
+    "build": "tsc",
     "watch": "tsc -w",
     "dev": "nodemon dist/index.js",
     "test": "jest --testPathIgnorePatterns dist --silent --runInBand",
-    "postinstall": "tsc",
-    "prepare": "npx prisma generate",
     "start": "node dist/index.js",
     "update": "yarn upgrade-interactive --latest"
   },
@@ -37,8 +36,5 @@
     "jest": "^26.6.3",
     "nodemon": "^2.0.7",
     "ts-jest": "^26.4.4"
-  },
-  "engines": {
-    "node": "14.15.4"
   }
 }
