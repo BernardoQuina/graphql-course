@@ -16,8 +16,6 @@ RUN yarn build
 
 ENV NODE_ENV production
 
-RUN npx prisma migrate deploy --preview-feature
-
 EXPOSE 8080
 CMD [ "node","dist/index.js" ]
 USER node
