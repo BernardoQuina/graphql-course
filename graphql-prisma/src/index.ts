@@ -9,8 +9,8 @@ const server = new ApolloServer({
   schema,
   context: createContext,
   tracing: process.env.NODE_ENV === 'development',
-  introspection: true, // REMOVE WHEN PROD IS READY
-  playground: true, // REMOVE WHEN PROD IS READY
+  introspection: process.env.NODE_ENV === 'development',
+  playground: process.env.NODE_ENV === 'development',
   cors: { origin: process.env.ORIGIN, credentials: true },
 })
 
