@@ -10,7 +10,7 @@ export const User = objectType({
     t.model.email({
       async resolve(_root: UserDef, args, ctx, info, originalResolver) {
         const res = await originalResolver(_root, args, ctx, info)
-        const userId = getUserId(ctx.request, false)
+        const userId = getUserId(ctx.req, false)
 
         // info.operation.selectionSet.selections[0].name.value
 
@@ -31,7 +31,7 @@ export const User = objectType({
       description: 'Only logged in user can query it but its hashed anyway',
       async resolve(_root: UserDef, args, ctx, info, originalResolver) {
         const res = await originalResolver(_root, args, ctx, info)
-        const userId = getUserId(ctx.request, false)
+        const userId = getUserId(ctx.req, false)
 
         if (userId === _root.id) {
           return res

@@ -1,10 +1,10 @@
 import jwt from 'jsonwebtoken'
-import { Request } from '../context'
+import { Request } from 'express'
 
-export const getUserId = (request: Request, requireAuth = true) => {
-  const header = request.req
-    ? request.req.headers.authorization
-    : request.connection.context.Authorization
+export const getUserId = (req: Request, requireAuth = true) => {
+  const header = req.headers.authorization
+
+    console.log(header)
 
   if (header) {
     const token = header.replace('Bearer ', '')

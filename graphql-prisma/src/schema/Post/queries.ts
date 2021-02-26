@@ -4,8 +4,8 @@ import { getUserId } from '../../util/getUserId'
 
 export const postQueries = queryField((t) => {
   t.crud.post({
-    async resolve(_root, { where: { id } }, { prisma, request }, _info) {
-      const userId = getUserId(request, false)
+    async resolve(_root, { where: { id } }, { prisma, req }, _info) {
+      const userId = getUserId(req, false)
 
       if (!id) {
         throw new Error('Please provide a post id.')
@@ -32,7 +32,7 @@ export const postQueries = queryField((t) => {
     async resolve(_root, _args, ctx, _info, originalResolver) {
       const posts = await (<Post[]>originalResolver(_root, _args, ctx, _info))
 
-      const userId = getUserId(ctx.request, false)
+      const userId = getUserId(ctx.req, false)
 
       const filteredPosts = posts.filter((post) => {
         return post.userId === userId || post.published
@@ -59,8 +59,8 @@ export const postQueries = queryField((t) => {
       take: nonNull(intArg()),
       skip: nonNull(intArg()),
     },
-    async resolve(_root, { take, skip }, { prisma, request }) {
-      const userId = getUserId(request, true)
+    async resolve(_root, { take, skip }, { prisma, req }) {
+      const userId = getUserId(req, true)
 
       const myPosts = await prisma.post.findMany({
         where: { userId },

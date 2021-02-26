@@ -12,9 +12,9 @@ export const createPost = mutationField('createPost', {
   async resolve(
     _root,
     { title, body, published },
-    { prisma, pubsub, request }
+    { prisma, pubsub, req }
   ) {
-    const userId = getUserId(request)
+    const userId = getUserId(req)
 
     const createdPost = await prisma.post.create({
       data: {
@@ -50,9 +50,9 @@ export const updatePost = mutationField('updatePost', {
   async resolve(
     _root,
     { whereId, updateTitle, updateBody, updatePublished },
-    { prisma, pubsub, request }
+    { prisma, pubsub, req }
   ) {
-    const userId = getUserId(request)
+    const userId = getUserId(req)
 
     const postExists = await prisma.post.findUnique({ where: { id: whereId } })
 
@@ -106,8 +106,8 @@ export const deletePost = mutationField('deletePost', {
   args: {
     id: nonNull(stringArg()),
   },
-  async resolve(_root, { id }, { prisma, pubsub, request }) {
-    const userId = getUserId(request)
+  async resolve(_root, { id }, { prisma, pubsub, req }) {
+    const userId = getUserId(req)
 
     const postExists = await prisma.post.findUnique({ where: { id } })
 

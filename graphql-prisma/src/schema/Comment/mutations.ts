@@ -8,10 +8,10 @@ export const createComment = mutationField('createComment', {
     postId: nonNull(stringArg()),
     text: nonNull(stringArg()),
   },
-  async resolve(_root, { postId, text }, { prisma, pubsub, request }) {
+  async resolve(_root, { postId, text }, { prisma, pubsub, req }) {
     const postExists = await prisma.post.findUnique({ where: { id: postId } })
 
-    const userId = getUserId(request)
+    const userId = getUserId(req)
 
     if (
       !postExists ||
@@ -44,7 +44,7 @@ export const updateComment = mutationField('updateComment', {
     whereId: nonNull(stringArg()),
     updateText: nonNull(stringArg()),
   },
-  async resolve(_root, { whereId, updateText }, { prisma, pubsub, request }) {
+  async resolve(_root, { whereId, updateText }, { prisma, pubsub, req }) {
     const commentExists = await prisma.comment.findUnique({
       where: { id: whereId },
     })
@@ -53,7 +53,7 @@ export const updateComment = mutationField('updateComment', {
       throw new Error('Comment not found')
     }
 
-    const userId = getUserId(request)
+    const userId = getUserId(req)
 
     if (userId !== commentExists.userId) {
       throw new Error('Invalid credentials.')
@@ -83,14 +83,14 @@ export const deleteComment = mutationField('deleteComment', {
   args: {
     id: nonNull(stringArg()),
   },
-  async resolve(_root, { id }, { prisma, pubsub, request }) {
+  async resolve(_root, { id }, { prisma, pubsub, req }) {
     const commentExists = await prisma.comment.findUnique({ where: { id } })
 
     if (!commentExists) {
       throw new Error('Comment not found.')
     }
 
-    const userId = getUserId(request)
+    const userId = getUserId(req)
 
     if (userId !== commentExists.userId) {
       throw new Error('Invalid credentials.')

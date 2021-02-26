@@ -21,8 +21,8 @@ export const userQueries = queryField((t) => {
 
   t.field('me', {
     type: 'User',
-    resolve(_root, _args, { prisma, request }) {
-      const userId = getUserId(request, false)
+    resolve(_root, _args, { prisma, req }) {
+      const userId = getUserId(req, false)
 
       if (userId === undefined) {
         return null

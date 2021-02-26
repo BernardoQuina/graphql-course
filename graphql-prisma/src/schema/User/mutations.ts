@@ -77,9 +77,9 @@ export const updateUser = mutationField('updateUser', {
   async resolve(
     _root,
     { password, updateName, updateEmail, updatePassword, confirmNewPassword },
-    { prisma, pubsub, request }
+    { prisma, pubsub, req }
   ) {
-    const userId = getUserId(request)
+    const userId = getUserId(req)
 
     const userExists = await prisma.user.findUnique({ where: { id: userId } })
 
@@ -140,8 +140,8 @@ export const deleteUser = mutationField('deleteUser', {
   args: {
     password: nonNull(stringArg()),
   },
-  async resolve(_root, { password }, { prisma, pubsub, request }) {
-    const userId = getUserId(request)
+  async resolve(_root, { password }, { prisma, pubsub, req }) {
+    const userId = getUserId(req)
 
     const userExists = await prisma.user.findUnique({ where: { id: userId } })
 

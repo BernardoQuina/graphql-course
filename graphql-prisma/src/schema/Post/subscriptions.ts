@@ -54,8 +54,8 @@ export const postSub = subscriptionField('postSub', {
 
 export const myPostSub = subscriptionField('myPostSub', {
   type: 'postSubResponse',
-  async subscribe(_root, _args, { pubsub, request }) {
-    const userId = getUserId(request)
+  async subscribe(_root, _args, { pubsub, req }) {
+    const userId = getUserId(req)
 
     return pubsub.asyncIterator(`post from user ${userId}`)
   },
