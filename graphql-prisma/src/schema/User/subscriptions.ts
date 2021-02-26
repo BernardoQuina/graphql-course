@@ -25,6 +25,8 @@ export const userSub = subscriptionField('userSub', {
       throw new Error('User not found.')
     }
 
+    console.log(pubsub)
+
     return pubsub.asyncIterator(`user ${userId}`)
   },
   resolve(payload: { mutation: string; data: User }) {

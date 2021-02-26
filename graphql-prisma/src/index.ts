@@ -2,6 +2,7 @@ import { ApolloServer } from 'apollo-server-express'
 import dotenv from 'dotenv'
 import express from 'express'
 import cors from 'cors'
+import { createServer } from 'http'
 
 import { schema } from './schema/schema'
 import { createContext } from './context'
@@ -18,18 +19,22 @@ const main = async () => {
     })
   )
 
-  const server = new ApolloServer({
+  const apolloServer = new ApolloServer({
     schema,
-    context: createContext,
+    context: createContext
   })
 
-  server.applyMiddleware({ app, cors: false })
+  apolloServer.applyMiddleware({ app, cors: false })
 
   app.get('/', (_, res) => {
     res.send('hello world')
   })
 
-  app.listen(process.env.PORT, () => {
+  const server = createServer(app)
+
+  apolloServer.installSubscriptionHandlers(server)
+
+  server.listen(process.env.PORT, () => {
     console.log(`server started on port:${process.env.PORT}`)
   })
 }
