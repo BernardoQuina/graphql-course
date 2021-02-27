@@ -5,6 +5,8 @@ declare global {
       NODE_ENV: 'development' | 'production'
       PORT: number
       ORIGIN: string
+      GOOGLE_CLIENT_ID: string
+      GOOGLE_CLIENT_SECRET: string
     }
   }
 }
