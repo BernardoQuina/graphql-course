@@ -9,7 +9,7 @@ export const createUser = mutationField('createUser', {
     name: nonNull(stringArg()),
     email: nonNull(stringArg()),
     password: nonNull(stringArg()),
-    confirmPassword: nonNull(stringArg())
+    confirmPassword: nonNull(stringArg()),
   },
   async resolve(_root, { name, email, password, confirmPassword }, { prisma }) {
     if (password.length < 8) {
@@ -34,8 +34,31 @@ export const createUser = mutationField('createUser', {
 
     return {
       user: newUser,
-      token: generateToken(newUser.id)
+      token: generateToken(newUser.id),
     }
+  },
+})
+
+export const googleUser = mutationField('googleUser', {
+  type: 'AuthPayload',
+  async resolve(_root, _args, { prisma, req }) {
+    const userExists = await prisma.user.findUnique({
+      where: { email: req.user?.emails![0].value },
+    })
+    
+    console.log('prisma user: ', userExists)
+
+    if (userExists) {
+      return {
+        userExists,
+        token: generateToken(userExists.id)
+      }
+    }
+
+    return null
+
+
+    console.log('user: ', req.user?.photos![0].value)
   },
 })
 
@@ -60,7 +83,7 @@ export const loginUser = mutationField('loginUser', {
 
     return {
       user: userExists,
-      token: generateToken(userExists.id)
+      token: generateToken(userExists.id),
     }
   },
 })

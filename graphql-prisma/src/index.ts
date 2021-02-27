@@ -52,7 +52,6 @@ const main = async () => {
       },
       // Called on successful authentication
       (_accessToken, _refreshToken, profile, cb) => {
-        console.log('profile: ', profile)
         cb(undefined, profile)
       }
     )
@@ -64,10 +63,10 @@ const main = async () => {
   )
 
   app.get(
-    'auth/google/callback',
+    '/auth/google/callback',
     passport.authenticate('google', { failureRedirect: '/login' }),
     (_req, res) => {
-      res.redirect('/')
+      res.redirect('http://localhost:3000')
     }
   )
 
@@ -77,10 +76,6 @@ const main = async () => {
   })
 
   apolloServer.applyMiddleware({ app, cors: false })
-
-  app.get('/', (_, res) => {
-    res.send('hello world')
-  })
 
   const server = createServer(app)
 

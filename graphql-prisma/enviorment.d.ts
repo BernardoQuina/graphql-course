@@ -1,3 +1,5 @@
+import { Profile } from 'passport-google-oauth20';
+
 declare global {
   namespace NodeJS {
     interface ProcessEnv {
@@ -8,6 +10,10 @@ declare global {
       GOOGLE_CLIENT_ID: string
       GOOGLE_CLIENT_SECRET: string
     }
+  }
+
+  namespace Express {
+    interface User extends Profile {}
   }
 }
 
