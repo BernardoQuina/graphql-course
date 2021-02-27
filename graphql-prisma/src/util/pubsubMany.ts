@@ -1,5 +1,5 @@
 import { Post, Comment, User } from '@prisma/client'
-import { PubSub } from 'apollo-server'
+import { PubSub } from 'apollo-server-express'
 
 type Payload = {
   mutation: 'CREATED' | 'UPDATED'| 'DELETED'
