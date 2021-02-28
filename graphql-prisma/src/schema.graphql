@@ -112,6 +112,20 @@ input NestedStringFilter {
   startsWith: String
 }
 
+input NestedStringNullableFilter {
+  contains: String
+  endsWith: String
+  equals: String
+  gt: String
+  gte: String
+  in: [String!]
+  lt: String
+  lte: String
+  not: NestedStringNullableFilter
+  notIn: [String!]
+  startsWith: String
+}
+
 type Post {
   author: User
   body: String
@@ -199,6 +213,21 @@ input StringFilter {
   startsWith: String
 }
 
+input StringNullableFilter {
+  contains: String
+  endsWith: String
+  equals: String
+  gt: String
+  gte: String
+  in: [String!]
+  lt: String
+  lte: String
+  mode: QueryMode
+  not: NestedStringNullableFilter
+  notIn: [String!]
+  startsWith: String
+}
+
 type Subscription {
   commentSub(commentId: ID!): commentSubResponse
   commentSubByPost(postId: ID!): commentSubResponse
@@ -213,6 +242,7 @@ type User {
   comments(cursor: CommentWhereUniqueInput, skip: Int, take: Int): [Comment!]!
   createdAt: DateTime
   email: String
+  googleId: String
   id: String
   name: String
 
@@ -225,6 +255,7 @@ type User {
 input UserOrderByInput {
   createdAt: SortOrder
   email: SortOrder
+  googleId: SortOrder
   id: SortOrder
   name: SortOrder
   password: SortOrder
@@ -238,15 +269,17 @@ input UserWhereInput {
   comments: CommentListRelationFilter
   createdAt: DateTimeFilter
   email: StringFilter
+  googleId: StringNullableFilter
   id: StringFilter
   name: StringFilter
-  password: StringFilter
+  password: StringNullableFilter
   posts: PostListRelationFilter
   updatedAt: DateTimeFilter
 }
 
 input UserWhereUniqueInput {
   email: String
+  googleId: String
   id: String
 }
 

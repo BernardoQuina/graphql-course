@@ -89,6 +89,19 @@ export interface NexusGenInputs {
     notIn?: string[] | null; // [String!]
     startsWith?: string | null; // String
   }
+  NestedStringNullableFilter: { // input type
+    contains?: string | null; // String
+    endsWith?: string | null; // String
+    equals?: string | null; // String
+    gt?: string | null; // String
+    gte?: string | null; // String
+    in?: string[] | null; // [String!]
+    lt?: string | null; // String
+    lte?: string | null; // String
+    not?: NexusGenInputs['NestedStringNullableFilter'] | null; // NestedStringNullableFilter
+    notIn?: string[] | null; // [String!]
+    startsWith?: string | null; // String
+  }
   PostListRelationFilter: { // input type
     every?: NexusGenInputs['PostWhereInput'] | null; // PostWhereInput
     none?: NexusGenInputs['PostWhereInput'] | null; // PostWhereInput
@@ -134,9 +147,24 @@ export interface NexusGenInputs {
     notIn?: string[] | null; // [String!]
     startsWith?: string | null; // String
   }
+  StringNullableFilter: { // input type
+    contains?: string | null; // String
+    endsWith?: string | null; // String
+    equals?: string | null; // String
+    gt?: string | null; // String
+    gte?: string | null; // String
+    in?: string[] | null; // [String!]
+    lt?: string | null; // String
+    lte?: string | null; // String
+    mode?: NexusGenEnums['QueryMode'] | null; // QueryMode
+    not?: NexusGenInputs['NestedStringNullableFilter'] | null; // NestedStringNullableFilter
+    notIn?: string[] | null; // [String!]
+    startsWith?: string | null; // String
+  }
   UserOrderByInput: { // input type
     createdAt?: NexusGenEnums['SortOrder'] | null; // SortOrder
     email?: NexusGenEnums['SortOrder'] | null; // SortOrder
+    googleId?: NexusGenEnums['SortOrder'] | null; // SortOrder
     id?: NexusGenEnums['SortOrder'] | null; // SortOrder
     name?: NexusGenEnums['SortOrder'] | null; // SortOrder
     password?: NexusGenEnums['SortOrder'] | null; // SortOrder
@@ -149,14 +177,16 @@ export interface NexusGenInputs {
     comments?: NexusGenInputs['CommentListRelationFilter'] | null; // CommentListRelationFilter
     createdAt?: NexusGenInputs['DateTimeFilter'] | null; // DateTimeFilter
     email?: NexusGenInputs['StringFilter'] | null; // StringFilter
+    googleId?: NexusGenInputs['StringNullableFilter'] | null; // StringNullableFilter
     id?: NexusGenInputs['StringFilter'] | null; // StringFilter
     name?: NexusGenInputs['StringFilter'] | null; // StringFilter
-    password?: NexusGenInputs['StringFilter'] | null; // StringFilter
+    password?: NexusGenInputs['StringNullableFilter'] | null; // StringNullableFilter
     posts?: NexusGenInputs['PostListRelationFilter'] | null; // PostListRelationFilter
     updatedAt?: NexusGenInputs['DateTimeFilter'] | null; // DateTimeFilter
   }
   UserWhereUniqueInput: { // input type
     email?: string | null; // String
+    googleId?: string | null; // String
     id?: string | null; // String
   }
 }
@@ -202,6 +232,7 @@ export interface NexusGenObjects {
   Subscription: {};
   User: { // root type
     createdAt?: NexusGenScalars['DateTime'] | null; // DateTime
+    googleId?: string | null; // String
     id?: string | null; // String
     name?: string | null; // String
     updatedAt?: NexusGenScalars['DateTime'] | null; // DateTime
@@ -295,6 +326,7 @@ export interface NexusGenFieldTypes {
     comments: NexusGenRootTypes['Comment'][]; // [Comment!]!
     createdAt: NexusGenScalars['DateTime'] | null; // DateTime
     email: string | null; // String
+    googleId: string | null; // String
     id: string | null; // String
     name: string | null; // String
     password: string | null; // String
@@ -380,6 +412,7 @@ export interface NexusGenFieldTypeNames {
     comments: 'Comment'
     createdAt: 'DateTime'
     email: 'String'
+    googleId: 'String'
     id: 'String'
     name: 'String'
     password: 'String'

@@ -20,7 +20,8 @@ export const User = objectType({
         if (
           userId === _root.id ||
           operation === 'loginUser' ||
-          operation === 'createUser'
+          operation === 'createUser' ||
+          ctx.req.user !== undefined 
         ) {
           return res
         }
@@ -39,6 +40,7 @@ export const User = objectType({
         return null
       },
     })
+    t.model.googleId()
     t.model.createdAt()
     t.model.updatedAt()
     t.model.posts()

@@ -1,4 +1,5 @@
-import { Profile } from 'passport-google-oauth20';
+import { Profile } from 'passport-google-oauth20'
+import { User as PrismaUser } from '@prisma/client'
 
 declare global {
   namespace NodeJS {
@@ -13,7 +14,7 @@ declare global {
   }
 
   namespace Express {
-    interface User extends Profile {}
+    interface User extends PrismaUser {}
   }
 }
 

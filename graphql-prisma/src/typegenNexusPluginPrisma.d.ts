@@ -22,8 +22,8 @@ interface PrismaModels {
 interface NexusPrismaInputs {
   Query: {
     users: {
-      filtering: 'AND' | 'OR' | 'NOT' | 'id' | 'name' | 'password' | 'email' | 'createdAt' | 'updatedAt' | 'posts' | 'comments'
-      ordering: 'id' | 'name' | 'password' | 'email' | 'createdAt' | 'updatedAt'
+      filtering: 'AND' | 'OR' | 'NOT' | 'id' | 'name' | 'password' | 'email' | 'googleId' | 'createdAt' | 'updatedAt' | 'posts' | 'comments'
+      ordering: 'id' | 'name' | 'password' | 'email' | 'googleId' | 'createdAt' | 'updatedAt'
     }
     posts: {
       filtering: 'AND' | 'OR' | 'NOT' | 'id' | 'title' | 'body' | 'published' | 'createdAt' | 'updatedAt' | 'author' | 'userId' | 'comments'
@@ -90,6 +90,7 @@ interface NexusPrismaOutputs {
     name: 'String'
     password: 'String'
     email: 'String'
+    googleId: 'String'
     createdAt: 'DateTime'
     updatedAt: 'DateTime'
     posts: 'Post'

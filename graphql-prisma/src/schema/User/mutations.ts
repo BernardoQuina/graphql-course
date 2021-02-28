@@ -39,29 +39,6 @@ export const createUser = mutationField('createUser', {
   },
 })
 
-export const googleUser = mutationField('googleUser', {
-  type: 'AuthPayload',
-  async resolve(_root, _args, { prisma, req }) {
-    const userExists = await prisma.user.findUnique({
-      where: { email: req.user?.emails![0].value },
-    })
-    
-    console.log('prisma user: ', userExists)
-
-    if (userExists) {
-      return {
-        userExists,
-        token: generateToken(userExists.id)
-      }
-    }
-
-    return null
-
-
-    console.log('user: ', req.user?.photos![0].value)
-  },
-})
-
 export const loginUser = mutationField('loginUser', {
   type: 'AuthPayload',
   args: {
@@ -75,7 +52,7 @@ export const loginUser = mutationField('loginUser', {
       throw new Error('Invalid credentials.')
     }
 
-    const isMatch = await bcrypt.compare(password, userExists.password)
+    const isMatch = await bcrypt.compare(password, userExists.password!)
 
     if (!isMatch) {
       throw new Error('Invalid credentials.')
@@ -110,7 +87,7 @@ export const updateUser = mutationField('updateUser', {
       throw new Error('User not found')
     }
 
-    const isMatch = await bcrypt.compare(password, userExists.password)
+    const isMatch = await bcrypt.compare(password, userExists.password!)
 
     if (!isMatch) {
       throw new Error('Invalid credentials.')
@@ -172,7 +149,7 @@ export const deleteUser = mutationField('deleteUser', {
       throw new Error('User not found')
     }
 
-    const isMatch = await bcrypt.compare(password, userExists.password)
+    const isMatch = await bcrypt.compare(password, userExists.password!)
 
     if (!isMatch) {
       throw new Error('Invalid credentials')

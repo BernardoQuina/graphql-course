@@ -9,7 +9,8 @@ import { Strategy as GoogleStrategy } from 'passport-google-oauth20'
 
 import './util/passport'
 import { schema } from './schema/schema'
-import { createContext } from './context'
+import { createContext, prisma } from './context'
+
 dotenv.config()
 
 const main = async () => {
@@ -36,10 +37,12 @@ const main = async () => {
   app.use(passport.session())
 
   passport.serializeUser((user, done) => {
-    return done(null, user)
+    return done(null, user.id)
   })
 
-  passport.deserializeUser((user: any, done) => {
+  passport.deserializeUser(async (id: string, done) => {
+    const user = await prisma.user.findUnique({ where: { id } })
+
     return done(null, user)
   })
 
@@ -51,8 +54,24 @@ const main = async () => {
         callbackURL: '/auth/google/callback',
       },
       // Called on successful authentication
-      (_accessToken, _refreshToken, profile, cb) => {
-        cb(undefined, profile)
+      async (_accessToken, _refreshToken, profile, cb) => {
+        const userExists = await prisma.user.findUnique({
+          where: { googleId: profile.id },
+        })
+
+        if (!userExists) {
+          const newUser = await prisma.user.create({
+            data: {
+              name: profile.displayName,
+              email: profile.emails![0].value,
+              googleId: profile.id,
+            },
+          })
+
+          cb(undefined, newUser)
+        } else {
+          cb(undefined, userExists)
+        }
       }
     )
   )
@@ -64,10 +83,10 @@ const main = async () => {
 
   app.get(
     '/auth/google/callback',
-    passport.authenticate('google', { failureRedirect: '/login' }),
-    (_req, res) => {
-      res.redirect('http://localhost:3000')
-    }
+    passport.authenticate('google', {
+      failureRedirect: 'http://localhost:3000/login',
+      successRedirect: 'http://localhost:3000',
+    })
   )
 
   const apolloServer = new ApolloServer({
