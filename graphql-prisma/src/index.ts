@@ -4,6 +4,8 @@ import dotenv from 'dotenv'
 import cors from 'cors'
 import express from 'express'
 import session from 'express-session'
+import Redis from 'ioredis'
+import connectRedis from 'connect-redis'
 import passport from 'passport'
 import { Strategy as GoogleStrategy } from 'passport-google-oauth20'
 
@@ -15,6 +17,9 @@ dotenv.config()
 
 const main = async () => {
   const app = express()
+
+  const RedisStore = connectRedis(session)
+  const redis = new Redis(process.env.REDIS_URL)
 
   app.use(express.json())
 
@@ -29,6 +34,10 @@ const main = async () => {
 
   app.use(
     session({
+      store: new RedisStore({
+        client: redis,
+        disableTouch: true
+      }),
       secret: 'secretCode',
       resave: true,
       saveUninitialized: true,
