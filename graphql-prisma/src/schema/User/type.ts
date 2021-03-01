@@ -1,6 +1,6 @@
 import { User as UserDef } from '@prisma/client' // From prisma User model
 import { objectType } from 'nexus'
-import { getUserId } from '../../util/getUserId'
+import { isAuth } from '../../util/isAuth'
 
 export const User = objectType({
   name: 'User',
@@ -10,7 +10,7 @@ export const User = objectType({
     t.model.email({
       async resolve(_root: UserDef, args, ctx, info, originalResolver) {
         const res = await originalResolver(_root, args, ctx, info)
-        const userId = getUserId(ctx.req, false)
+        const userId = isAuth(ctx.req, false)
 
         // info.operation.selectionSet.selections[0].name.value
 
@@ -20,8 +20,7 @@ export const User = objectType({
         if (
           userId === _root.id ||
           operation === 'loginUser' ||
-          operation === 'createUser' ||
-          ctx.req.user !== undefined 
+          operation === 'createUser'
         ) {
           return res
         }
@@ -32,7 +31,7 @@ export const User = objectType({
       description: 'Only logged in user can query it but its hashed anyway',
       async resolve(_root: UserDef, args, ctx, info, originalResolver) {
         const res = await originalResolver(_root, args, ctx, info)
-        const userId = getUserId(ctx.req, false)
+        const userId = isAuth(ctx.req, false)
 
         if (userId === _root.id) {
           return res

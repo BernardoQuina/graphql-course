@@ -1,5 +1,5 @@
 import { queryField } from 'nexus'
-import { getUserId } from '../../util/getUserId'
+import { isAuth } from '../../util/isAuth'
 
 export const userQueries = queryField((t) => {
   t.crud.user({
@@ -24,15 +24,11 @@ export const userQueries = queryField((t) => {
   t.field('me', {
     type: 'User',
     resolve(_root, _args, { prisma, req }) {
-      const userId = getUserId(req, false)
+      console.log('user before meQuery: ', req.user)
 
-      if (userId === undefined) {
-        console.log('user before meQuery: ', req.user)
-        if (req.user) {
-          return prisma.user.findUnique({ where: { id: req.user.id } })
-        }
-        return null
-      }
+      const userId = isAuth(req, false)
+
+      if (!req.user) return null
 
       return prisma.user.findUnique({ where: { id: userId } })
     },

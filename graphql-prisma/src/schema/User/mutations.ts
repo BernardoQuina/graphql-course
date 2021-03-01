@@ -1,6 +1,6 @@
 import { mutationField, nonNull, stringArg } from 'nexus'
 import bcrypt from 'bcryptjs'
-import { getUserId } from '../../util/getUserId'
+import { isAuth } from '../../util/isAuth'
 import { generateToken } from '../../util/generateToken'
 
 export const createUser = mutationField('createUser', {
@@ -101,7 +101,7 @@ export const updateUser = mutationField('updateUser', {
     { password, updateName, updateEmail, updatePassword, confirmNewPassword },
     { prisma, pubsub, req }
   ) {
-    const userId = getUserId(req)
+    const userId = isAuth(req)
 
     const userExists = await prisma.user.findUnique({ where: { id: userId } })
 
@@ -163,7 +163,7 @@ export const deleteUser = mutationField('deleteUser', {
     password: nonNull(stringArg()),
   },
   async resolve(_root, { password }, { prisma, pubsub, req }) {
-    const userId = getUserId(req)
+    const userId = isAuth(req)
 
     const userExists = await prisma.user.findUnique({ where: { id: userId } })
 

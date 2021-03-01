@@ -1,6 +1,6 @@
 import { Post } from '@prisma/client'
 import { idArg, nonNull, objectType, subscriptionField } from 'nexus'
-import { getUserId } from '../../util/getUserId'
+import { isAuth } from '../../util/isAuth'
 
 export const postSubResponse = objectType({
   name: 'postSubResponse',
@@ -55,7 +55,9 @@ export const postSub = subscriptionField('postSub', {
 export const myPostSub = subscriptionField('myPostSub', {
   type: 'postSubResponse',
   async subscribe(_root, _args, { pubsub, connection }) {
-    const userId = getUserId(connection)
+    // This wont work
+    const userId = isAuth(connection as any) 
+    // Still have to figure out how to pass the user via ws connection
 
     return pubsub.asyncIterator(`post from user ${userId}`)
   },

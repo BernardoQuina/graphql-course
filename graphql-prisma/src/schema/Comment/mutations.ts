@@ -1,5 +1,5 @@
 import { mutationField, nonNull, stringArg } from 'nexus'
-import { getUserId } from '../../util/getUserId'
+import { isAuth } from '../../util/isAuth'
 import { pubsubPublishMany } from '../../util/pubsubMany'
 
 export const createComment = mutationField('createComment', {
@@ -11,7 +11,7 @@ export const createComment = mutationField('createComment', {
   async resolve(_root, { postId, text }, { prisma, pubsub, req }) {
     const postExists = await prisma.post.findUnique({ where: { id: postId } })
 
-    const userId = getUserId(req)
+    const userId = isAuth(req)
 
     if (
       !postExists ||
@@ -53,7 +53,7 @@ export const updateComment = mutationField('updateComment', {
       throw new Error('Comment not found')
     }
 
-    const userId = getUserId(req)
+    const userId = isAuth(req)
 
     if (userId !== commentExists.userId) {
       throw new Error('Invalid credentials.')
@@ -90,7 +90,7 @@ export const deleteComment = mutationField('deleteComment', {
       throw new Error('Comment not found.')
     }
 
-    const userId = getUserId(req)
+    const userId = isAuth(req)
 
     if (userId !== commentExists.userId) {
       throw new Error('Invalid credentials.')

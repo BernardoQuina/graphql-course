@@ -1,11 +1,11 @@
 import { Post } from '@prisma/client'
 import { intArg, list, nonNull, queryField } from 'nexus'
-import { getUserId } from '../../util/getUserId'
+import { isAuth } from '../../util/isAuth'
 
 export const postQueries = queryField((t) => {
   t.crud.post({
     async resolve(_root, { where: { id } }, { prisma, req }, _info) {
-      const userId = getUserId(req, false)
+      const userId = isAuth(req, false)
 
       if (!id) {
         throw new Error('Please provide a post id.')
@@ -32,7 +32,7 @@ export const postQueries = queryField((t) => {
     async resolve(_root, _args, ctx, _info, originalResolver) {
       const posts = await (<Post[]>originalResolver(_root, _args, ctx, _info))
 
-      const userId = getUserId(ctx.req, false)
+      const userId = isAuth(ctx.req, false)
 
       const filteredPosts = posts.filter((post) => {
         return post.userId === userId || post.published
@@ -60,7 +60,7 @@ export const postQueries = queryField((t) => {
       skip: nonNull(intArg()),
     },
     async resolve(_root, { take, skip }, { prisma, req }) {
-      const userId = getUserId(req, true)
+      const userId = isAuth(req, true)
 
       const myPosts = await prisma.post.findMany({
         where: { userId },
