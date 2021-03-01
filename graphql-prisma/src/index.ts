@@ -25,11 +25,18 @@ const main = async () => {
     })
   )
 
+  app.set('trust proxy', 1)
+
   app.use(
     session({
       secret: 'secretCode',
       resave: true,
       saveUninitialized: true,
+      cookie: {
+        sameSite: 'lax',
+        secure: process.env.NODE_ENV === 'production',
+        maxAge: 1000 * 60 * 60 * 24 * 7 // One Week
+      }
     })
   )
 
@@ -56,7 +63,7 @@ const main = async () => {
       // Called on successful authentication
       async (_accessToken, _refreshToken, profile, cb) => {
         const userExists = await prisma.user.findUnique({
-          where: { googleId: profile.id },
+          where: { email: profile.emails![0].value },
         })
 
         if (!userExists) {
@@ -84,8 +91,8 @@ const main = async () => {
   app.get(
     '/auth/google/callback',
     passport.authenticate('google', {
-      failureRedirect: 'http://localhost:3000/login',
-      successRedirect: 'http://localhost:3000',
+      failureRedirect: `${process.env.ORIGIN}/login`,
+      successRedirect: process.env.ORIGIN,
     })
   )
 
