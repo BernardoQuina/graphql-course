@@ -27,7 +27,7 @@ export const userQueries = queryField((t) => {
       const userId = getUserId(req, false)
 
       if (userId === undefined) {
-        console.log(req.user)
+        console.log('user before meQuery: ', req.user)
         if (req.user) {
           return prisma.user.findUnique({ where: { id: req.user.id } })
         }

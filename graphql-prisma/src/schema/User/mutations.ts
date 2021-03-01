@@ -65,6 +65,18 @@ export const loginUser = mutationField('loginUser', {
   },
 })
 
+// oAuth logout
+export const logoutUser = mutationField('logoutUser', {
+  type: 'Boolean',
+  async resolve(_root, _args, { req }) {
+    if (req.user) {
+      req.logOut()
+      return true
+    }
+    return true
+  }
+})
+
 export const updateUser = mutationField('updateUser', {
   type: 'User',
   args: {

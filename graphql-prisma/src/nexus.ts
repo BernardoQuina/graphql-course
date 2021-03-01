@@ -284,6 +284,7 @@ export interface NexusGenFieldTypes {
     deletePost: NexusGenRootTypes['Post'] | null; // Post
     deleteUser: NexusGenRootTypes['User'] | null; // User
     loginUser: NexusGenRootTypes['AuthPayload'] | null; // AuthPayload
+    logoutUser: boolean | null; // Boolean
     updateComment: NexusGenRootTypes['Comment'] | null; // Comment
     updatePost: NexusGenRootTypes['Post'] | null; // Post
     updateUser: NexusGenRootTypes['User'] | null; // User
@@ -370,6 +371,7 @@ export interface NexusGenFieldTypeNames {
     deletePost: 'Post'
     deleteUser: 'User'
     loginUser: 'AuthPayload'
+    logoutUser: 'Boolean'
     updateComment: 'Comment'
     updatePost: 'Post'
     updateUser: 'User'
