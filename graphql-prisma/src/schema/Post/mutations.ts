@@ -1,6 +1,6 @@
 import { mutationField, nonNull, stringArg, booleanArg } from 'nexus'
 import { pubsubPublishMany } from '../../util/pubsubMany'
-import { getUserId } from '../../util/getUserId'
+import { isAuth } from '../../util/isAuth'
 
 export const createPost = mutationField('createPost', {
   type: 'Post',
@@ -14,7 +14,7 @@ export const createPost = mutationField('createPost', {
     { title, body, published },
     { prisma, pubsub, req }
   ) {
-    const userId = getUserId(req)
+    const userId = isAuth(req)
 
     const createdPost = await prisma.post.create({
       data: {
@@ -52,7 +52,7 @@ export const updatePost = mutationField('updatePost', {
     { whereId, updateTitle, updateBody, updatePublished },
     { prisma, pubsub, req }
   ) {
-    const userId = getUserId(req)
+    const userId = isAuth(req)
 
     const postExists = await prisma.post.findUnique({ where: { id: whereId } })
 
@@ -107,7 +107,7 @@ export const deletePost = mutationField('deletePost', {
     id: nonNull(stringArg()),
   },
   async resolve(_root, { id }, { prisma, pubsub, req }) {
-    const userId = getUserId(req)
+    const userId = isAuth(req)
 
     const postExists = await prisma.post.findUnique({ where: { id } })
 
