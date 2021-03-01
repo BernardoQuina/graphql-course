@@ -68,13 +68,23 @@ export const loginUser = mutationField('loginUser', {
 // oAuth logout
 export const logoutUser = mutationField('logoutUser', {
   type: 'Boolean',
-  async resolve(_root, _args, { req }) {
+  async resolve(_root, _args, { req, res }) {
     if (req.user) {
       req.logOut()
-      return true
+      return new Promise((resolve) =>
+        req.session.destroy((err) => {
+          res.clearCookie(',', { path: '/' })
+          if (err) {
+            console.log(err)
+            resolve(false)
+            return
+          }
+          resolve(true)
+        })
+      )
     }
     return true
-  }
+  },
 })
 
 export const updateUser = mutationField('updateUser', {
