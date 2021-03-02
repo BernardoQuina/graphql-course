@@ -1,6 +1,7 @@
 import { PrismaClient } from '@prisma/client'
 import { PubSub } from 'apollo-server-express'
 import { Request, Response } from 'express'
+import { Session, SessionData } from 'express-session'
 import Redis from 'ioredis'
 
 // Type-safe database client for TypeScript & Node.js (ORM replacement)
@@ -12,7 +13,7 @@ export type Context = {
   redis: Redis.Redis
   prisma: PrismaClient
   pubsub: PubSub
-  req: Request,
+  req: Request & { session: Session & Partial<SessionData> & { userId?: string } },
   res: Response,
   connection: { context: { Authorization?: string } }
 }

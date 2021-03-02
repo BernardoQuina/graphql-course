@@ -11,7 +11,7 @@ export const createUser = mutationField('createUser', {
     password: nonNull(stringArg()),
     confirmPassword: nonNull(stringArg()),
   },
-  async resolve(_root, { name, email, password, confirmPassword }, { prisma }) {
+  async resolve(_root, { name, email, password, confirmPassword }, { prisma, req }) {
     if (password.length < 8) {
       throw new Error('Password must be 8 characters or longer.')
     }
@@ -31,6 +31,8 @@ export const createUser = mutationField('createUser', {
     const newUser = await prisma.user.create({
       data: { name, email, password: hashedPassword },
     })
+    
+    req.session.userId = newUser.id
 
     return {
       user: newUser,
@@ -45,7 +47,7 @@ export const loginUser = mutationField('loginUser', {
     email: nonNull(stringArg()),
     password: nonNull(stringArg()),
   },
-  async resolve(_root, { email, password }, { prisma }) {
+  async resolve(_root, { email, password }, { prisma, req }) {
     const userExists = await prisma.user.findUnique({ where: { email } })
 
     if (!userExists) {
@@ -58,6 +60,8 @@ export const loginUser = mutationField('loginUser', {
       throw new Error('Invalid credentials.')
     }
 
+    req.session.userId = userExists.id
+
     return {
       user: userExists,
       token: generateToken(userExists.id),
@@ -68,12 +72,11 @@ export const loginUser = mutationField('loginUser', {
 // oAuth logout
 export const logoutUser = mutationField('logoutUser', {
   type: 'Boolean',
-  async resolve(_root, _args, { req, res }) {
-    if (req.user) {
+  async resolve(_root, _args, { req }) {
+    if (req.user || req.session.userId) {
       req.logOut()
       return new Promise((resolve) =>
         req.session.destroy((err) => {
-          res.clearCookie(',', { path: '/' })
           if (err) {
             console.log(err)
             resolve(false)

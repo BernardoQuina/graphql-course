@@ -25,10 +25,12 @@ export const userQueries = queryField((t) => {
     type: 'User',
     resolve(_root, _args, { prisma, req }) {
       console.log('user before meQuery: ', req.user)
-
+      console.log('session id', req.session.id)
+      console.log('user id', req.session.userId)
+      
       const userId = isAuth(req, false)
 
-      if (!req.user) return null
+      if (!req.user && !req.session.userId) return null
 
       return prisma.user.findUnique({ where: { id: userId } })
     },

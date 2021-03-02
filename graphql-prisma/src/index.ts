@@ -38,13 +38,13 @@ const main = async () => {
         client: redis,
         disableTouch: true
       }),
-      secret: 'secretCode',
+      secret: process.env.SESSION_SECRET,
       resave: true,
       saveUninitialized: true,
       cookie: {
         sameSite: 'lax',
         secure: process.env.NODE_ENV === 'production',
-        maxAge: 1000 * 60 * 60 * 24 * 7 // One Week
+        maxAge: 1000 * 60 * 60 * 24 * 7 // One Week,
       }
     })
   )
