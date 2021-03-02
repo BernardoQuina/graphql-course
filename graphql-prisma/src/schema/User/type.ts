@@ -47,11 +47,3 @@ export const User = objectType({
     t.model.comments()
   },
 })
-
-export const AuthPayload = objectType({
-  name: 'AuthPayload',
-  definition(t) {
-    t.field('user', { type: 'User' })
-    t.field('token', { type: 'String' })
-  },
-})

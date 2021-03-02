@@ -208,10 +208,6 @@ export interface NexusGenScalars {
 }
 
 export interface NexusGenObjects {
-  AuthPayload: { // root type
-    token?: string | null; // String
-    user?: NexusGenRootTypes['User'] | null; // User
-  }
   Comment: { // root type
     createdAt?: NexusGenScalars['DateTime'] | null; // DateTime
     id?: string | null; // String
@@ -265,10 +261,6 @@ export type NexusGenRootTypes = NexusGenObjects
 export type NexusGenAllTypes = NexusGenRootTypes & NexusGenScalars & NexusGenEnums
 
 export interface NexusGenFieldTypes {
-  AuthPayload: { // field return type
-    token: string | null; // String
-    user: NexusGenRootTypes['User'] | null; // User
-  }
   Comment: { // field return type
     author: NexusGenRootTypes['User'] | null; // User
     createdAt: NexusGenScalars['DateTime'] | null; // DateTime
@@ -282,11 +274,11 @@ export interface NexusGenFieldTypes {
   Mutation: { // field return type
     createComment: NexusGenRootTypes['Comment'] | null; // Comment
     createPost: NexusGenRootTypes['Post'] | null; // Post
-    createUser: NexusGenRootTypes['AuthPayload'] | null; // AuthPayload
+    createUser: NexusGenRootTypes['User'] | null; // User
     deleteComment: NexusGenRootTypes['Comment'] | null; // Comment
     deletePost: NexusGenRootTypes['Post'] | null; // Post
     deleteUser: NexusGenRootTypes['User'] | null; // User
-    loginUser: NexusGenRootTypes['AuthPayload'] | null; // AuthPayload
+    loginUser: NexusGenRootTypes['User'] | null; // User
     logoutUser: boolean | null; // Boolean
     updateComment: NexusGenRootTypes['Comment'] | null; // Comment
     updatePost: NexusGenRootTypes['Post'] | null; // Post
@@ -353,10 +345,6 @@ export interface NexusGenFieldTypes {
 }
 
 export interface NexusGenFieldTypeNames {
-  AuthPayload: { // field return type name
-    token: 'String'
-    user: 'User'
-  }
   Comment: { // field return type name
     author: 'User'
     createdAt: 'DateTime'
@@ -370,11 +358,11 @@ export interface NexusGenFieldTypeNames {
   Mutation: { // field return type name
     createComment: 'Comment'
     createPost: 'Post'
-    createUser: 'AuthPayload'
+    createUser: 'User'
     deleteComment: 'Comment'
     deletePost: 'Post'
     deleteUser: 'User'
-    loginUser: 'AuthPayload'
+    loginUser: 'User'
     logoutUser: 'Boolean'
     updateComment: 'Comment'
     updatePost: 'Post'

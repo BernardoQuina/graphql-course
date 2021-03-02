@@ -1,10 +1,9 @@
 import { mutationField, nonNull, stringArg } from 'nexus'
 import bcrypt from 'bcryptjs'
 import { isAuth } from '../../util/isAuth'
-import { generateToken } from '../../util/generateToken'
 
 export const createUser = mutationField('createUser', {
-  type: 'AuthPayload',
+  type: 'User',
   args: {
     name: nonNull(stringArg()),
     email: nonNull(stringArg()),
@@ -34,15 +33,12 @@ export const createUser = mutationField('createUser', {
     
     req.session.userId = newUser.id
 
-    return {
-      user: newUser,
-      token: generateToken(newUser.id),
-    }
+    return newUser
   },
 })
 
 export const loginUser = mutationField('loginUser', {
-  type: 'AuthPayload',
+  type: 'User',
   args: {
     email: nonNull(stringArg()),
     password: nonNull(stringArg()),
@@ -62,10 +58,7 @@ export const loginUser = mutationField('loginUser', {
 
     req.session.userId = userExists.id
 
-    return {
-      user: userExists,
-      token: generateToken(userExists.id),
-    }
+    return userExists
   },
 })
 
