@@ -249,6 +249,7 @@ type User {
 
   """Only logged in user can query it but its hashed anyway"""
   password: String
+  photo: String
   posts(cursor: PostWhereUniqueInput, skip: Int, take: Int): [Post!]!
   updatedAt: DateTime
 }
@@ -260,6 +261,7 @@ input UserOrderByInput {
   id: SortOrder
   name: SortOrder
   password: SortOrder
+  photo: SortOrder
   updatedAt: SortOrder
 }
 
@@ -274,6 +276,7 @@ input UserWhereInput {
   id: StringFilter
   name: StringFilter
   password: StringNullableFilter
+  photo: StringNullableFilter
   posts: PostListRelationFilter
   updatedAt: DateTimeFilter
 }

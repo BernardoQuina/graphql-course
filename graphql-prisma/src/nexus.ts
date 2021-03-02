@@ -168,6 +168,7 @@ export interface NexusGenInputs {
     id?: NexusGenEnums['SortOrder'] | null; // SortOrder
     name?: NexusGenEnums['SortOrder'] | null; // SortOrder
     password?: NexusGenEnums['SortOrder'] | null; // SortOrder
+    photo?: NexusGenEnums['SortOrder'] | null; // SortOrder
     updatedAt?: NexusGenEnums['SortOrder'] | null; // SortOrder
   }
   UserWhereInput: { // input type
@@ -181,6 +182,7 @@ export interface NexusGenInputs {
     id?: NexusGenInputs['StringFilter'] | null; // StringFilter
     name?: NexusGenInputs['StringFilter'] | null; // StringFilter
     password?: NexusGenInputs['StringNullableFilter'] | null; // StringNullableFilter
+    photo?: NexusGenInputs['StringNullableFilter'] | null; // StringNullableFilter
     posts?: NexusGenInputs['PostListRelationFilter'] | null; // PostListRelationFilter
     updatedAt?: NexusGenInputs['DateTimeFilter'] | null; // DateTimeFilter
   }
@@ -235,6 +237,7 @@ export interface NexusGenObjects {
     googleId?: string | null; // String
     id?: string | null; // String
     name?: string | null; // String
+    photo?: string | null; // String
     updatedAt?: NexusGenScalars['DateTime'] | null; // DateTime
   }
   commentSubResponse: { // root type
@@ -331,6 +334,7 @@ export interface NexusGenFieldTypes {
     id: string | null; // String
     name: string | null; // String
     password: string | null; // String
+    photo: string | null; // String
     posts: NexusGenRootTypes['Post'][]; // [Post!]!
     updatedAt: NexusGenScalars['DateTime'] | null; // DateTime
   }
@@ -418,6 +422,7 @@ export interface NexusGenFieldTypeNames {
     id: 'String'
     name: 'String'
     password: 'String'
+    photo: 'String'
     posts: 'Post'
     updatedAt: 'DateTime'
   }

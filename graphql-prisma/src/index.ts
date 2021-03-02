@@ -75,12 +75,15 @@ const main = async () => {
           where: { email: profile.emails![0].value },
         })
 
+        console.log('google profile: ', profile.photos![0].value)
+
         if (!userExists) {
           const newUser = await prisma.user.create({
             data: {
               name: profile.displayName,
               email: profile.emails![0].value,
               googleId: profile.id,
+              photo: profile.photos![0].value
             },
           })
 
