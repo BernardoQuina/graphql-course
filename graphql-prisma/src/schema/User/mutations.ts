@@ -46,11 +46,11 @@ export const loginUser = mutationField('loginUser', {
   async resolve(_root, { email, password }, { prisma, req }) {
     const userExists = await prisma.user.findUnique({ where: { email } })
 
-    if (!userExists) {
+    if (!userExists || !userExists.password) {
       throw new Error('Invalid credentials.')
     }
 
-    const isMatch = await bcrypt.compare(password, userExists.password!)
+    const isMatch = await bcrypt.compare(password, userExists.password)
 
     if (!isMatch) {
       throw new Error('Invalid credentials.')

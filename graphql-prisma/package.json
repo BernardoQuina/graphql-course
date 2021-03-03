@@ -28,6 +28,7 @@
     "nexus-plugin-prisma": "^0.28.0",
     "node-fetch": "^2.6.1",
     "passport": "^0.4.1",
+    "passport-facebook": "^3.0.0",
     "passport-google-oauth20": "^2.0.0",
     "typescript": "^4.1.3"
   },
@@ -41,6 +42,7 @@
     "@types/ioredis": "^4.22.0",
     "@types/node": "^14.14.22",
     "@types/passport": "^1.0.6",
+    "@types/passport-facebook": "^2.1.10",
     "@types/passport-google-oauth20": "^2.0.6",
     "@types/redis": "^2.8.28",
     "nodemon": "^2.0.7"

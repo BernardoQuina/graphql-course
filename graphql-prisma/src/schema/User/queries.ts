@@ -24,10 +24,6 @@ export const userQueries = queryField((t) => {
   t.field('me', {
     type: 'User',
     resolve(_root, _args, { prisma, req }) {
-      console.log('user before meQuery: ', req.user)
-      console.log('session id', req.session.id)
-      console.log('user id', req.session.userId)
-      
       const userId = isAuth(req, false)
 
       if (!req.user && !req.session.userId) return null

@@ -1,4 +1,4 @@
-import { Profile } from 'passport-google-oauth20'
+import { Profile } from 'passport-FACEBOOK-oauth20'
 import { User as PrismaUser } from '@prisma/client'
 
 declare global {
@@ -11,6 +11,8 @@ declare global {
       ORIGIN: string
       GOOGLE_CLIENT_ID: string
       GOOGLE_CLIENT_SECRET: string
+      FACEBOOK_CLIENT_ID: string
+      FACEBOOK_CLIENT_SECRET: string
       REDIS_URL: string
     }
   }
