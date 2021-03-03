@@ -99,9 +99,13 @@ const main = async () => {
         clientID: process.env.FACEBOOK_CLIENT_ID,
         clientSecret: process.env.FACEBOOK_CLIENT_SECRET,
         callbackURL: '/auth/facebook/callback',
+        profileFields: ['id', 'email', 'displayName', 'photos']
       },
       // Called on successful authentication
       async (_accessToken, _refreshToken, profile, cb) => {
+
+        console.log('facebook profile: ', profile)
+
         const userExists = await prisma.user.findUnique({
           where: { email: profile.emails![0].value },
         })
@@ -111,6 +115,7 @@ const main = async () => {
             data: {
               name: profile.displayName,
               email: profile.emails![0].value,
+              facebookId: profile.id,
               photo: profile.photos![0].value,
             },
           })
@@ -138,7 +143,7 @@ const main = async () => {
 
   app.get(
     '/auth/facebook',
-    passport.authenticate('facebook', { scope: ['profile', 'email'] })
+    passport.authenticate('facebook', { scope: ['public_profile', 'email'] })
   )
 
   app.get(

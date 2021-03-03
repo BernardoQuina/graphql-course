@@ -238,6 +238,7 @@ type User {
   comments(cursor: CommentWhereUniqueInput, skip: Int, take: Int): [Comment!]!
   createdAt: DateTime
   email: String
+  facebookId: String
   googleId: String
   id: String
   name: String
@@ -252,6 +253,7 @@ type User {
 input UserOrderByInput {
   createdAt: SortOrder
   email: SortOrder
+  facebookId: SortOrder
   googleId: SortOrder
   id: SortOrder
   name: SortOrder
@@ -267,6 +269,7 @@ input UserWhereInput {
   comments: CommentListRelationFilter
   createdAt: DateTimeFilter
   email: StringFilter
+  facebookId: StringNullableFilter
   googleId: StringNullableFilter
   id: StringFilter
   name: StringFilter
@@ -278,6 +281,7 @@ input UserWhereInput {
 
 input UserWhereUniqueInput {
   email: String
+  facebookId: String
   googleId: String
   id: String
 }

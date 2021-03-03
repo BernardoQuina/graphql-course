@@ -40,6 +40,7 @@ export const User = objectType({
       },
     })
     t.model.googleId()
+    t.model.facebookId()
     t.model.photo()
     t.model.createdAt()
     t.model.updatedAt()

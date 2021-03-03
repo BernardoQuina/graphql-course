@@ -164,6 +164,7 @@ export interface NexusGenInputs {
   UserOrderByInput: { // input type
     createdAt?: NexusGenEnums['SortOrder'] | null; // SortOrder
     email?: NexusGenEnums['SortOrder'] | null; // SortOrder
+    facebookId?: NexusGenEnums['SortOrder'] | null; // SortOrder
     googleId?: NexusGenEnums['SortOrder'] | null; // SortOrder
     id?: NexusGenEnums['SortOrder'] | null; // SortOrder
     name?: NexusGenEnums['SortOrder'] | null; // SortOrder
@@ -178,6 +179,7 @@ export interface NexusGenInputs {
     comments?: NexusGenInputs['CommentListRelationFilter'] | null; // CommentListRelationFilter
     createdAt?: NexusGenInputs['DateTimeFilter'] | null; // DateTimeFilter
     email?: NexusGenInputs['StringFilter'] | null; // StringFilter
+    facebookId?: NexusGenInputs['StringNullableFilter'] | null; // StringNullableFilter
     googleId?: NexusGenInputs['StringNullableFilter'] | null; // StringNullableFilter
     id?: NexusGenInputs['StringFilter'] | null; // StringFilter
     name?: NexusGenInputs['StringFilter'] | null; // StringFilter
@@ -188,6 +190,7 @@ export interface NexusGenInputs {
   }
   UserWhereUniqueInput: { // input type
     email?: string | null; // String
+    facebookId?: string | null; // String
     googleId?: string | null; // String
     id?: string | null; // String
   }
@@ -230,6 +233,7 @@ export interface NexusGenObjects {
   Subscription: {};
   User: { // root type
     createdAt?: NexusGenScalars['DateTime'] | null; // DateTime
+    facebookId?: string | null; // String
     googleId?: string | null; // String
     id?: string | null; // String
     name?: string | null; // String
@@ -322,6 +326,7 @@ export interface NexusGenFieldTypes {
     comments: NexusGenRootTypes['Comment'][]; // [Comment!]!
     createdAt: NexusGenScalars['DateTime'] | null; // DateTime
     email: string | null; // String
+    facebookId: string | null; // String
     googleId: string | null; // String
     id: string | null; // String
     name: string | null; // String
@@ -406,6 +411,7 @@ export interface NexusGenFieldTypeNames {
     comments: 'Comment'
     createdAt: 'DateTime'
     email: 'String'
+    facebookId: 'String'
     googleId: 'String'
     id: 'String'
     name: 'String'
