@@ -6,7 +6,7 @@ import Redis from 'ioredis'
 
 // Type-safe database client for TypeScript & Node.js (ORM replacement)
 export const prisma = new PrismaClient({ log: ['query'] })
-const redis = new Redis(process.env.REDIS_URL)
+export const redis = new Redis(process.env.REDIS_URL)
 const pubsub = new PubSub()
 
 export type Context = {
