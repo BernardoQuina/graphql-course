@@ -458,7 +458,7 @@ export interface NexusGenArgTypes {
       id: string; // String!
     }
     deleteUser: { // args
-      password: string; // String!
+      password?: string | null; // String
     }
     loginUser: { // args
       email: string; // String!

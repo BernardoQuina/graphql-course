@@ -10,7 +10,11 @@ export const createUser = mutationField('createUser', {
     password: nonNull(stringArg()),
     confirmPassword: nonNull(stringArg()),
   },
-  async resolve(_root, { name, email, password, confirmPassword }, { prisma, req }) {
+  async resolve(
+    _root,
+    { name, email, password, confirmPassword },
+    { prisma, req }
+  ) {
     if (password.length < 8) {
       throw new Error('Password must be 8 characters or longer.')
     }
@@ -30,7 +34,7 @@ export const createUser = mutationField('createUser', {
     const newUser = await prisma.user.create({
       data: { name, email, password: hashedPassword },
     })
-    
+
     req.session.userId = newUser.id
 
     return newUser
@@ -156,7 +160,7 @@ export const updateUser = mutationField('updateUser', {
 export const deleteUser = mutationField('deleteUser', {
   type: 'User',
   args: {
-    password: nonNull(stringArg()),
+    password: stringArg(),
   },
   async resolve(_root, { password }, { prisma, pubsub, req }) {
     const userId = isAuth(req)
@@ -167,10 +171,16 @@ export const deleteUser = mutationField('deleteUser', {
       throw new Error('User not found')
     }
 
-    const isMatch = await bcrypt.compare(password, userExists.password!)
+    if (!userExists.googleId && !userExists.facebookId) {
+      if (!password) {
+        throw new Error('Invalid credentials.')
+      }
 
-    if (!isMatch) {
-      throw new Error('Invalid credentials')
+      const isMatch = await bcrypt.compare(password, userExists.password!)
+
+      if (!isMatch) {
+        throw new Error('Invalid credentials')
+      }
     }
 
     await prisma.comment.deleteMany({ where: { userId } })
