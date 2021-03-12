@@ -26,8 +26,8 @@ interface NexusPrismaInputs {
       ordering: 'id' | 'name' | 'password' | 'email' | 'googleId' | 'facebookId' | 'photo' | 'createdAt' | 'updatedAt'
     }
     posts: {
-      filtering: 'AND' | 'OR' | 'NOT' | 'id' | 'title' | 'body' | 'published' | 'createdAt' | 'updatedAt' | 'author' | 'userId' | 'comments'
-      ordering: 'id' | 'title' | 'body' | 'published' | 'createdAt' | 'updatedAt' | 'userId'
+      filtering: 'AND' | 'OR' | 'NOT' | 'id' | 'title' | 'body' | 'images' | 'published' | 'createdAt' | 'updatedAt' | 'author' | 'userId' | 'comments'
+      ordering: 'id' | 'title' | 'body' | 'images' | 'published' | 'createdAt' | 'updatedAt' | 'userId'
     }
     comments: {
       filtering: 'AND' | 'OR' | 'NOT' | 'id' | 'text' | 'createdAt' | 'updatedAt' | 'author' | 'userId' | 'post' | 'postId'
@@ -36,8 +36,8 @@ interface NexusPrismaInputs {
   },
   User: {
     posts: {
-      filtering: 'AND' | 'OR' | 'NOT' | 'id' | 'title' | 'body' | 'published' | 'createdAt' | 'updatedAt' | 'author' | 'userId' | 'comments'
-      ordering: 'id' | 'title' | 'body' | 'published' | 'createdAt' | 'updatedAt' | 'userId'
+      filtering: 'AND' | 'OR' | 'NOT' | 'id' | 'title' | 'body' | 'images' | 'published' | 'createdAt' | 'updatedAt' | 'author' | 'userId' | 'comments'
+      ordering: 'id' | 'title' | 'body' | 'images' | 'published' | 'createdAt' | 'updatedAt' | 'userId'
     }
     comments: {
       filtering: 'AND' | 'OR' | 'NOT' | 'id' | 'text' | 'createdAt' | 'updatedAt' | 'author' | 'userId' | 'post' | 'postId'
@@ -102,6 +102,7 @@ interface NexusPrismaOutputs {
     id: 'String'
     title: 'String'
     body: 'String'
+    images: 'String'
     published: 'Boolean'
     createdAt: 'DateTime'
     updatedAt: 'DateTime'

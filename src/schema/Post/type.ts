@@ -6,6 +6,7 @@ export const Post = objectType({
     t.model.id()
     t.model.title()
     t.model.body()
+    t.model.images()
     t.model.published()
     t.model.createdAt()
     t.model.updatedAt()

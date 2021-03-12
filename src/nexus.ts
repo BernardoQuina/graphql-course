@@ -111,6 +111,7 @@ export interface NexusGenInputs {
     body?: NexusGenEnums['SortOrder'] | null; // SortOrder
     createdAt?: NexusGenEnums['SortOrder'] | null; // SortOrder
     id?: NexusGenEnums['SortOrder'] | null; // SortOrder
+    images?: NexusGenEnums['SortOrder'] | null; // SortOrder
     published?: NexusGenEnums['SortOrder'] | null; // SortOrder
     title?: NexusGenEnums['SortOrder'] | null; // SortOrder
     updatedAt?: NexusGenEnums['SortOrder'] | null; // SortOrder
@@ -125,6 +126,7 @@ export interface NexusGenInputs {
     comments?: NexusGenInputs['CommentListRelationFilter'] | null; // CommentListRelationFilter
     createdAt?: NexusGenInputs['DateTimeFilter'] | null; // DateTimeFilter
     id?: NexusGenInputs['StringFilter'] | null; // StringFilter
+    images?: NexusGenInputs['StringNullableListFilter'] | null; // StringNullableListFilter
     published?: NexusGenInputs['BoolFilter'] | null; // BoolFilter
     title?: NexusGenInputs['StringFilter'] | null; // StringFilter
     updatedAt?: NexusGenInputs['DateTimeFilter'] | null; // DateTimeFilter
@@ -160,6 +162,13 @@ export interface NexusGenInputs {
     not?: NexusGenInputs['NestedStringNullableFilter'] | null; // NestedStringNullableFilter
     notIn?: string[] | null; // [String!]
     startsWith?: string | null; // String
+  }
+  StringNullableListFilter: { // input type
+    equals?: string[] | null; // [String!]
+    has?: string | null; // String
+    hasEvery?: string[] | null; // [String!]
+    hasSome?: string[] | null; // [String!]
+    isEmpty?: boolean | null; // Boolean
   }
   UserOrderByInput: { // input type
     createdAt?: NexusGenEnums['SortOrder'] | null; // SortOrder
@@ -224,6 +233,7 @@ export interface NexusGenObjects {
     body?: string | null; // String
     createdAt?: NexusGenScalars['DateTime'] | null; // DateTime
     id?: string | null; // String
+    images: string[]; // [String!]!
     published?: boolean | null; // Boolean
     title?: string | null; // String
     updatedAt?: NexusGenScalars['DateTime'] | null; // DateTime
@@ -294,6 +304,7 @@ export interface NexusGenFieldTypes {
     comments: NexusGenRootTypes['Comment'][]; // [Comment!]!
     createdAt: NexusGenScalars['DateTime'] | null; // DateTime
     id: string | null; // String
+    images: string[]; // [String!]!
     published: boolean | null; // Boolean
     textSnippet: string | null; // String
     title: string | null; // String
@@ -379,6 +390,7 @@ export interface NexusGenFieldTypeNames {
     comments: 'Comment'
     createdAt: 'DateTime'
     id: 'String'
+    images: 'String'
     published: 'Boolean'
     textSnippet: 'String'
     title: 'String'
@@ -442,6 +454,7 @@ export interface NexusGenArgTypes {
     }
     createPost: { // args
       body: string; // String!
+      images: string[]; // [String!]!
       published: boolean; // Boolean!
       title: string; // String!
     }

@@ -1,4 +1,4 @@
-import { mutationField, nonNull, stringArg, booleanArg } from 'nexus'
+import { mutationField, nonNull, stringArg, booleanArg, list } from 'nexus'
 import { pubsubPublishMany } from '../../util/pubsubMany'
 import { isAuth } from '../../util/isAuth'
 
@@ -7,20 +7,26 @@ export const createPost = mutationField('createPost', {
   args: {
     title: nonNull(stringArg()),
     body: nonNull(stringArg()),
+    images: nonNull(list(nonNull(stringArg()))),
     published: nonNull(booleanArg()),
   },
   async resolve(
     _root,
-    { title, body, published },
+    { title, body, images, published },
     { prisma, pubsub, req }
   ) {
     const userId = isAuth(req)
+
+    if (images.length > 2) {
+      throw new Error('You can only upload 2 images per post.')
+    }
 
     const createdPost = await prisma.post.create({
       data: {
         title,
         body,
         published,
+        images,
         updatedAt: new Date(),
         author: {
           connect: {

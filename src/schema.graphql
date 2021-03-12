@@ -66,7 +66,7 @@ input DateTimeFilter {
 
 type Mutation {
   createComment(postId: String!, text: String!): Comment
-  createPost(body: String!, published: Boolean!, title: String!): Post
+  createPost(body: String!, images: [String!]!, published: Boolean!, title: String!): Post
   createUser(confirmPassword: String!, email: String!, name: String!, password: String!): User
   deleteComment(id: String!): Comment
   deletePost(id: String!): Post
@@ -128,6 +128,7 @@ type Post {
   comments(cursor: CommentWhereUniqueInput, skip: Int, take: Int): [Comment!]!
   createdAt: DateTime
   id: String
+  images: [String!]!
   published: Boolean
   textSnippet: String
   title: String
@@ -145,6 +146,7 @@ input PostOrderByInput {
   body: SortOrder
   createdAt: SortOrder
   id: SortOrder
+  images: SortOrder
   published: SortOrder
   title: SortOrder
   updatedAt: SortOrder
@@ -160,6 +162,7 @@ input PostWhereInput {
   comments: CommentListRelationFilter
   createdAt: DateTimeFilter
   id: StringFilter
+  images: StringNullableListFilter
   published: BoolFilter
   title: StringFilter
   updatedAt: DateTimeFilter
@@ -222,6 +225,14 @@ input StringNullableFilter {
   not: NestedStringNullableFilter
   notIn: [String!]
   startsWith: String
+}
+
+input StringNullableListFilter {
+  equals: [String!]
+  has: String
+  hasEvery: [String!]
+  hasSome: [String!]
+  isEmpty: Boolean
 }
 
 type Subscription {
