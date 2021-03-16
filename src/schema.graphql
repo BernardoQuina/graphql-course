@@ -75,7 +75,7 @@ type Mutation {
   logoutUser: Boolean
   updateComment(updateText: String!, whereId: String!): Comment
   updatePost(updateBody: String, updatePublished: Boolean, updateTitle: String, whereId: String!): Post
-  updateUser(confirmNewPassword: String, password: String!, updateEmail: String, updateName: String, updatePassword: String): User
+  updateUser(confirmNewPassword: String, password: String!, updateEmail: String, updateName: String, updatePassword: String, updatePhoto: String): User
 }
 
 input NestedBoolFilter {

@@ -493,6 +493,7 @@ export interface NexusGenArgTypes {
       updateEmail?: string | null; // String
       updateName?: string | null; // String
       updatePassword?: string | null; // String
+      updatePhoto?: string | null; // String
     }
   }
   Post: {

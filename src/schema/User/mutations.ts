@@ -92,13 +92,21 @@ export const updateUser = mutationField('updateUser', {
   args: {
     password: nonNull(stringArg()),
     updateName: stringArg(),
+    updatePhoto: stringArg(),
     updateEmail: stringArg(),
     updatePassword: stringArg(),
     confirmNewPassword: stringArg(),
   },
   async resolve(
     _root,
-    { password, updateName, updateEmail, updatePassword, confirmNewPassword },
+    {
+      password,
+      updateName,
+      updatePhoto,
+      updateEmail,
+      updatePassword,
+      confirmNewPassword,
+    },
     { prisma, pubsub, req }
   ) {
     const userId = isAuth(req)
@@ -115,11 +123,20 @@ export const updateUser = mutationField('updateUser', {
       throw new Error('Invalid credentials.')
     }
 
-    let data: { email?: string; name?: string; password?: string } = {}
+    let data: {
+      email?: string
+      photo?: string
+      name?: string
+      password?: string
+    } = {}
 
-    if (updateEmail) {
-      data.email = updateEmail
+    if (updatePhoto) {
+      data.photo = updatePhoto
     }
+    
+      if (updateEmail) {
+        data.email = updateEmail
+      }
 
     if (updateName) {
       data.name = updateName
