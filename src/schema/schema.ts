@@ -17,6 +17,10 @@ import * as commentQueries from './Comment/queries'
 import * as commentMutations from './Comment/mutations'
 import * as commentSubscriptions from './Comment/subscriptions'
 
+import { Like } from './Like/type'
+import * as likeQueries from './Like/queries'
+import * as likeMutations from './Like/mutations'
+
 // makeSchema defines the GraphQL schema, by combining the GraphQL types defined
 // by the GraphQL Nexus layer or any manually defined GraphQLType objects
 export const schema = makeSchema({
@@ -33,6 +37,9 @@ export const schema = makeSchema({
     commentQueries,
     commentMutations,
     commentSubscriptions,
+    Like,
+    likeQueries,
+    likeMutations
   },
   // shouldGenerateArtifacts: process.env.NODE_ENV === 'development',
   plugins: [
@@ -43,7 +50,7 @@ export const schema = makeSchema({
         // We need it in src because production build will crash at tsc compiling
         typegen: path.join(process.cwd(), 'src/typegenNexusPluginPrisma.d.ts'),
       },
-      paginationStrategy: 'prisma'
+      paginationStrategy: 'prisma',
     }),
   ],
   outputs: {

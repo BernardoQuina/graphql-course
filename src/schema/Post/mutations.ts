@@ -88,9 +88,6 @@ export const updatePost = mutationField('updatePost', {
       throw new Error('Please provide something to update')
     }
 
-    if (data.published === false) {
-      await prisma.comment.deleteMany({ where: { postId: whereId } })
-    }
 
     const updatedPost = await prisma.post.update({
       where: { id: whereId },
@@ -126,6 +123,7 @@ export const deletePost = mutationField('deletePost', {
     }
 
     await prisma.comment.deleteMany({ where: { postId: id } })
+    await prisma.like.deleteMany({ where: { postId: id } })
 
     pubsubPublishMany(
       pubsub,

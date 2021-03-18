@@ -46,5 +46,6 @@ export const User = objectType({
     t.model.updatedAt()
     t.model.posts()
     t.model.comments()
+    t.model.likes()
   },
 })

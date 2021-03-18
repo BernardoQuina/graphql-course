@@ -64,6 +64,52 @@ input DateTimeFilter {
   notIn: [DateTime!]
 }
 
+type Like {
+  active: Boolean
+  author: User
+  createdAt: DateTime
+  post: Post
+  postId: String
+  updatedAt: DateTime
+  userId: String
+}
+
+input LikeListRelationFilter {
+  every: LikeWhereInput
+  none: LikeWhereInput
+  some: LikeWhereInput
+}
+
+input LikeOrderByInput {
+  active: SortOrder
+  createdAt: SortOrder
+  postId: SortOrder
+  updatedAt: SortOrder
+  userId: SortOrder
+}
+
+input LikeUserIdPostIdCompoundUniqueInput {
+  postId: String!
+  userId: String!
+}
+
+input LikeWhereInput {
+  AND: [LikeWhereInput!]
+  NOT: [LikeWhereInput!]
+  OR: [LikeWhereInput!]
+  active: BoolFilter
+  author: UserWhereInput
+  createdAt: DateTimeFilter
+  post: PostWhereInput
+  postId: StringFilter
+  updatedAt: DateTimeFilter
+  userId: StringFilter
+}
+
+input LikeWhereUniqueInput {
+  userId_postId: LikeUserIdPostIdCompoundUniqueInput
+}
+
 type Mutation {
   createComment(postId: String!, text: String!): Comment
   createPost(body: String!, images: [String!]!, published: Boolean!, title: String!): Post
@@ -71,6 +117,7 @@ type Mutation {
   deleteComment(id: String!): Comment
   deletePost(id: String!): Post
   deleteUser(password: String): User
+  likePost(postId: String!): Like
   loginUser(email: String!, password: String!): User
   logoutUser: Boolean
   updateComment(updateText: String!, whereId: String!): Comment
@@ -125,10 +172,13 @@ input NestedStringNullableFilter {
 type Post {
   author: User
   body: String
+  commentCount: Int
   comments(cursor: CommentWhereUniqueInput, skip: Int, take: Int): [Comment!]!
   createdAt: DateTime
   id: String
   images: [String!]!
+  likeCount: Int
+  likes(cursor: LikeWhereUniqueInput, skip: Int, take: Int): [Like!]!
   published: Boolean
   textSnippet: String
   title: String
@@ -163,6 +213,7 @@ input PostWhereInput {
   createdAt: DateTimeFilter
   id: StringFilter
   images: StringNullableListFilter
+  likes: LikeListRelationFilter
   published: BoolFilter
   title: StringFilter
   updatedAt: DateTimeFilter
@@ -177,6 +228,9 @@ type Query {
   comment(where: CommentWhereUniqueInput!): Comment
   commentCount: Int
   comments(cursor: CommentWhereUniqueInput, orderBy: [CommentOrderByInput!], skip: Int, take: Int, where: CommentWhereInput): [Comment!]!
+  like(where: LikeWhereUniqueInput!): Like
+  likeCount: Int
+  likes(cursor: LikeWhereUniqueInput, orderBy: [LikeOrderByInput!], skip: Int, take: Int, where: LikeWhereInput): [Like!]!
   me: User
   myPosts(skip: Int!, take: Int!): [Post]!
   post(where: PostWhereUniqueInput!): Post
@@ -252,6 +306,7 @@ type User {
   facebookId: String
   googleId: String
   id: String
+  likes(cursor: LikeWhereUniqueInput, skip: Int, take: Int): [Like!]!
   name: String
 
   """Only logged in user can query it but its hashed anyway"""
@@ -283,6 +338,7 @@ input UserWhereInput {
   facebookId: StringNullableFilter
   googleId: StringNullableFilter
   id: StringFilter
+  likes: LikeListRelationFilter
   name: StringFilter
   password: StringNullableFilter
   photo: StringNullableFilter

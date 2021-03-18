@@ -200,9 +200,9 @@ export const deleteUser = mutationField('deleteUser', {
       }
     }
 
-    await prisma.comment.deleteMany({ where: { userId } })
-
     await prisma.post.deleteMany({ where: { userId } })
+    await prisma.comment.deleteMany({ where: { userId } })
+    await prisma.like.deleteMany({ where: { userId } })
 
     pubsub.publish(`user ${userId}`, {
       mutation: 'DELETED',

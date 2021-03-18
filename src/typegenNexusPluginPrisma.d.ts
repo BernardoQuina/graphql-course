@@ -16,32 +16,41 @@ interface PrismaModels {
   User: Prisma.User
   Post: Prisma.Post
   Comment: Prisma.Comment
+  Like: Prisma.Like
 }
 
 // Prisma input types metadata
 interface NexusPrismaInputs {
   Query: {
     users: {
-      filtering: 'AND' | 'OR' | 'NOT' | 'id' | 'name' | 'password' | 'email' | 'googleId' | 'facebookId' | 'photo' | 'createdAt' | 'updatedAt' | 'posts' | 'comments'
+      filtering: 'AND' | 'OR' | 'NOT' | 'id' | 'name' | 'password' | 'email' | 'googleId' | 'facebookId' | 'photo' | 'createdAt' | 'updatedAt' | 'posts' | 'comments' | 'likes'
       ordering: 'id' | 'name' | 'password' | 'email' | 'googleId' | 'facebookId' | 'photo' | 'createdAt' | 'updatedAt'
     }
     posts: {
-      filtering: 'AND' | 'OR' | 'NOT' | 'id' | 'title' | 'body' | 'images' | 'published' | 'createdAt' | 'updatedAt' | 'author' | 'userId' | 'comments'
+      filtering: 'AND' | 'OR' | 'NOT' | 'id' | 'title' | 'body' | 'images' | 'published' | 'createdAt' | 'updatedAt' | 'author' | 'userId' | 'comments' | 'likes'
       ordering: 'id' | 'title' | 'body' | 'images' | 'published' | 'createdAt' | 'updatedAt' | 'userId'
     }
     comments: {
       filtering: 'AND' | 'OR' | 'NOT' | 'id' | 'text' | 'createdAt' | 'updatedAt' | 'author' | 'userId' | 'post' | 'postId'
       ordering: 'id' | 'text' | 'createdAt' | 'updatedAt' | 'userId' | 'postId'
+    }
+    likes: {
+      filtering: 'AND' | 'OR' | 'NOT' | 'active' | 'createdAt' | 'updatedAt' | 'author' | 'userId' | 'post' | 'postId'
+      ordering: 'active' | 'createdAt' | 'updatedAt' | 'userId' | 'postId'
     }
   },
   User: {
     posts: {
-      filtering: 'AND' | 'OR' | 'NOT' | 'id' | 'title' | 'body' | 'images' | 'published' | 'createdAt' | 'updatedAt' | 'author' | 'userId' | 'comments'
+      filtering: 'AND' | 'OR' | 'NOT' | 'id' | 'title' | 'body' | 'images' | 'published' | 'createdAt' | 'updatedAt' | 'author' | 'userId' | 'comments' | 'likes'
       ordering: 'id' | 'title' | 'body' | 'images' | 'published' | 'createdAt' | 'updatedAt' | 'userId'
     }
     comments: {
       filtering: 'AND' | 'OR' | 'NOT' | 'id' | 'text' | 'createdAt' | 'updatedAt' | 'author' | 'userId' | 'post' | 'postId'
       ordering: 'id' | 'text' | 'createdAt' | 'updatedAt' | 'userId' | 'postId'
+    }
+    likes: {
+      filtering: 'AND' | 'OR' | 'NOT' | 'active' | 'createdAt' | 'updatedAt' | 'author' | 'userId' | 'post' | 'postId'
+      ordering: 'active' | 'createdAt' | 'updatedAt' | 'userId' | 'postId'
     }
   }
   Post: {
@@ -49,8 +58,15 @@ interface NexusPrismaInputs {
       filtering: 'AND' | 'OR' | 'NOT' | 'id' | 'text' | 'createdAt' | 'updatedAt' | 'author' | 'userId' | 'post' | 'postId'
       ordering: 'id' | 'text' | 'createdAt' | 'updatedAt' | 'userId' | 'postId'
     }
+    likes: {
+      filtering: 'AND' | 'OR' | 'NOT' | 'active' | 'createdAt' | 'updatedAt' | 'author' | 'userId' | 'post' | 'postId'
+      ordering: 'active' | 'createdAt' | 'updatedAt' | 'userId' | 'postId'
+    }
   }
   Comment: {
+
+  }
+  Like: {
 
   }
 }
@@ -64,6 +80,8 @@ interface NexusPrismaOutputs {
     posts: 'Post'
     comment: 'Comment'
     comments: 'Comment'
+    like: 'Like'
+    likes: 'Like'
   },
   Mutation: {
     createOneUser: 'User'
@@ -84,6 +102,12 @@ interface NexusPrismaOutputs {
     deleteOneComment: 'Comment'
     deleteManyComment: 'BatchPayload'
     upsertOneComment: 'Comment'
+    createOneLike: 'Like'
+    updateOneLike: 'Like'
+    updateManyLike: 'BatchPayload'
+    deleteOneLike: 'Like'
+    deleteManyLike: 'BatchPayload'
+    upsertOneLike: 'Like'
   },
   User: {
     id: 'String'
@@ -97,6 +121,7 @@ interface NexusPrismaOutputs {
     updatedAt: 'DateTime'
     posts: 'Post'
     comments: 'Comment'
+    likes: 'Like'
   }
   Post: {
     id: 'String'
@@ -109,10 +134,20 @@ interface NexusPrismaOutputs {
     author: 'User'
     userId: 'String'
     comments: 'Comment'
+    likes: 'Like'
   }
   Comment: {
     id: 'String'
     text: 'String'
+    createdAt: 'DateTime'
+    updatedAt: 'DateTime'
+    author: 'User'
+    userId: 'String'
+    post: 'Post'
+    postId: 'String'
+  }
+  Like: {
+    active: 'Boolean'
     createdAt: 'DateTime'
     updatedAt: 'DateTime'
     author: 'User'
@@ -127,6 +162,7 @@ interface NexusPrismaMethods {
   User: Typegen.NexusPrismaFields<'User'>
   Post: Typegen.NexusPrismaFields<'Post'>
   Comment: Typegen.NexusPrismaFields<'Comment'>
+  Like: Typegen.NexusPrismaFields<'Like'>
   Query: Typegen.NexusPrismaFields<'Query'>
   Mutation: Typegen.NexusPrismaFields<'Mutation'>
 }
