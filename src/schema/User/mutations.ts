@@ -15,6 +15,15 @@ export const createUser = mutationField('createUser', {
     { name, email, password, confirmPassword },
     { prisma, req }
   ) {
+
+    if (name.length < 2) {
+      throw new Error('Name must be 2 characters or longer.')
+    }
+
+    if (email.length < 4) {
+      throw new Error('Please provide a valid email.')
+    }
+
     if (password.length < 8) {
       throw new Error('Password must be 8 characters or longer.')
     }
