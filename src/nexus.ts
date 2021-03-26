@@ -341,6 +341,7 @@ export interface NexusGenFieldTypes {
     deleteComment: NexusGenRootTypes['Comment'] | null; // Comment
     deletePost: NexusGenRootTypes['Post'] | null; // Post
     deleteUser: NexusGenRootTypes['User'] | null; // User
+    forgotPassword: boolean | null; // Boolean
     likePost: NexusGenRootTypes['Like'] | null; // Like
     loginUser: NexusGenRootTypes['User'] | null; // User
     logoutUser: boolean | null; // Boolean
@@ -444,6 +445,7 @@ export interface NexusGenFieldTypeNames {
     deleteComment: 'Comment'
     deletePost: 'Post'
     deleteUser: 'User'
+    forgotPassword: 'Boolean'
     likePost: 'Like'
     loginUser: 'User'
     logoutUser: 'Boolean'
@@ -546,6 +548,9 @@ export interface NexusGenArgTypes {
     }
     deleteUser: { // args
       password?: string | null; // String
+    }
+    forgotPassword: { // args
+      email: string; // String!
     }
     likePost: { // args
       postId: string; // String!

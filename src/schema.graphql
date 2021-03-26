@@ -117,6 +117,7 @@ type Mutation {
   deleteComment(id: String!): Comment
   deletePost(id: String!): Post
   deleteUser(password: String): User
+  forgotPassword(email: String!): Boolean
   likePost(postId: String!): Like
   loginUser(email: String!, password: String!): User
   logoutUser: Boolean
