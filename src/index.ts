@@ -9,10 +9,14 @@ import connectRedis from 'connect-redis'
 import { passportOauth } from './util/passport'
 import { schema } from './schema/schema'
 import { createContext, redis } from './context'
+import { sendEmail } from './util/sendEmail'
 
 dotenv.config()
 
 const main = async () => {
+
+  sendEmail('bob@bob.com', 'hello there')
+
   const app = express()
 
   const RedisStore = connectRedis(session)
