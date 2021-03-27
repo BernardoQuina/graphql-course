@@ -15,6 +15,8 @@ declare global {
       FACEBOOK_CLIENT_SECRET: string
       NODE_TLS_REJECT_UNAUTHORIZED: string
       FORGOT_PASSWORD_PREFIX:  string
+      EMAIl: string
+      EMAIL_PASS: string
     }
   }
 

@@ -6,17 +6,15 @@ export const sendEmail = async (to: string, html: string) => {
   // console.log('testAccount', testAccount)
 
   let transporter = nodemailer.createTransport({
-    host: 'smtp.ethereal.email',
-    port: 587,
-    secure: false,
+    service: 'gmail',
     auth: {
-      user: 'in53almi5w37csqp@ethereal.email',
-      pass: '8N1HchDFFY1T9f3BhX'
+      user: process.env.EMAIl,
+      pass: process.env.EMAIL_PASS
     }
   })
 
   let info = await transporter.sendMail({
-    from: '"Fred Foo 👻" <foo@example.com>',
+    from: '"Bernardo Quina" <benrardoquina@gmail.com>',
     to,
     subject: 'Change Password',
     html
