@@ -231,7 +231,7 @@ export const forgotPassword = mutationField('forgotPassword', {
   async resolve(_root, { email }, { prisma, redis }) {
     const userExists = await prisma.user.findUnique({ where: { email } })
 
-    if (!userExists) {
+    if (!userExists || userExists.googleId || userExists.facebookId) {
       return true // We don't want to disclose to anyone whether a user exists or not
     }
 
@@ -250,5 +250,50 @@ export const forgotPassword = mutationField('forgotPassword', {
     )
 
     return true
+  },
+})
+
+export const changePassword = mutationField('changePassword', {
+  type: 'User',
+  args: {
+    token: nonNull(stringArg()),
+    newPassword: nonNull(stringArg()),
+    confirmPassword: nonNull(stringArg()),
+  },
+  async resolve(
+    _root,
+    { token, newPassword, confirmPassword },
+    { prisma, redis, req }
+  ) {
+    if (newPassword !== confirmPassword) {
+      throw new Error('Passwords do not match.')
+    }
+
+    if (newPassword.length < 8) {
+      throw new Error('Password must be 8 characters or longer.')
+    }
+
+    const newHashedPassword = await bcrypt.hash(newPassword, 10)
+
+    const userId = await redis.get(process.env.FORGOT_PASSWORD_PREFIX + token)
+
+    if (!userId) {
+      throw new Error('Token expired.')
+    }
+
+    const userExists = await prisma.user.findUnique({ where: { id: userId } })
+
+    if (!userExists) {
+      throw new Error('User no longer exists.')
+    }
+
+    const updatedUser = await prisma.user.update({
+      where: { id: userId },
+      data: { password: newHashedPassword },
+    })
+
+    req.session.userId = userExists.id
+
+    return updatedUser
   },
 })

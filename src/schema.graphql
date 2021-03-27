@@ -111,6 +111,7 @@ input LikeWhereUniqueInput {
 }
 
 type Mutation {
+  changePassword(confirmPassword: String!, newPassword: String!, token: String!): User
   createComment(postId: String!, text: String!): Comment
   createPost(body: String!, images: [String!]!, published: Boolean!, title: String!): Post
   createUser(confirmPassword: String!, email: String!, name: String!, password: String!): User

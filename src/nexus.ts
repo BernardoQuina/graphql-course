@@ -335,6 +335,7 @@ export interface NexusGenFieldTypes {
     userId: string | null; // String
   }
   Mutation: { // field return type
+    changePassword: NexusGenRootTypes['User'] | null; // User
     createComment: NexusGenRootTypes['Comment'] | null; // Comment
     createPost: NexusGenRootTypes['Post'] | null; // Post
     createUser: NexusGenRootTypes['User'] | null; // User
@@ -439,6 +440,7 @@ export interface NexusGenFieldTypeNames {
     userId: 'String'
   }
   Mutation: { // field return type name
+    changePassword: 'User'
     createComment: 'Comment'
     createPost: 'Post'
     createUser: 'User'
@@ -524,6 +526,11 @@ export interface NexusGenFieldTypeNames {
 
 export interface NexusGenArgTypes {
   Mutation: {
+    changePassword: { // args
+      confirmPassword: string; // String!
+      newPassword: string; // String!
+      token: string; // String!
+    }
     createComment: { // args
       postId: string; // String!
       text: string; // String!

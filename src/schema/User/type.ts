@@ -20,7 +20,8 @@ export const User = objectType({
         if (
           userId === _root.id ||
           operation === 'loginUser' ||
-          operation === 'createUser'
+          operation === 'createUser' ||
+          operation === 'changePassword'
         ) {
           return res
         }
