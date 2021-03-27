@@ -229,6 +229,10 @@ export const forgotPassword = mutationField('forgotPassword', {
     email: nonNull(stringArg()),
   },
   async resolve(_root, { email }, { prisma, redis }) {
+    if (email.length < 4) {
+      throw new Error('Please provide a valid email.')
+    }
+    
     const userExists = await prisma.user.findUnique({ where: { email } })
 
     if (!userExists || userExists.googleId || userExists.facebookId) {
@@ -293,6 +297,8 @@ export const changePassword = mutationField('changePassword', {
     })
 
     req.session.userId = userExists.id
+
+    redis.del(process.env.FORGOT_PASSWORD_PREFIX + token) // expire token
 
     return updatedUser
   },
