@@ -210,6 +210,8 @@ export const deleteUser = mutationField('deleteUser', {
       }
     }
 
+    await prisma.comment.deleteMany({ where: { post: { userId } } })
+    await prisma.like.deleteMany({ where: { post: { userId } } })
     await prisma.post.deleteMany({ where: { userId } })
     await prisma.comment.deleteMany({ where: { userId } })
     await prisma.like.deleteMany({ where: { userId } })
@@ -232,7 +234,7 @@ export const forgotPassword = mutationField('forgotPassword', {
     if (email.length < 4) {
       throw new Error('Please provide a valid email.')
     }
-    
+
     const userExists = await prisma.user.findUnique({ where: { email } })
 
     if (!userExists || userExists.googleId || userExists.facebookId) {

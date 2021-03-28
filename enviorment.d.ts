@@ -11,6 +11,7 @@ declare global {
       REDIS_URL: string
       GOOGLE_CLIENT_ID: string
       GOOGLE_CLIENT_SECRET: string
+      GOOGLE_REFRESH_TOKEN: string
       FACEBOOK_CLIENT_ID: string
       FACEBOOK_CLIENT_SECRET: string
       NODE_TLS_REJECT_UNAUTHORIZED: string
