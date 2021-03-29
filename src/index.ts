@@ -55,15 +55,11 @@ const main = async () => {
     context: createContext,
     subscriptions: {
       onConnect: (_, ws: any) => {
-        sessionMiddleware(ws.upgradeReq, {} as any, () => {
-          console.log(ws.upgradeReq.session)
-          if (
-            !ws.upgradeReq.session.userId &&
-            !ws.upgradeReq.session.passport
-          ) {
-            throw new Error('Authentication required.')
-          }
-        })
+        return new Promise((resolve) =>
+          sessionMiddleware(ws.upgradeReq, {} as any, () => {
+            resolve({ req: ws.upgradeReq })
+          })
+        )
       },
     },
   })

@@ -13,15 +13,15 @@ export const createPost = mutationField('createPost', {
   async resolve(
     _root,
     { title, body, images, published },
-    { prisma, pubsub, req }
+    context
   ) {
-    const userId = isAuth(req)
+    const userId = isAuth(context)
 
     if (images.length > 2) {
       throw new Error('You can only upload 2 images per post.')
     }
 
-    const createdPost = await prisma.post.create({
+    const createdPost = await context.prisma.post.create({
       data: {
         title,
         body,
@@ -36,7 +36,7 @@ export const createPost = mutationField('createPost', {
       },
     })
 
-    pubsub.publish(`post from user ${userId}`, {
+    context.pubsub.publish(`post from user ${userId}`, {
       mutation: 'CREATED',
       data: createdPost,
     })
@@ -56,11 +56,11 @@ export const updatePost = mutationField('updatePost', {
   async resolve(
     _root,
     { whereId, updateTitle, updateBody, updatePublished },
-    { prisma, pubsub, req }
+    context
   ) {
-    const userId = isAuth(req)
+    const userId = isAuth(context)
 
-    const postExists = await prisma.post.findUnique({ where: { id: whereId } })
+    const postExists = await context.prisma.post.findUnique({ where: { id: whereId } })
 
     if (!postExists) {
       throw new Error('The post you are trying to update does not exist')
@@ -89,13 +89,13 @@ export const updatePost = mutationField('updatePost', {
     }
 
 
-    const updatedPost = await prisma.post.update({
+    const updatedPost = await context.prisma.post.update({
       where: { id: whereId },
       data,
     })
 
     pubsubPublishMany(
-      pubsub,
+      context.pubsub,
       [`post ${whereId}`, `post from user ${updatedPost.userId}`],
       { mutation: 'UPDATED', data: updatedPost }
     )
@@ -109,10 +109,10 @@ export const deletePost = mutationField('deletePost', {
   args: {
     id: nonNull(stringArg()),
   },
-  async resolve(_root, { id }, { prisma, pubsub, req }) {
-    const userId = isAuth(req)
+  async resolve(_root, { id }, context) {
+    const userId = isAuth(context)
 
-    const postExists = await prisma.post.findUnique({ where: { id } })
+    const postExists = await context.prisma.post.findUnique({ where: { id } })
 
     if (!postExists) {
       throw new Error('Post not found')
@@ -122,15 +122,15 @@ export const deletePost = mutationField('deletePost', {
       throw new Error('Invalid credentials.')
     }
 
-    await prisma.comment.deleteMany({ where: { postId: id } })
-    await prisma.like.deleteMany({ where: { postId: id } })
+    await context.prisma.comment.deleteMany({ where: { postId: id } })
+    await context.prisma.like.deleteMany({ where: { postId: id } })
 
     pubsubPublishMany(
-      pubsub,
+      context.pubsub,
       [`post ${id}`, `post from user ${postExists.userId}`],
       { mutation: 'DELETED', data: postExists }
     )
 
-    return prisma.post.delete({ where: { id } })
+    return context.prisma.post.delete({ where: { id } })
   },
 })

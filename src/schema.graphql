@@ -296,8 +296,8 @@ type Subscription {
   commentSubByPost(postId: ID!): commentSubResponse
   commentSubByUser(userId: ID!): commentSubResponse
   myPostSub: postSubResponse
-  postSub(postId: ID!): postSubResponse
-  postSubByUser(userId: ID!): postSubResponse
+  postSub(postId: String!): postSubResponse
+  postSubByUser(userId: String!): postSubResponse
   userSub(userId: ID!): userSubResponse
 }
 

@@ -4,14 +4,14 @@ import { isAuth } from '../../util/isAuth'
 
 export const postQueries = queryField((t) => {
   t.crud.post({
-    async resolve(_root, { where: { id } }, { prisma, req }, _info) {
-      const userId = isAuth(req, false)
+    async resolve(_root, { where: { id } }, context, _info) {
+      const userId = isAuth(context, false)
 
       if (!id) {
         throw new Error('Please provide a post id.')
       }
 
-      const postExists = await prisma.post.findUnique({ where: { id } })
+      const postExists = await context.prisma.post.findUnique({ where: { id } })
 
       if (!postExists) {
         throw new Error('Post not found.')
@@ -29,10 +29,12 @@ export const postQueries = queryField((t) => {
     pagination: true,
     filtering: true,
     ordering: true,
-    async resolve(_root, _args, ctx, _info, originalResolver) {
-      const posts = await (<Post[]>originalResolver(_root, _args, ctx, _info))
+    async resolve(_root, _args, context, _info, originalResolver) {
+      const posts = await (<Post[]>(
+        originalResolver(_root, _args, context, _info)
+      ))
 
-      const userId = isAuth(ctx.req, false)
+      const userId = isAuth(context, false)
 
       const filteredPosts = posts.filter((post) => {
         return post.userId === userId || post.published
@@ -59,10 +61,10 @@ export const postQueries = queryField((t) => {
       take: nonNull(intArg()),
       skip: nonNull(intArg()),
     },
-    async resolve(_root, { take, skip }, { prisma, req }) {
-      const userId = isAuth(req, true)
+    async resolve(_root, { take, skip }, context) {
+      const userId = isAuth(context, true)
 
-      const myPosts = await prisma.post.findMany({
+      const myPosts = await context.prisma.post.findMany({
         where: { userId },
         take,
         skip,

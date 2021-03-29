@@ -654,10 +654,10 @@ export interface NexusGenArgTypes {
       userId: string; // ID!
     }
     postSub: { // args
-      postId: string; // ID!
+      postId: string; // String!
     }
     postSubByUser: { // args
-      userId: string; // ID!
+      userId: string; // String!
     }
     userSub: { // args
       userId: string; // ID!

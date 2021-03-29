@@ -6,10 +6,12 @@ export const likePost = mutationField('likePost', {
   args: {
     postId: nonNull(stringArg()),
   },
-  async resolve(_root, { postId }, { prisma, req }) {
-    const postExists = await prisma.post.findUnique({ where: { id: postId } })
+  async resolve(_root, { postId }, context) {
+    const postExists = await context.prisma.post.findUnique({
+      where: { id: postId },
+    })
 
-    const userId = isAuth(req) as string // It will throw an error otherwise
+    const userId = isAuth(context) as string // It will throw an error otherwise
 
     if (
       !postExists ||
@@ -18,20 +20,20 @@ export const likePost = mutationField('likePost', {
       throw new Error('Post not found')
     }
 
-    const alreadyLiked = await prisma.like.findUnique({
+    const alreadyLiked = await context.prisma.like.findUnique({
       where: { userId_postId: { postId, userId } },
     })
 
     if (alreadyLiked) {
       if (alreadyLiked.active) {
-        const unlike = await prisma.like.update({
+        const unlike = await context.prisma.like.update({
           where: { userId_postId: { postId, userId } },
           data: { active: false },
         })
 
         return unlike
       } else {
-        const like = await prisma.like.update({
+        const like = await context.prisma.like.update({
           where: { userId_postId: { postId, userId } },
           data: { active: true },
         })
@@ -40,7 +42,7 @@ export const likePost = mutationField('likePost', {
       }
     }
 
-    const like = await prisma.like.create({
+    const like = await context.prisma.like.create({
       data: { active: true, postId, userId },
     })
 

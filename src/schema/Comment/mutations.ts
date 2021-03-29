@@ -8,10 +8,10 @@ export const createComment = mutationField('createComment', {
     postId: nonNull(stringArg()),
     text: nonNull(stringArg()),
   },
-  async resolve(_root, { postId, text }, { prisma, pubsub, req }) {
-    const postExists = await prisma.post.findUnique({ where: { id: postId } })
+  async resolve(_root, { postId, text }, context) {
+    const postExists = await context.prisma.post.findUnique({ where: { id: postId } })
 
-    const userId = isAuth(req)
+    const userId = isAuth(context)
 
     if (
       !postExists ||
@@ -20,7 +20,7 @@ export const createComment = mutationField('createComment', {
       throw new Error('Post not found')
     }
 
-    const createdComment = await prisma.comment.create({
+    const createdComment = await context.prisma.comment.create({
       data: {
         text,
         author: { connect: { id: userId } },
@@ -29,7 +29,7 @@ export const createComment = mutationField('createComment', {
     })
 
     pubsubPublishMany(
-      pubsub,
+      context.pubsub,
       [`comment from user ${userId}`, `comment from post ${postId}`],
       { mutation: 'CREATED', data: createdComment }
     )
@@ -44,8 +44,8 @@ export const updateComment = mutationField('updateComment', {
     whereId: nonNull(stringArg()),
     updateText: nonNull(stringArg()),
   },
-  async resolve(_root, { whereId, updateText }, { prisma, pubsub, req }) {
-    const commentExists = await prisma.comment.findUnique({
+  async resolve(_root, { whereId, updateText }, context) {
+    const commentExists = await context.prisma.comment.findUnique({
       where: { id: whereId },
     })
 
@@ -53,19 +53,19 @@ export const updateComment = mutationField('updateComment', {
       throw new Error('Comment not found')
     }
 
-    const userId = isAuth(req)
+    const userId = isAuth(context)
 
     if (userId !== commentExists.userId) {
       throw new Error('Invalid credentials.')
     }
 
-    const updatedComment = await prisma.comment.update({
+    const updatedComment = await context.prisma.comment.update({
       where: { id: whereId },
       data: { text: updateText },
     })
 
     pubsubPublishMany(
-      pubsub,
+      context.pubsub,
       [
         `comment ${whereId}`,
         `comment from post ${updatedComment.postId}`,
@@ -83,21 +83,21 @@ export const deleteComment = mutationField('deleteComment', {
   args: {
     id: nonNull(stringArg()),
   },
-  async resolve(_root, { id }, { prisma, pubsub, req }) {
-    const commentExists = await prisma.comment.findUnique({ where: { id } })
+  async resolve(_root, { id }, context) {
+    const commentExists = await context.prisma.comment.findUnique({ where: { id } })
 
     if (!commentExists) {
       throw new Error('Comment not found.')
     }
 
-    const userId = isAuth(req)
+    const userId = isAuth(context)
 
     if (userId !== commentExists.userId) {
       throw new Error('Invalid credentials.')
     }
 
     pubsubPublishMany(
-      pubsub,
+      context.pubsub,
       [
         `comment ${id}`,
         `comment from user ${commentExists.userId}`,
@@ -106,6 +106,6 @@ export const deleteComment = mutationField('deleteComment', {
       { mutation: 'DELETED', data: commentExists }
     )
 
-    return prisma.comment.delete({ where: { id } })
+    return context.prisma.comment.delete({ where: { id } })
   },
 })

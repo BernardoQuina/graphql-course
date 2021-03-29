@@ -27,7 +27,11 @@ export type Context = {
     session: Session & Partial<SessionData> & { userId?: string }
   }
   res: Response
-  connection: { context: { Authorization?: string } }
+  connection: {
+    context: {
+      req: { session: { userId?: string; passport?: { user?: string } } }
+    }
+  }
 }
 
 // Provided to ApolloServer in index.ts

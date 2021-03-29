@@ -118,11 +118,11 @@ export const updateUser = mutationField('updateUser', {
       updatePassword,
       confirmNewPassword,
     },
-    { prisma, pubsub, req }
+    context
   ) {
-    const userId = isAuth(req)
+    const userId = isAuth(context)
 
-    const userExists = await prisma.user.findUnique({ where: { id: userId } })
+    const userExists = await context.prisma.user.findUnique({ where: { id: userId } })
 
     if (!userExists) {
       throw new Error('User not found')
@@ -171,12 +171,12 @@ export const updateUser = mutationField('updateUser', {
       throw new Error('Please provide something to update')
     }
 
-    const updatedUser = await prisma.user.update({
+    const updatedUser = await context.prisma.user.update({
       where: { id: userId },
       data,
     })
 
-    pubsub.publish(`user ${userId}`, {
+    context.pubsub.publish(`user ${userId}`, {
       mutation: 'UPDATED',
       data: updatedUser,
     })
@@ -190,10 +190,10 @@ export const deleteUser = mutationField('deleteUser', {
   args: {
     password: stringArg(),
   },
-  async resolve(_root, { password }, { prisma, pubsub, req }) {
-    const userId = isAuth(req)
+  async resolve(_root, { password }, context) {
+    const userId = isAuth(context)
 
-    const userExists = await prisma.user.findUnique({ where: { id: userId } })
+    const userExists = await context.prisma.user.findUnique({ where: { id: userId } })
 
     if (!userExists) {
       throw new Error('User not found')
@@ -211,18 +211,18 @@ export const deleteUser = mutationField('deleteUser', {
       }
     }
 
-    await prisma.comment.deleteMany({ where: { post: { userId } } })
-    await prisma.like.deleteMany({ where: { post: { userId } } })
-    await prisma.post.deleteMany({ where: { userId } })
-    await prisma.comment.deleteMany({ where: { userId } })
-    await prisma.like.deleteMany({ where: { userId } })
+    await context.prisma.comment.deleteMany({ where: { post: { userId } } })
+    await context.prisma.like.deleteMany({ where: { post: { userId } } })
+    await context.prisma.post.deleteMany({ where: { userId } })
+    await context.prisma.comment.deleteMany({ where: { userId } })
+    await context.prisma.like.deleteMany({ where: { userId } })
 
-    pubsub.publish(`user ${userId}`, {
+    context.pubsub.publish(`user ${userId}`, {
       mutation: 'DELETED',
       data: userExists,
     })
 
-    return prisma.user.delete({ where: { id: userId } })
+    return context.prisma.user.delete({ where: { id: userId } })
   },
 })
 

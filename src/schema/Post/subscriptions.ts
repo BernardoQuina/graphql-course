@@ -1,5 +1,5 @@
 import { Post } from '@prisma/client'
-import { idArg, nonNull, objectType, subscriptionField } from 'nexus'
+import { nonNull, objectType, stringArg, subscriptionField } from 'nexus'
 import { isAuth } from '../../util/isAuth'
 
 export const postSubResponse = objectType({
@@ -17,16 +17,21 @@ export const postSubResponse = objectType({
 export const postSubByUser = subscriptionField('postSubByUser', {
   type: 'postSubResponse',
   args: {
-    userId: nonNull(idArg()),
+    userId: nonNull(stringArg()),
   },
-  async subscribe(_, { userId }, { prisma, pubsub }) {
-    const userExists = await prisma.user.findUnique({ where: { id: userId } })
+  async subscribe(_, { userId }, context) {
+
+    const myId = isAuth(context)
+
+    console.log('my id: ', myId)
+
+    const userExists = await context.prisma.user.findUnique({ where: { id: userId } })
 
     if (!userExists) {
       throw new Error('User not found.')
     }
 
-    return pubsub.asyncIterator(`post from user ${userId}`)
+    return context.pubsub.asyncIterator(`post from user ${userId}`)
   },
   resolve(payload: { mutation: string; data: Post }) {
     return payload
@@ -36,7 +41,7 @@ export const postSubByUser = subscriptionField('postSubByUser', {
 export const postSub = subscriptionField('postSub', {
   type: 'postSubResponse',
   args: {
-    postId: nonNull(idArg()),
+    postId: nonNull(stringArg()),
   },
   async subscribe(_root, { postId }, { prisma, pubsub }) {
     const postExists = await prisma.post.findUnique({ where: { id: postId } })
@@ -54,12 +59,10 @@ export const postSub = subscriptionField('postSub', {
 
 export const myPostSub = subscriptionField('myPostSub', {
   type: 'postSubResponse',
-  async subscribe(_root, _args, { pubsub, connection }) {
-    // This wont work
-    const userId = isAuth(connection as any) 
-    // Still have to figure out how to pass the user via ws connection
+  async subscribe(_root, _args, context) {
+    const userId = isAuth(context)
 
-    return pubsub.asyncIterator(`post from user ${userId}`)
+    return context.pubsub.asyncIterator(`post from user ${userId}`)
   },
   resolve(payload: { mutation: string; data: Post }) {
     return payload
