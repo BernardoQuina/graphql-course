@@ -9,6 +9,8 @@ declare global {
       ORIGIN: string
       SESSION_SECRET: string
       REDIS_URL: string
+      REDIS_DOMAIN_NAME: string
+      REDIS_PORT_NUMBER: number
       GOOGLE_CLIENT_ID: string
       GOOGLE_CLIENT_SECRET: string
       GOOGLE_REFRESH_TOKEN: string

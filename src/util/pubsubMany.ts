@@ -1,5 +1,5 @@
 import { Post, Comment, User } from '@prisma/client'
-import { PubSub } from 'apollo-server-express'
+import { RedisPubSub } from 'graphql-redis-subscriptions'
 
 type Payload = {
   mutation: 'CREATED' | 'UPDATED'| 'DELETED'
@@ -7,7 +7,7 @@ type Payload = {
 }
 
 export const pubsubPublishMany = (
-  pubsub: PubSub,
+  pubsub: RedisPubSub,
   stringArr: string[],
   payload: Payload
 ) => {

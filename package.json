@@ -23,6 +23,7 @@
     "express-session": "^1.17.1",
     "googleapis": "^68.0.0",
     "graphql": "^15.5.0",
+    "graphql-redis-subscriptions": "^2.3.1",
     "ioredis": "^4.23.0",
     "nexus": "^1.0.0",
     "nexus-plugin-prisma": "^0.28.0",

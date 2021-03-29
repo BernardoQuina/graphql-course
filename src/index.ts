@@ -14,7 +14,6 @@ import { createContext, redis } from './context'
 dotenv.config()
 
 const main = async () => {
-
   // sendEmail('bob@bob.com', 'hello there')
 
   const app = express()
@@ -32,28 +31,41 @@ const main = async () => {
 
   app.set('trust proxy', 1)
 
-  app.use(
-    session({
-      store: new RedisStore({
-        client: redis,
-        disableTouch: true,
-      }),
-      secret: process.env.SESSION_SECRET,
-      resave: true,
-      saveUninitialized: true,
-      cookie: {
-        sameSite: 'lax',
-        secure: process.env.NODE_ENV === 'production',
-        maxAge: 1000 * 60 * 60 * 24 * 7, // One Week,
-      },
-    })
-  )
+  const sessionMiddleware = session({
+    store: new RedisStore({
+      client: redis,
+      disableTouch: true,
+    }),
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+      sameSite: 'lax',
+      secure: process.env.NODE_ENV === 'production',
+      maxAge: 1000 * 60 * 60 * 24 * 7, // One Week,
+    },
+  })
+
+  app.use(sessionMiddleware)
 
   passportOauth(app)
 
   const apolloServer = new ApolloServer({
     schema,
     context: createContext,
+    subscriptions: {
+      onConnect: (_, ws: any) => {
+        sessionMiddleware(ws.upgradeReq, {} as any, () => {
+          console.log(ws.upgradeReq.session)
+          if (
+            !ws.upgradeReq.session.userId &&
+            !ws.upgradeReq.session.passport
+          ) {
+            throw new Error('Authentication required.')
+          }
+        })
+      },
+    },
   })
 
   apolloServer.applyMiddleware({ app, cors: false })
