@@ -67,6 +67,28 @@ export interface NexusGenInputs {
     none?: NexusGenInputs['LikeWhereInput'] | null; // LikeWhereInput
     some?: NexusGenInputs['LikeWhereInput'] | null; // LikeWhereInput
   }
+  LikeNotificationListRelationFilter: { // input type
+    every?: NexusGenInputs['LikeNotificationWhereInput'] | null; // LikeNotificationWhereInput
+    none?: NexusGenInputs['LikeNotificationWhereInput'] | null; // LikeNotificationWhereInput
+    some?: NexusGenInputs['LikeNotificationWhereInput'] | null; // LikeNotificationWhereInput
+  }
+  LikeNotificationWhereInput: { // input type
+    AND?: NexusGenInputs['LikeNotificationWhereInput'][] | null; // [LikeNotificationWhereInput!]
+    NOT?: NexusGenInputs['LikeNotificationWhereInput'][] | null; // [LikeNotificationWhereInput!]
+    OR?: NexusGenInputs['LikeNotificationWhereInput'][] | null; // [LikeNotificationWhereInput!]
+    createdAt?: NexusGenInputs['DateTimeFilter'] | null; // DateTimeFilter
+    id?: NexusGenInputs['StringFilter'] | null; // StringFilter
+    like?: NexusGenInputs['LikeWhereInput'] | null; // LikeWhereInput
+    likeAuthorId?: NexusGenInputs['StringFilter'] | null; // StringFilter
+    post?: NexusGenInputs['PostWhereInput'] | null; // PostWhereInput
+    postAuthorId?: NexusGenInputs['StringFilter'] | null; // StringFilter
+    postId?: NexusGenInputs['StringFilter'] | null; // StringFilter
+    read?: NexusGenInputs['BoolFilter'] | null; // BoolFilter
+    updatedAt?: NexusGenInputs['DateTimeFilter'] | null; // DateTimeFilter
+  }
+  LikeNotificationWhereUniqueInput: { // input type
+    id?: string | null; // String
+  }
   LikeOrderByInput: { // input type
     active?: NexusGenEnums['SortOrder'] | null; // SortOrder
     createdAt?: NexusGenEnums['SortOrder'] | null; // SortOrder
@@ -85,6 +107,7 @@ export interface NexusGenInputs {
     active?: NexusGenInputs['BoolFilter'] | null; // BoolFilter
     author?: NexusGenInputs['UserWhereInput'] | null; // UserWhereInput
     createdAt?: NexusGenInputs['DateTimeFilter'] | null; // DateTimeFilter
+    notifications?: NexusGenInputs['LikeNotificationListRelationFilter'] | null; // LikeNotificationListRelationFilter
     post?: NexusGenInputs['PostWhereInput'] | null; // PostWhereInput
     postId?: NexusGenInputs['StringFilter'] | null; // StringFilter
     updatedAt?: NexusGenInputs['DateTimeFilter'] | null; // DateTimeFilter
@@ -159,6 +182,7 @@ export interface NexusGenInputs {
     id?: NexusGenInputs['StringFilter'] | null; // StringFilter
     images?: NexusGenInputs['StringNullableListFilter'] | null; // StringNullableListFilter
     likes?: NexusGenInputs['LikeListRelationFilter'] | null; // LikeListRelationFilter
+    likesNotifications?: NexusGenInputs['LikeNotificationListRelationFilter'] | null; // LikeNotificationListRelationFilter
     published?: NexusGenInputs['BoolFilter'] | null; // BoolFilter
     title?: NexusGenInputs['StringFilter'] | null; // StringFilter
     updatedAt?: NexusGenInputs['DateTimeFilter'] | null; // DateTimeFilter
@@ -268,6 +292,15 @@ export interface NexusGenObjects {
     updatedAt?: NexusGenScalars['DateTime'] | null; // DateTime
     userId?: string | null; // String
   }
+  LikeNotification: { // root type
+    createdAt?: NexusGenScalars['DateTime'] | null; // DateTime
+    id?: string | null; // String
+    likeAuthorId?: string | null; // String
+    postAuthorId?: string | null; // String
+    postId?: string | null; // String
+    read?: boolean | null; // Boolean
+    updatedAt?: NexusGenScalars['DateTime'] | null; // DateTime
+  }
   Mutation: {};
   Post: { // root type
     body?: string | null; // String
@@ -329,10 +362,22 @@ export interface NexusGenFieldTypes {
     active: boolean | null; // Boolean
     author: NexusGenRootTypes['User'] | null; // User
     createdAt: NexusGenScalars['DateTime'] | null; // DateTime
+    notifications: NexusGenRootTypes['LikeNotification'][]; // [LikeNotification!]!
     post: NexusGenRootTypes['Post'] | null; // Post
     postId: string | null; // String
     updatedAt: NexusGenScalars['DateTime'] | null; // DateTime
     userId: string | null; // String
+  }
+  LikeNotification: { // field return type
+    createdAt: NexusGenScalars['DateTime'] | null; // DateTime
+    id: string | null; // String
+    like: NexusGenRootTypes['Like'] | null; // Like
+    likeAuthorId: string | null; // String
+    post: NexusGenRootTypes['Post'] | null; // Post
+    postAuthorId: string | null; // String
+    postId: string | null; // String
+    read: boolean | null; // Boolean
+    updatedAt: NexusGenScalars['DateTime'] | null; // DateTime
   }
   Mutation: { // field return type
     changePassword: NexusGenRootTypes['User'] | null; // User
@@ -434,10 +479,22 @@ export interface NexusGenFieldTypeNames {
     active: 'Boolean'
     author: 'User'
     createdAt: 'DateTime'
+    notifications: 'LikeNotification'
     post: 'Post'
     postId: 'String'
     updatedAt: 'DateTime'
     userId: 'String'
+  }
+  LikeNotification: { // field return type name
+    createdAt: 'DateTime'
+    id: 'String'
+    like: 'Like'
+    likeAuthorId: 'String'
+    post: 'Post'
+    postAuthorId: 'String'
+    postId: 'String'
+    read: 'Boolean'
+    updatedAt: 'DateTime'
   }
   Mutation: { // field return type name
     changePassword: 'User'
@@ -525,6 +582,13 @@ export interface NexusGenFieldTypeNames {
 }
 
 export interface NexusGenArgTypes {
+  Like: {
+    notifications: { // args
+      cursor?: NexusGenInputs['LikeNotificationWhereUniqueInput'] | null; // LikeNotificationWhereUniqueInput
+      skip?: number | null; // Int
+      take?: number | null; // Int
+    }
+  }
   Mutation: {
     changePassword: { // args
       confirmPassword: string; // String!

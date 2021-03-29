@@ -17,6 +17,7 @@ interface PrismaModels {
   Post: Prisma.Post
   Comment: Prisma.Comment
   Like: Prisma.Like
+  LikeNotification: Prisma.LikeNotification
 }
 
 // Prisma input types metadata
@@ -27,7 +28,7 @@ interface NexusPrismaInputs {
       ordering: 'id' | 'name' | 'password' | 'email' | 'googleId' | 'facebookId' | 'photo' | 'createdAt' | 'updatedAt'
     }
     posts: {
-      filtering: 'AND' | 'OR' | 'NOT' | 'id' | 'title' | 'body' | 'images' | 'published' | 'createdAt' | 'updatedAt' | 'author' | 'userId' | 'comments' | 'likes'
+      filtering: 'AND' | 'OR' | 'NOT' | 'id' | 'title' | 'body' | 'images' | 'published' | 'createdAt' | 'updatedAt' | 'author' | 'userId' | 'comments' | 'likes' | 'likesNotifications'
       ordering: 'id' | 'title' | 'body' | 'images' | 'published' | 'createdAt' | 'updatedAt' | 'userId'
     }
     comments: {
@@ -35,13 +36,17 @@ interface NexusPrismaInputs {
       ordering: 'id' | 'text' | 'createdAt' | 'updatedAt' | 'userId' | 'postId'
     }
     likes: {
-      filtering: 'AND' | 'OR' | 'NOT' | 'active' | 'createdAt' | 'updatedAt' | 'author' | 'userId' | 'post' | 'postId'
+      filtering: 'AND' | 'OR' | 'NOT' | 'active' | 'createdAt' | 'updatedAt' | 'author' | 'userId' | 'post' | 'postId' | 'notifications'
       ordering: 'active' | 'createdAt' | 'updatedAt' | 'userId' | 'postId'
+    }
+    likeNotifications: {
+      filtering: 'AND' | 'OR' | 'NOT' | 'id' | 'read' | 'createdAt' | 'updatedAt' | 'like' | 'likeAuthorId' | 'postAuthorId' | 'post' | 'postId'
+      ordering: 'id' | 'read' | 'createdAt' | 'updatedAt' | 'likeAuthorId' | 'postAuthorId' | 'postId'
     }
   },
   User: {
     posts: {
-      filtering: 'AND' | 'OR' | 'NOT' | 'id' | 'title' | 'body' | 'images' | 'published' | 'createdAt' | 'updatedAt' | 'author' | 'userId' | 'comments' | 'likes'
+      filtering: 'AND' | 'OR' | 'NOT' | 'id' | 'title' | 'body' | 'images' | 'published' | 'createdAt' | 'updatedAt' | 'author' | 'userId' | 'comments' | 'likes' | 'likesNotifications'
       ordering: 'id' | 'title' | 'body' | 'images' | 'published' | 'createdAt' | 'updatedAt' | 'userId'
     }
     comments: {
@@ -49,7 +54,7 @@ interface NexusPrismaInputs {
       ordering: 'id' | 'text' | 'createdAt' | 'updatedAt' | 'userId' | 'postId'
     }
     likes: {
-      filtering: 'AND' | 'OR' | 'NOT' | 'active' | 'createdAt' | 'updatedAt' | 'author' | 'userId' | 'post' | 'postId'
+      filtering: 'AND' | 'OR' | 'NOT' | 'active' | 'createdAt' | 'updatedAt' | 'author' | 'userId' | 'post' | 'postId' | 'notifications'
       ordering: 'active' | 'createdAt' | 'updatedAt' | 'userId' | 'postId'
     }
   }
@@ -59,14 +64,24 @@ interface NexusPrismaInputs {
       ordering: 'id' | 'text' | 'createdAt' | 'updatedAt' | 'userId' | 'postId'
     }
     likes: {
-      filtering: 'AND' | 'OR' | 'NOT' | 'active' | 'createdAt' | 'updatedAt' | 'author' | 'userId' | 'post' | 'postId'
+      filtering: 'AND' | 'OR' | 'NOT' | 'active' | 'createdAt' | 'updatedAt' | 'author' | 'userId' | 'post' | 'postId' | 'notifications'
       ordering: 'active' | 'createdAt' | 'updatedAt' | 'userId' | 'postId'
+    }
+    likesNotifications: {
+      filtering: 'AND' | 'OR' | 'NOT' | 'id' | 'read' | 'createdAt' | 'updatedAt' | 'like' | 'likeAuthorId' | 'postAuthorId' | 'post' | 'postId'
+      ordering: 'id' | 'read' | 'createdAt' | 'updatedAt' | 'likeAuthorId' | 'postAuthorId' | 'postId'
     }
   }
   Comment: {
 
   }
   Like: {
+    notifications: {
+      filtering: 'AND' | 'OR' | 'NOT' | 'id' | 'read' | 'createdAt' | 'updatedAt' | 'like' | 'likeAuthorId' | 'postAuthorId' | 'post' | 'postId'
+      ordering: 'id' | 'read' | 'createdAt' | 'updatedAt' | 'likeAuthorId' | 'postAuthorId' | 'postId'
+    }
+  }
+  LikeNotification: {
 
   }
 }
@@ -82,6 +97,8 @@ interface NexusPrismaOutputs {
     comments: 'Comment'
     like: 'Like'
     likes: 'Like'
+    likeNotification: 'LikeNotification'
+    likeNotifications: 'LikeNotification'
   },
   Mutation: {
     createOneUser: 'User'
@@ -108,6 +125,12 @@ interface NexusPrismaOutputs {
     deleteOneLike: 'Like'
     deleteManyLike: 'BatchPayload'
     upsertOneLike: 'Like'
+    createOneLikeNotification: 'LikeNotification'
+    updateOneLikeNotification: 'LikeNotification'
+    updateManyLikeNotification: 'BatchPayload'
+    deleteOneLikeNotification: 'LikeNotification'
+    deleteManyLikeNotification: 'BatchPayload'
+    upsertOneLikeNotification: 'LikeNotification'
   },
   User: {
     id: 'String'
@@ -135,6 +158,7 @@ interface NexusPrismaOutputs {
     userId: 'String'
     comments: 'Comment'
     likes: 'Like'
+    likesNotifications: 'LikeNotification'
   }
   Comment: {
     id: 'String'
@@ -154,6 +178,18 @@ interface NexusPrismaOutputs {
     userId: 'String'
     post: 'Post'
     postId: 'String'
+    notifications: 'LikeNotification'
+  }
+  LikeNotification: {
+    id: 'String'
+    read: 'Boolean'
+    createdAt: 'DateTime'
+    updatedAt: 'DateTime'
+    like: 'Like'
+    likeAuthorId: 'String'
+    postAuthorId: 'String'
+    post: 'Post'
+    postId: 'String'
   }
 }
 
@@ -163,6 +199,7 @@ interface NexusPrismaMethods {
   Post: Typegen.NexusPrismaFields<'Post'>
   Comment: Typegen.NexusPrismaFields<'Comment'>
   Like: Typegen.NexusPrismaFields<'Like'>
+  LikeNotification: Typegen.NexusPrismaFields<'LikeNotification'>
   Query: Typegen.NexusPrismaFields<'Query'>
   Mutation: Typegen.NexusPrismaFields<'Mutation'>
 }

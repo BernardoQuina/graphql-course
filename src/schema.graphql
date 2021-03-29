@@ -68,6 +68,7 @@ type Like {
   active: Boolean
   author: User
   createdAt: DateTime
+  notifications(cursor: LikeNotificationWhereUniqueInput, skip: Int, take: Int): [LikeNotification!]!
   post: Post
   postId: String
   updatedAt: DateTime
@@ -78,6 +79,43 @@ input LikeListRelationFilter {
   every: LikeWhereInput
   none: LikeWhereInput
   some: LikeWhereInput
+}
+
+type LikeNotification {
+  createdAt: DateTime
+  id: String
+  like: Like
+  likeAuthorId: String
+  post: Post
+  postAuthorId: String
+  postId: String
+  read: Boolean
+  updatedAt: DateTime
+}
+
+input LikeNotificationListRelationFilter {
+  every: LikeNotificationWhereInput
+  none: LikeNotificationWhereInput
+  some: LikeNotificationWhereInput
+}
+
+input LikeNotificationWhereInput {
+  AND: [LikeNotificationWhereInput!]
+  NOT: [LikeNotificationWhereInput!]
+  OR: [LikeNotificationWhereInput!]
+  createdAt: DateTimeFilter
+  id: StringFilter
+  like: LikeWhereInput
+  likeAuthorId: StringFilter
+  post: PostWhereInput
+  postAuthorId: StringFilter
+  postId: StringFilter
+  read: BoolFilter
+  updatedAt: DateTimeFilter
+}
+
+input LikeNotificationWhereUniqueInput {
+  id: String
 }
 
 input LikeOrderByInput {
@@ -100,6 +138,7 @@ input LikeWhereInput {
   active: BoolFilter
   author: UserWhereInput
   createdAt: DateTimeFilter
+  notifications: LikeNotificationListRelationFilter
   post: PostWhereInput
   postId: StringFilter
   updatedAt: DateTimeFilter
@@ -216,6 +255,7 @@ input PostWhereInput {
   id: StringFilter
   images: StringNullableListFilter
   likes: LikeListRelationFilter
+  likesNotifications: LikeNotificationListRelationFilter
   published: BoolFilter
   title: StringFilter
   updatedAt: DateTimeFilter

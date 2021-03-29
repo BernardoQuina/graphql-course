@@ -22,21 +22,22 @@ model User {
   updatedAt  DateTime  @updatedAt
   posts      Post[]
   comments   Comment[]
-  likes       Like[]
+  likes      Like[]
 }
 
 model Post {
-  id        String    @id @default(uuid())
-  title     String
-  body      String
-  images    String[]
-  published Boolean
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  author    User      @relation(fields: [userId], references: [id])
-  userId    String
-  comments  Comment[]
-  likes      Like[]
+  id                 String             @id @default(uuid())
+  title              String
+  body               String
+  images             String[]
+  published          Boolean
+  createdAt          DateTime           @default(now())
+  updatedAt          DateTime           @updatedAt
+  author             User               @relation(fields: [userId], references: [id])
+  userId             String
+  comments           Comment[]
+  likes              Like[]
+  likesNotifications LikeNotification[]
 }
 
 model Comment {
@@ -51,13 +52,26 @@ model Comment {
 }
 
 model Like {
-  active    Boolean
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  author    User     @relation(fields: [userId], references: [id])
-  userId    String
-  post      Post     @relation(fields: [postId], references: [id])
-  postId    String
+  active        Boolean
+  createdAt     DateTime           @default(now())
+  updatedAt     DateTime           @updatedAt
+  author        User               @relation(fields: [userId], references: [id])
+  userId        String
+  post          Post               @relation(fields: [postId], references: [id])
+  postId        String
+  notifications LikeNotification[]
 
   @@id([userId, postId])
+}
+
+model LikeNotification {
+  id           String   @id @default(uuid())
+  read         Boolean  @default(false)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  like         Like     @relation(fields: [likeAuthorId, postAuthorId], references: [userId, postId])
+  likeAuthorId String
+  postAuthorId String
+  post         Post     @relation(fields: [postId], references: [id])
+  postId       String
 }

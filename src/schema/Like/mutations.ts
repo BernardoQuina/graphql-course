@@ -46,6 +46,17 @@ export const likePost = mutationField('likePost', {
       data: { active: true, postId, userId },
     })
 
+    await context.prisma.likeNotification.create(
+      {
+        data: {
+          createdAt: new Date(),
+          likeAuthorId: userId,
+          postAuthorId: postExists.userId,
+          postId
+        },
+      }
+    )
+
     return like
   },
 })
