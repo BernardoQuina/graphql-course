@@ -16,7 +16,10 @@ export const likeNotificationQueries = queryField((t) => {
 
       if (!context.req.user && !context.req.session.userId) return null
 
-      return context.prisma.likeNotification.findMany({ where: { userId } })
+      return context.prisma.likeNotification.findMany({
+        where: { userId },
+        orderBy: { createdAt: 'desc' },
+      })
     },
   })
 })

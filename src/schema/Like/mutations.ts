@@ -55,6 +55,9 @@ export const likePost = mutationField('likePost', {
     })
 
     // Send notification to post author
+
+    if (postExists.userId === userId) return like // self like, no notification
+
     await context.prisma.likeNotification.create({
       data: {
         userId: postExists.userId,
