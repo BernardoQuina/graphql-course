@@ -72,6 +72,16 @@ export interface NexusGenInputs {
     none?: NexusGenInputs['LikeNotificationWhereInput'] | null; // LikeNotificationWhereInput
     some?: NexusGenInputs['LikeNotificationWhereInput'] | null; // LikeNotificationWhereInput
   }
+  LikeNotificationOrderByInput: { // input type
+    createdAt?: NexusGenEnums['SortOrder'] | null; // SortOrder
+    id?: NexusGenEnums['SortOrder'] | null; // SortOrder
+    likeAuthorId?: NexusGenEnums['SortOrder'] | null; // SortOrder
+    message?: NexusGenEnums['SortOrder'] | null; // SortOrder
+    postId?: NexusGenEnums['SortOrder'] | null; // SortOrder
+    read?: NexusGenEnums['SortOrder'] | null; // SortOrder
+    updatedAt?: NexusGenEnums['SortOrder'] | null; // SortOrder
+    userId?: NexusGenEnums['SortOrder'] | null; // SortOrder
+  }
   LikeNotificationWhereInput: { // input type
     AND?: NexusGenInputs['LikeNotificationWhereInput'][] | null; // [LikeNotificationWhereInput!]
     NOT?: NexusGenInputs['LikeNotificationWhereInput'][] | null; // [LikeNotificationWhereInput!]
@@ -80,11 +90,13 @@ export interface NexusGenInputs {
     id?: NexusGenInputs['StringFilter'] | null; // StringFilter
     like?: NexusGenInputs['LikeWhereInput'] | null; // LikeWhereInput
     likeAuthorId?: NexusGenInputs['StringFilter'] | null; // StringFilter
+    message?: NexusGenInputs['StringFilter'] | null; // StringFilter
     post?: NexusGenInputs['PostWhereInput'] | null; // PostWhereInput
-    postAuthorId?: NexusGenInputs['StringFilter'] | null; // StringFilter
     postId?: NexusGenInputs['StringFilter'] | null; // StringFilter
     read?: NexusGenInputs['BoolFilter'] | null; // BoolFilter
+    receiver?: NexusGenInputs['UserWhereInput'] | null; // UserWhereInput
     updatedAt?: NexusGenInputs['DateTimeFilter'] | null; // DateTimeFilter
+    userId?: NexusGenInputs['StringFilter'] | null; // StringFilter
   }
   LikeNotificationWhereUniqueInput: { // input type
     id?: string | null; // String
@@ -247,6 +259,7 @@ export interface NexusGenInputs {
     facebookId?: NexusGenInputs['StringNullableFilter'] | null; // StringNullableFilter
     googleId?: NexusGenInputs['StringNullableFilter'] | null; // StringNullableFilter
     id?: NexusGenInputs['StringFilter'] | null; // StringFilter
+    likeNotification?: NexusGenInputs['LikeNotificationListRelationFilter'] | null; // LikeNotificationListRelationFilter
     likes?: NexusGenInputs['LikeListRelationFilter'] | null; // LikeListRelationFilter
     name?: NexusGenInputs['StringFilter'] | null; // StringFilter
     password?: NexusGenInputs['StringNullableFilter'] | null; // StringNullableFilter
@@ -296,10 +309,11 @@ export interface NexusGenObjects {
     createdAt?: NexusGenScalars['DateTime'] | null; // DateTime
     id?: string | null; // String
     likeAuthorId?: string | null; // String
-    postAuthorId?: string | null; // String
+    message?: string | null; // String
     postId?: string | null; // String
     read?: boolean | null; // Boolean
     updatedAt?: NexusGenScalars['DateTime'] | null; // DateTime
+    userId?: string | null; // String
   }
   Mutation: {};
   Post: { // root type
@@ -373,11 +387,13 @@ export interface NexusGenFieldTypes {
     id: string | null; // String
     like: NexusGenRootTypes['Like'] | null; // Like
     likeAuthorId: string | null; // String
+    message: string | null; // String
     post: NexusGenRootTypes['Post'] | null; // Post
-    postAuthorId: string | null; // String
     postId: string | null; // String
     read: boolean | null; // Boolean
+    receiver: NexusGenRootTypes['User'] | null; // User
     updatedAt: NexusGenScalars['DateTime'] | null; // DateTime
+    userId: string | null; // String
   }
   Mutation: { // field return type
     changePassword: NexusGenRootTypes['User'] | null; // User
@@ -405,6 +421,7 @@ export interface NexusGenFieldTypes {
     images: string[]; // [String!]!
     likeCount: number | null; // Int
     likes: NexusGenRootTypes['Like'][]; // [Like!]!
+    likesNotifications: NexusGenRootTypes['LikeNotification'][]; // [LikeNotification!]!
     published: boolean | null; // Boolean
     textSnippet: string | null; // String
     title: string | null; // String
@@ -417,8 +434,11 @@ export interface NexusGenFieldTypes {
     comments: NexusGenRootTypes['Comment'][]; // [Comment!]!
     like: NexusGenRootTypes['Like'] | null; // Like
     likeCount: number | null; // Int
+    likeNotification: NexusGenRootTypes['LikeNotification'] | null; // LikeNotification
+    likeNotifications: NexusGenRootTypes['LikeNotification'][]; // [LikeNotification!]!
     likes: NexusGenRootTypes['Like'][]; // [Like!]!
     me: NexusGenRootTypes['User'] | null; // User
+    myLikeNotifications: Array<NexusGenRootTypes['LikeNotification'] | null> | null; // [LikeNotification]
     myPosts: Array<NexusGenRootTypes['Post'] | null>; // [Post]!
     post: NexusGenRootTypes['Post'] | null; // Post
     postCount: number | null; // Int
@@ -443,6 +463,7 @@ export interface NexusGenFieldTypes {
     facebookId: string | null; // String
     googleId: string | null; // String
     id: string | null; // String
+    likeNotification: NexusGenRootTypes['LikeNotification'][]; // [LikeNotification!]!
     likes: NexusGenRootTypes['Like'][]; // [Like!]!
     name: string | null; // String
     password: string | null; // String
@@ -490,11 +511,13 @@ export interface NexusGenFieldTypeNames {
     id: 'String'
     like: 'Like'
     likeAuthorId: 'String'
+    message: 'String'
     post: 'Post'
-    postAuthorId: 'String'
     postId: 'String'
     read: 'Boolean'
+    receiver: 'User'
     updatedAt: 'DateTime'
+    userId: 'String'
   }
   Mutation: { // field return type name
     changePassword: 'User'
@@ -522,6 +545,7 @@ export interface NexusGenFieldTypeNames {
     images: 'String'
     likeCount: 'Int'
     likes: 'Like'
+    likesNotifications: 'LikeNotification'
     published: 'Boolean'
     textSnippet: 'String'
     title: 'String'
@@ -534,8 +558,11 @@ export interface NexusGenFieldTypeNames {
     comments: 'Comment'
     like: 'Like'
     likeCount: 'Int'
+    likeNotification: 'LikeNotification'
+    likeNotifications: 'LikeNotification'
     likes: 'Like'
     me: 'User'
+    myLikeNotifications: 'LikeNotification'
     myPosts: 'Post'
     post: 'Post'
     postCount: 'Int'
@@ -560,6 +587,7 @@ export interface NexusGenFieldTypeNames {
     facebookId: 'String'
     googleId: 'String'
     id: 'String'
+    likeNotification: 'LikeNotification'
     likes: 'Like'
     name: 'String'
     password: 'String'
@@ -660,6 +688,11 @@ export interface NexusGenArgTypes {
       skip?: number | null; // Int
       take?: number | null; // Int
     }
+    likesNotifications: { // args
+      cursor?: NexusGenInputs['LikeNotificationWhereUniqueInput'] | null; // LikeNotificationWhereUniqueInput
+      skip?: number | null; // Int
+      take?: number | null; // Int
+    }
   }
   Query: {
     comment: { // args
@@ -674,6 +707,16 @@ export interface NexusGenArgTypes {
     }
     like: { // args
       where: NexusGenInputs['LikeWhereUniqueInput']; // LikeWhereUniqueInput!
+    }
+    likeNotification: { // args
+      where: NexusGenInputs['LikeNotificationWhereUniqueInput']; // LikeNotificationWhereUniqueInput!
+    }
+    likeNotifications: { // args
+      cursor?: NexusGenInputs['LikeNotificationWhereUniqueInput'] | null; // LikeNotificationWhereUniqueInput
+      orderBy?: NexusGenInputs['LikeNotificationOrderByInput'][] | null; // [LikeNotificationOrderByInput!]
+      skip?: number | null; // Int
+      take?: number | null; // Int
+      where?: NexusGenInputs['LikeNotificationWhereInput'] | null; // LikeNotificationWhereInput
     }
     likes: { // args
       cursor?: NexusGenInputs['LikeWhereUniqueInput'] | null; // LikeWhereUniqueInput
@@ -730,6 +773,11 @@ export interface NexusGenArgTypes {
   User: {
     comments: { // args
       cursor?: NexusGenInputs['CommentWhereUniqueInput'] | null; // CommentWhereUniqueInput
+      skip?: number | null; // Int
+      take?: number | null; // Int
+    }
+    likeNotification: { // args
+      cursor?: NexusGenInputs['LikeNotificationWhereUniqueInput'] | null; // LikeNotificationWhereUniqueInput
       skip?: number | null; // Int
       take?: number | null; // Int
     }

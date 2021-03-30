@@ -48,5 +48,6 @@ export const User = objectType({
     t.model.posts()
     t.model.comments()
     t.model.likes()
+    t.model.likeNotification()
   },
 })

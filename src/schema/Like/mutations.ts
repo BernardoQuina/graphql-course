@@ -13,6 +13,14 @@ export const likePost = mutationField('likePost', {
 
     const userId = isAuth(context) as string // It will throw an error otherwise
 
+    const userExists = await context.prisma.user.findUnique({
+      where: { id: userId },
+    })
+
+    if (!userExists) {
+      throw new Error('Authentication required.')
+    }
+
     if (
       !postExists ||
       (!postExists.published && postExists.userId !== userId)
@@ -46,16 +54,16 @@ export const likePost = mutationField('likePost', {
       data: { active: true, postId, userId },
     })
 
-    await context.prisma.likeNotification.create(
-      {
-        data: {
-          createdAt: new Date(),
-          likeAuthorId: userId,
-          postAuthorId: postExists.userId,
-          postId
-        },
-      }
-    )
+    // Send notification to post author
+    await context.prisma.likeNotification.create({
+      data: {
+        userId: postExists.userId,
+        message: `${userExists.name} liked your post.`,
+        createdAt: new Date(),
+        likeAuthorId: userId,
+        postId,
+      },
+    })
 
     return like
   },

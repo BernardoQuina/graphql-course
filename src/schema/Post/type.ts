@@ -14,6 +14,7 @@ export const Post = objectType({
     t.model.userId()
     t.model.comments()
     t.model.likes()
+    t.model.likesNotifications()
 
     t.field('textSnippet', {
       type: 'String',
