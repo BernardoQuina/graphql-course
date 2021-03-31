@@ -1,33 +1,47 @@
 import { list, mutationField, nonNull, stringArg } from 'nexus'
 
-export const markAsRead = mutationField('markAsRead', {
+export const markAsSeen = mutationField('markAsSeen', {
   type: 'Boolean',
   args: {
     notificationsIds: nonNull(list(nonNull(stringArg()))),
   },
   async resolve(_root, { notificationsIds }, context) {
-
-    let error = false
-
     notificationsIds.forEach(async (id) => {
-      const notificationExists = await context.prisma.notification.findUnique(
-        { where: { id } }
-      )
+      const notificationExists = await context.prisma.notification.findUnique({
+        where: { id },
+      })
       if (!notificationExists) {
-        error = true
+        return
       }
 
-      const updated = await context.prisma.notification.update({
+      await context.prisma.notification.update({
         where: { id },
         data: { seen: true },
       })
-      if (!updated) error = true
     })
 
-    if (error) {
-      throw new Error('Could not update notification')
-    }
-
     return true
+  },
+})
+
+export const markAsRead = mutationField('markAsRead', {
+  type: 'Notification',
+  args: {
+    notificationId: nonNull(stringArg()),
+  },
+  async resolve(_root, { notificationId }, context) {
+      const notificationExists = await context.prisma.notification.findUnique({
+        where: { id: notificationId },
+      })
+      if (!notificationExists) {
+        throw new Error('Notification not found.')
+      }
+
+      await context.prisma.notification.update({
+        where: { id: notificationId },
+        data: { read: true },
+      })
+
+    return notificationExists
   },
 })

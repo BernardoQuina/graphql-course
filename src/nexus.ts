@@ -394,7 +394,8 @@ export interface NexusGenFieldTypes {
     likePost: NexusGenRootTypes['Like'] | null; // Like
     loginUser: NexusGenRootTypes['User'] | null; // User
     logoutUser: boolean | null; // Boolean
-    markAsRead: boolean | null; // Boolean
+    markAsRead: NexusGenRootTypes['Notification'] | null; // Notification
+    markAsSeen: boolean | null; // Boolean
     updateComment: NexusGenRootTypes['Comment'] | null; // Comment
     updatePost: NexusGenRootTypes['Post'] | null; // Post
     updateUser: NexusGenRootTypes['User'] | null; // User
@@ -518,7 +519,8 @@ export interface NexusGenFieldTypeNames {
     likePost: 'Like'
     loginUser: 'User'
     logoutUser: 'Boolean'
-    markAsRead: 'Boolean'
+    markAsRead: 'Notification'
+    markAsSeen: 'Boolean'
     updateComment: 'Comment'
     updatePost: 'Post'
     updateUser: 'User'
@@ -653,6 +655,9 @@ export interface NexusGenArgTypes {
       password: string; // String!
     }
     markAsRead: { // args
+      notificationId: string; // String!
+    }
+    markAsSeen: { // args
       notificationsIds: string[]; // [String!]!
     }
     updateComment: { // args
