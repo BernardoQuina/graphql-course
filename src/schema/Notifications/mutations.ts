@@ -6,20 +6,27 @@ export const markAsRead = mutationField('markAsRead', {
     notificationsIds: nonNull(list(nonNull(stringArg()))),
   },
   async resolve(_root, { notificationsIds }, context) {
+
+    let error = false
+
     notificationsIds.forEach(async (id) => {
-      const notificationExists = await context.prisma.likeNotification.findUnique(
+      const notificationExists = await context.prisma.notification.findUnique(
         { where: { id } }
       )
       if (!notificationExists) {
-        throw new Error('Could not find notification.')
+        error = true
       }
 
-      const updated = await context.prisma.likeNotification.update({
+      const updated = await context.prisma.notification.update({
         where: { id },
-        data: { read: true },
+        data: { seen: true },
       })
-      if (!updated) throw new Error('Could not update notification.')
+      if (!updated) error = true
     })
+
+    if (error) {
+      throw new Error('Could not update notification')
+    }
 
     return true
   },

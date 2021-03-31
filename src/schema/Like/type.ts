@@ -10,6 +10,5 @@ export const Like = objectType({
     t.model.userId()
     t.model.post()
     t.model.postId()
-    t.model.notifications()
   },
 })

@@ -1,23 +1,23 @@
 import { list, queryField } from 'nexus'
 import { isAuth } from '../../util/isAuth'
 
-export const likeNotificationQueries = queryField((t) => {
-  t.crud.likeNotification()
-  t.crud.likeNotifications({
+export const NotificationQueries = queryField((t) => {
+  t.crud.notification()
+  t.crud.notifications({
     pagination: true,
     filtering: true,
     ordering: true,
   })
 
-  t.field('myLikeNotifications', {
-    type: list('LikeNotification'),
+  t.field('myNotifications', {
+    type: list('Notification'),
     resolve(_root, _args, context) {
       const userId = isAuth(context, false)
 
       if (!context.req.user && !context.req.session.userId) return null
 
-      return context.prisma.likeNotification.findMany({
-        where: { userId },
+      return context.prisma.notification.findMany({
+        where: { receiverId: userId },
         orderBy: { createdAt: 'desc' },
       })
     },

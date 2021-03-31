@@ -11,34 +11,34 @@ generator client {
 }
 
 model User {
-  id               String             @id @default(uuid())
+  id               String         @id @default(uuid())
   name             String
   password         String?
-  email            String             @unique
-  googleId         String?            @unique
-  facebookId       String?            @unique
+  email            String         @unique
+  googleId         String?        @unique
+  facebookId       String?        @unique
   photo            String?
-  createdAt        DateTime           @default(now())
-  updatedAt        DateTime           @updatedAt
+  createdAt        DateTime       @default(now())
+  updatedAt        DateTime       @updatedAt
   posts            Post[]
   comments         Comment[]
   likes            Like[]
-  likeNotification LikeNotification[]
+  myNotification   Notification[] @relation("receiver")
+  sentNotification Notification[] @relation("dispatcher")
 }
 
 model Post {
-  id                 String             @id @default(uuid())
-  title              String
-  body               String
-  images             String[]
-  published          Boolean
-  createdAt          DateTime           @default(now())
-  updatedAt          DateTime           @updatedAt
-  author             User               @relation(fields: [userId], references: [id])
-  userId             String
-  comments           Comment[]
-  likes              Like[]
-  likesNotifications LikeNotification[]
+  id        String    @id @default(uuid())
+  title     String
+  body      String
+  images    String[]
+  published Boolean
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  author    User      @relation(fields: [userId], references: [id])
+  userId    String
+  comments  Comment[]
+  likes     Like[]
 }
 
 model Comment {
@@ -53,28 +53,27 @@ model Comment {
 }
 
 model Like {
-  active        Boolean
-  createdAt     DateTime           @default(now())
-  updatedAt     DateTime           @updatedAt
-  author        User               @relation(fields: [userId], references: [id])
-  userId        String
-  post          Post               @relation(fields: [postId], references: [id])
-  postId        String
-  notifications LikeNotification[]
+  active    Boolean
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  author    User     @relation(fields: [userId], references: [id])
+  userId    String
+  post      Post     @relation(fields: [postId], references: [id])
+  postId    String
 
   @@id([userId, postId])
 }
 
-model LikeNotification {
+model Notification {
   id           String   @id @default(uuid())
-  receiver     User     @relation(fields: [userId], references: [id])
-  userId       String
-  message      String
+  receiver     User     @relation("receiver", fields: [receiverId], references: [id])
+  receiverId   String
+  dispatcher   User     @relation("dispatcher", fields: [dispatcherId], references: [id])
+  dispatcherId String
+  seen         Boolean  @default(false)
   read         Boolean  @default(false)
+  message      String
+  link         String
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
-  like         Like     @relation(fields: [likeAuthorId, postId], references: [userId, postId])
-  likeAuthorId String
-  post         Post     @relation(fields: [postId], references: [id])
-  postId       String
 }

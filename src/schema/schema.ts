@@ -21,9 +21,9 @@ import { Like } from './Like/type'
 import * as likeQueries from './Like/queries'
 import * as likeMutations from './Like/mutations'
 
-import { LikeNotification } from './LikeNotifications/type'
-import * as likeNotificationQueries from './LikeNotifications/queries'
-import * as likeNotificationMutations from './LikeNotifications/mutations'
+import { Notification } from './Notifications/type'
+import * as notificationQueries from './Notifications/queries'
+import * as notificationMutations from './Notifications/mutations'
 
 // makeSchema defines the GraphQL schema, by combining the GraphQL types defined
 // by the GraphQL Nexus layer or any manually defined GraphQLType objects
@@ -44,9 +44,9 @@ export const schema = makeSchema({
     Like,
     likeQueries,
     likeMutations,
-    LikeNotification,
-    likeNotificationQueries,
-    likeNotificationMutations
+    Notification,
+    notificationQueries,
+    notificationMutations
   },
   // shouldGenerateArtifacts: process.env.NODE_ENV === 'development',
   plugins: [

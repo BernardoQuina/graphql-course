@@ -68,7 +68,6 @@ type Like {
   active: Boolean
   author: User
   createdAt: DateTime
-  notifications(cursor: LikeNotificationWhereUniqueInput, skip: Int, take: Int): [LikeNotification!]!
   post: Post
   postId: String
   updatedAt: DateTime
@@ -79,58 +78,6 @@ input LikeListRelationFilter {
   every: LikeWhereInput
   none: LikeWhereInput
   some: LikeWhereInput
-}
-
-type LikeNotification {
-  createdAt: DateTime
-  id: String
-  like: Like
-  likeAuthorId: String
-  message: String
-  post: Post
-  postId: String
-  read: Boolean
-  receiver: User
-  updatedAt: DateTime
-  userId: String
-}
-
-input LikeNotificationListRelationFilter {
-  every: LikeNotificationWhereInput
-  none: LikeNotificationWhereInput
-  some: LikeNotificationWhereInput
-}
-
-input LikeNotificationOrderByInput {
-  createdAt: SortOrder
-  id: SortOrder
-  likeAuthorId: SortOrder
-  message: SortOrder
-  postId: SortOrder
-  read: SortOrder
-  updatedAt: SortOrder
-  userId: SortOrder
-}
-
-input LikeNotificationWhereInput {
-  AND: [LikeNotificationWhereInput!]
-  NOT: [LikeNotificationWhereInput!]
-  OR: [LikeNotificationWhereInput!]
-  createdAt: DateTimeFilter
-  id: StringFilter
-  like: LikeWhereInput
-  likeAuthorId: StringFilter
-  message: StringFilter
-  post: PostWhereInput
-  postId: StringFilter
-  read: BoolFilter
-  receiver: UserWhereInput
-  updatedAt: DateTimeFilter
-  userId: StringFilter
-}
-
-input LikeNotificationWhereUniqueInput {
-  id: String
 }
 
 input LikeOrderByInput {
@@ -153,7 +100,6 @@ input LikeWhereInput {
   active: BoolFilter
   author: UserWhereInput
   createdAt: DateTimeFilter
-  notifications: LikeNotificationListRelationFilter
   post: PostWhereInput
   postId: StringFilter
   updatedAt: DateTimeFilter
@@ -226,6 +172,59 @@ input NestedStringNullableFilter {
   startsWith: String
 }
 
+type Notification {
+  createdAt: DateTime
+  dispatcher: User
+  dispatcherId: String
+  id: String
+  link: String
+  message: String
+  read: Boolean
+  receiver: User
+  receiverId: String
+  seen: Boolean
+  updatedAt: DateTime
+}
+
+input NotificationListRelationFilter {
+  every: NotificationWhereInput
+  none: NotificationWhereInput
+  some: NotificationWhereInput
+}
+
+input NotificationOrderByInput {
+  createdAt: SortOrder
+  dispatcherId: SortOrder
+  id: SortOrder
+  link: SortOrder
+  message: SortOrder
+  read: SortOrder
+  receiverId: SortOrder
+  seen: SortOrder
+  updatedAt: SortOrder
+}
+
+input NotificationWhereInput {
+  AND: [NotificationWhereInput!]
+  NOT: [NotificationWhereInput!]
+  OR: [NotificationWhereInput!]
+  createdAt: DateTimeFilter
+  dispatcher: UserWhereInput
+  dispatcherId: StringFilter
+  id: StringFilter
+  link: StringFilter
+  message: StringFilter
+  read: BoolFilter
+  receiver: UserWhereInput
+  receiverId: StringFilter
+  seen: BoolFilter
+  updatedAt: DateTimeFilter
+}
+
+input NotificationWhereUniqueInput {
+  id: String
+}
+
 type Post {
   author: User
   body: String
@@ -236,7 +235,6 @@ type Post {
   images: [String!]!
   likeCount: Int
   likes(cursor: LikeWhereUniqueInput, skip: Int, take: Int): [Like!]!
-  likesNotifications(cursor: LikeNotificationWhereUniqueInput, skip: Int, take: Int): [LikeNotification!]!
   published: Boolean
   textSnippet: String
   title: String
@@ -272,7 +270,6 @@ input PostWhereInput {
   id: StringFilter
   images: StringNullableListFilter
   likes: LikeListRelationFilter
-  likesNotifications: LikeNotificationListRelationFilter
   published: BoolFilter
   title: StringFilter
   updatedAt: DateTimeFilter
@@ -289,12 +286,12 @@ type Query {
   comments(cursor: CommentWhereUniqueInput, orderBy: [CommentOrderByInput!], skip: Int, take: Int, where: CommentWhereInput): [Comment!]!
   like(where: LikeWhereUniqueInput!): Like
   likeCount: Int
-  likeNotification(where: LikeNotificationWhereUniqueInput!): LikeNotification
-  likeNotifications(cursor: LikeNotificationWhereUniqueInput, orderBy: [LikeNotificationOrderByInput!], skip: Int, take: Int, where: LikeNotificationWhereInput): [LikeNotification!]!
   likes(cursor: LikeWhereUniqueInput, orderBy: [LikeOrderByInput!], skip: Int, take: Int, where: LikeWhereInput): [Like!]!
   me: User
-  myLikeNotifications: [LikeNotification]
+  myNotifications: [Notification]
   myPosts(skip: Int!, take: Int!): [Post]!
+  notification(where: NotificationWhereUniqueInput!): Notification
+  notifications(cursor: NotificationWhereUniqueInput, orderBy: [NotificationOrderByInput!], skip: Int, take: Int, where: NotificationWhereInput): [Notification!]!
   post(where: PostWhereUniqueInput!): Post
   postCount: Int
   posts(cursor: PostWhereUniqueInput, orderBy: [PostOrderByInput!], skip: Int, take: Int, where: PostWhereInput): [Post!]!
@@ -368,14 +365,15 @@ type User {
   facebookId: String
   googleId: String
   id: String
-  likeNotification(cursor: LikeNotificationWhereUniqueInput, skip: Int, take: Int): [LikeNotification!]!
   likes(cursor: LikeWhereUniqueInput, skip: Int, take: Int): [Like!]!
+  myNotification(cursor: NotificationWhereUniqueInput, skip: Int, take: Int): [Notification!]!
   name: String
 
   """Only logged in user can query it but its hashed anyway"""
   password: String
   photo: String
   posts(cursor: PostWhereUniqueInput, skip: Int, take: Int): [Post!]!
+  sentNotification(cursor: NotificationWhereUniqueInput, skip: Int, take: Int): [Notification!]!
   updatedAt: DateTime
 }
 
@@ -401,12 +399,13 @@ input UserWhereInput {
   facebookId: StringNullableFilter
   googleId: StringNullableFilter
   id: StringFilter
-  likeNotification: LikeNotificationListRelationFilter
   likes: LikeListRelationFilter
+  myNotification: NotificationListRelationFilter
   name: StringFilter
   password: StringNullableFilter
   photo: StringNullableFilter
   posts: PostListRelationFilter
+  sentNotification: NotificationListRelationFilter
   updatedAt: DateTimeFilter
 }
 
