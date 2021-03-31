@@ -5,7 +5,9 @@ import { Session, SessionData } from 'express-session'
 import Redis, { RedisOptions } from 'ioredis'
 
 // Type-safe database client for TypeScript & Node.js (ORM replacement)
-export const prisma = new PrismaClient({ log: ['query'] })
+export const prisma = new PrismaClient({
+  log: process.env.NODE_ENV === 'development' ? ['query'] : undefined,
+})
 
 const redisOptions: RedisOptions = {
   host: process.env.REDIS_DOMAIN_NAME,

@@ -9,9 +9,19 @@ export const createComment = mutationField('createComment', {
     text: nonNull(stringArg()),
   },
   async resolve(_root, { postId, text }, context) {
-    const postExists = await context.prisma.post.findUnique({ where: { id: postId } })
+    const postExists = await context.prisma.post.findUnique({
+      where: { id: postId },
+    })
 
-    const userId = isAuth(context)
+    const userId = isAuth(context) as string
+
+    const userExists = await context.prisma.user.findUnique({
+      where: { id: userId },
+    })
+
+    if (!userExists) {
+      throw new Error('Authentication Required.')
+    }
 
     if (
       !postExists ||
@@ -25,6 +35,20 @@ export const createComment = mutationField('createComment', {
         text,
         author: { connect: { id: userId } },
         post: { connect: { id: postId } },
+      },
+    })
+
+    // send notification to post author
+
+    if (postExists.userId === userId) return createdComment // self like, no notification
+
+    await context.prisma.notification.create({
+      data: {
+        receiverId: postExists.userId,
+        dispatcherId: userId,
+        message: `${userExists.name} replied to your post.`,
+        link: `/post/${postId}`,
+        createdAt: new Date(),
       },
     })
 
@@ -84,7 +108,9 @@ export const deleteComment = mutationField('deleteComment', {
     id: nonNull(stringArg()),
   },
   async resolve(_root, { id }, context) {
-    const commentExists = await context.prisma.comment.findUnique({ where: { id } })
+    const commentExists = await context.prisma.comment.findUnique({
+      where: { id },
+    })
 
     if (!commentExists) {
       throw new Error('Comment not found.')
