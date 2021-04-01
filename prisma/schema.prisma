@@ -20,6 +20,8 @@ model User {
   photo            String?
   createdAt        DateTime       @default(now())
   updatedAt        DateTime       @updatedAt
+  followers        User[]         @relation("UserFollows", references: [id])
+  following        User[]         @relation("UserFollows", references: [id])
   posts            Post[]
   comments         Comment[]
   likes            Like[]

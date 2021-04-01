@@ -118,12 +118,14 @@ type Mutation {
   deleteComment(id: String!): Comment
   deletePost(id: String!): Post
   deleteUser(password: String): User
+  follow(userId: String!): User
   forgotPassword(email: String!): Boolean
   likePost(postId: String!): Like
   loginUser(email: String!, password: String!): User
   logoutUser: Boolean
   markAsRead(notificationId: String!): Notification
   markAsSeen(notificationsIds: [String!]!): Boolean
+  unfollow(userId: String!): User
   updateComment(updateText: String!, whereId: String!): Comment
   updatePost(updateBody: String, updatePublished: Boolean, updateTitle: String, whereId: String!): Post
   updateUser(confirmNewPassword: String, password: String!, updateEmail: String, updateName: String, updatePassword: String, updatePhoto: String): User
@@ -364,6 +366,10 @@ type User {
   createdAt: DateTime
   email: String
   facebookId: String
+  followers(cursor: UserWhereUniqueInput, skip: Int, take: Int): [User!]!
+  followersCount: Int
+  following(cursor: UserWhereUniqueInput, skip: Int, take: Int): [User!]!
+  followingCount: Int
   googleId: String
   id: String
   likes(cursor: LikeWhereUniqueInput, skip: Int, take: Int): [Like!]!
@@ -376,6 +382,12 @@ type User {
   posts(cursor: PostWhereUniqueInput, skip: Int, take: Int): [Post!]!
   sentNotification(cursor: NotificationWhereUniqueInput, skip: Int, take: Int): [Notification!]!
   updatedAt: DateTime
+}
+
+input UserListRelationFilter {
+  every: UserWhereInput
+  none: UserWhereInput
+  some: UserWhereInput
 }
 
 input UserOrderByInput {
@@ -398,6 +410,8 @@ input UserWhereInput {
   createdAt: DateTimeFilter
   email: StringFilter
   facebookId: StringNullableFilter
+  followers: UserListRelationFilter
+  following: UserListRelationFilter
   googleId: StringNullableFilter
   id: StringFilter
   likes: LikeListRelationFilter

@@ -45,10 +45,30 @@ export const User = objectType({
     t.model.photo()
     t.model.createdAt()
     t.model.updatedAt()
+    t.model.followers()
+    t.model.following()
     t.model.posts()
     t.model.comments()
     t.model.likes()
     t.model.myNotification()
     t.model.sentNotification()
+
+    t.field('followersCount', {
+      type: 'Int',
+      resolve(root, _, { prisma }) {
+        return prisma.user.count({
+          where: { following: { some: { id: root.id! } } },
+        })
+      },
+    })
+
+    t.field('followingCount', {
+      type: 'Int',
+      resolve(root, _, { prisma }) {
+        return prisma.user.count({
+          where: { followers: { some: { id: root.id! } } },
+        })
+      },
+    })
   },
 })

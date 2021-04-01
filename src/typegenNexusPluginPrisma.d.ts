@@ -24,7 +24,7 @@ interface PrismaModels {
 interface NexusPrismaInputs {
   Query: {
     users: {
-      filtering: 'AND' | 'OR' | 'NOT' | 'id' | 'name' | 'password' | 'email' | 'googleId' | 'facebookId' | 'photo' | 'createdAt' | 'updatedAt' | 'posts' | 'comments' | 'likes' | 'myNotification' | 'sentNotification'
+      filtering: 'AND' | 'OR' | 'NOT' | 'id' | 'name' | 'password' | 'email' | 'googleId' | 'facebookId' | 'photo' | 'createdAt' | 'updatedAt' | 'followers' | 'following' | 'posts' | 'comments' | 'likes' | 'myNotification' | 'sentNotification'
       ordering: 'id' | 'name' | 'password' | 'email' | 'googleId' | 'facebookId' | 'photo' | 'createdAt' | 'updatedAt'
     }
     posts: {
@@ -45,6 +45,14 @@ interface NexusPrismaInputs {
     }
   },
   User: {
+    followers: {
+      filtering: 'AND' | 'OR' | 'NOT' | 'id' | 'name' | 'password' | 'email' | 'googleId' | 'facebookId' | 'photo' | 'createdAt' | 'updatedAt' | 'followers' | 'following' | 'posts' | 'comments' | 'likes' | 'myNotification' | 'sentNotification'
+      ordering: 'id' | 'name' | 'password' | 'email' | 'googleId' | 'facebookId' | 'photo' | 'createdAt' | 'updatedAt'
+    }
+    following: {
+      filtering: 'AND' | 'OR' | 'NOT' | 'id' | 'name' | 'password' | 'email' | 'googleId' | 'facebookId' | 'photo' | 'createdAt' | 'updatedAt' | 'followers' | 'following' | 'posts' | 'comments' | 'likes' | 'myNotification' | 'sentNotification'
+      ordering: 'id' | 'name' | 'password' | 'email' | 'googleId' | 'facebookId' | 'photo' | 'createdAt' | 'updatedAt'
+    }
     posts: {
       filtering: 'AND' | 'OR' | 'NOT' | 'id' | 'title' | 'body' | 'images' | 'published' | 'createdAt' | 'updatedAt' | 'author' | 'userId' | 'comments' | 'likes'
       ordering: 'id' | 'title' | 'body' | 'images' | 'published' | 'createdAt' | 'updatedAt' | 'userId'
@@ -143,6 +151,8 @@ interface NexusPrismaOutputs {
     photo: 'String'
     createdAt: 'DateTime'
     updatedAt: 'DateTime'
+    followers: 'User'
+    following: 'User'
     posts: 'Post'
     comments: 'Comment'
     likes: 'Like'

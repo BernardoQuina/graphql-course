@@ -237,6 +237,11 @@ export interface NexusGenInputs {
     hasSome?: string[] | null; // [String!]
     isEmpty?: boolean | null; // Boolean
   }
+  UserListRelationFilter: { // input type
+    every?: NexusGenInputs['UserWhereInput'] | null; // UserWhereInput
+    none?: NexusGenInputs['UserWhereInput'] | null; // UserWhereInput
+    some?: NexusGenInputs['UserWhereInput'] | null; // UserWhereInput
+  }
   UserOrderByInput: { // input type
     createdAt?: NexusGenEnums['SortOrder'] | null; // SortOrder
     email?: NexusGenEnums['SortOrder'] | null; // SortOrder
@@ -256,6 +261,8 @@ export interface NexusGenInputs {
     createdAt?: NexusGenInputs['DateTimeFilter'] | null; // DateTimeFilter
     email?: NexusGenInputs['StringFilter'] | null; // StringFilter
     facebookId?: NexusGenInputs['StringNullableFilter'] | null; // StringNullableFilter
+    followers?: NexusGenInputs['UserListRelationFilter'] | null; // UserListRelationFilter
+    following?: NexusGenInputs['UserListRelationFilter'] | null; // UserListRelationFilter
     googleId?: NexusGenInputs['StringNullableFilter'] | null; // StringNullableFilter
     id?: NexusGenInputs['StringFilter'] | null; // StringFilter
     likes?: NexusGenInputs['LikeListRelationFilter'] | null; // LikeListRelationFilter
@@ -390,12 +397,14 @@ export interface NexusGenFieldTypes {
     deleteComment: NexusGenRootTypes['Comment'] | null; // Comment
     deletePost: NexusGenRootTypes['Post'] | null; // Post
     deleteUser: NexusGenRootTypes['User'] | null; // User
+    follow: NexusGenRootTypes['User'] | null; // User
     forgotPassword: boolean | null; // Boolean
     likePost: NexusGenRootTypes['Like'] | null; // Like
     loginUser: NexusGenRootTypes['User'] | null; // User
     logoutUser: boolean | null; // Boolean
     markAsRead: NexusGenRootTypes['Notification'] | null; // Notification
     markAsSeen: boolean | null; // Boolean
+    unfollow: NexusGenRootTypes['User'] | null; // User
     updateComment: NexusGenRootTypes['Comment'] | null; // Comment
     updatePost: NexusGenRootTypes['Post'] | null; // Post
     updateUser: NexusGenRootTypes['User'] | null; // User
@@ -462,6 +471,10 @@ export interface NexusGenFieldTypes {
     createdAt: NexusGenScalars['DateTime'] | null; // DateTime
     email: string | null; // String
     facebookId: string | null; // String
+    followers: NexusGenRootTypes['User'][]; // [User!]!
+    followersCount: number | null; // Int
+    following: NexusGenRootTypes['User'][]; // [User!]!
+    followingCount: number | null; // Int
     googleId: string | null; // String
     id: string | null; // String
     likes: NexusGenRootTypes['Like'][]; // [Like!]!
@@ -515,12 +528,14 @@ export interface NexusGenFieldTypeNames {
     deleteComment: 'Comment'
     deletePost: 'Post'
     deleteUser: 'User'
+    follow: 'User'
     forgotPassword: 'Boolean'
     likePost: 'Like'
     loginUser: 'User'
     logoutUser: 'Boolean'
     markAsRead: 'Notification'
     markAsSeen: 'Boolean'
+    unfollow: 'User'
     updateComment: 'Comment'
     updatePost: 'Post'
     updateUser: 'User'
@@ -587,6 +602,10 @@ export interface NexusGenFieldTypeNames {
     createdAt: 'DateTime'
     email: 'String'
     facebookId: 'String'
+    followers: 'User'
+    followersCount: 'Int'
+    following: 'User'
+    followingCount: 'Int'
     googleId: 'String'
     id: 'String'
     likes: 'Like'
@@ -644,6 +663,9 @@ export interface NexusGenArgTypes {
     deleteUser: { // args
       password?: string | null; // String
     }
+    follow: { // args
+      userId: string; // String!
+    }
     forgotPassword: { // args
       email: string; // String!
     }
@@ -659,6 +681,9 @@ export interface NexusGenArgTypes {
     }
     markAsSeen: { // args
       notificationsIds: string[]; // [String!]!
+    }
+    unfollow: { // args
+      userId: string; // String!
     }
     updateComment: { // args
       updateText: string; // String!
@@ -770,6 +795,16 @@ export interface NexusGenArgTypes {
   User: {
     comments: { // args
       cursor?: NexusGenInputs['CommentWhereUniqueInput'] | null; // CommentWhereUniqueInput
+      skip?: number | null; // Int
+      take?: number | null; // Int
+    }
+    followers: { // args
+      cursor?: NexusGenInputs['UserWhereUniqueInput'] | null; // UserWhereUniqueInput
+      skip?: number | null; // Int
+      take?: number | null; // Int
+    }
+    following: { // args
+      cursor?: NexusGenInputs['UserWhereUniqueInput'] | null; // UserWhereUniqueInput
       skip?: number | null; // Int
       take?: number | null; // Int
     }

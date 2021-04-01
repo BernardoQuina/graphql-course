@@ -316,3 +316,53 @@ export const changePassword = mutationField('changePassword', {
     return updatedUser
   },
 })
+
+export const follow = mutationField('follow', {
+  type: 'User',
+  args: {
+    userId: nonNull(stringArg()),
+  },
+  async resolve(_root, { userId }, context) {
+    const myId = isAuth(context) as string
+
+    const userToFollowExists = await context.prisma.user.findUnique({
+      where: { id: userId },
+    })
+
+    if (!userToFollowExists) {
+      throw new Error('User not found.')
+    }
+
+    await context.prisma.user.update({
+      where: { id: myId },
+      data: { following: { connect: { id: userId } } },
+    })
+
+    return userToFollowExists
+  },
+})
+
+export const unfollow = mutationField('unfollow', {
+  type: 'User',
+  args: {
+    userId: nonNull(stringArg()),
+  },
+  async resolve(_root, { userId }, context) {
+    const myId = isAuth(context) as string
+
+    const userToUnfollowExists = await context.prisma.user.findUnique({
+      where: { id: userId },
+    })
+
+    if (!userToUnfollowExists) {
+      throw new Error('User not found.')
+    }
+
+    await context.prisma.user.update({
+      where: { id: myId },
+      data: { following: { disconnect: { id: userId } } },
+    })
+
+    return userToUnfollowExists
+  },
+})
