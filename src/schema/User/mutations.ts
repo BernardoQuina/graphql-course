@@ -122,7 +122,9 @@ export const updateUser = mutationField('updateUser', {
   ) {
     const userId = isAuth(context)
 
-    const userExists = await context.prisma.user.findUnique({ where: { id: userId } })
+    const userExists = await context.prisma.user.findUnique({
+      where: { id: userId },
+    })
 
     if (!userExists) {
       throw new Error('User not found')
@@ -193,7 +195,9 @@ export const deleteUser = mutationField('deleteUser', {
   async resolve(_root, { password }, context) {
     const userId = isAuth(context)
 
-    const userExists = await context.prisma.user.findUnique({ where: { id: userId } })
+    const userExists = await context.prisma.user.findUnique({
+      where: { id: userId },
+    })
 
     if (!userExists) {
       throw new Error('User not found')
@@ -216,6 +220,12 @@ export const deleteUser = mutationField('deleteUser', {
     await context.prisma.post.deleteMany({ where: { userId } })
     await context.prisma.comment.deleteMany({ where: { userId } })
     await context.prisma.like.deleteMany({ where: { userId } })
+    await context.prisma.notification.deleteMany({
+      where: { receiverId: userId },
+    })
+    await context.prisma.notification.deleteMany({
+      where: { dispatcherId: userId },
+    })
 
     context.pubsub.publish(`user ${userId}`, {
       mutation: 'DELETED',
