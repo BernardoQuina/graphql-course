@@ -467,6 +467,7 @@ export interface NexusGenFieldTypes {
     userSub: NexusGenRootTypes['userSubResponse'] | null; // userSubResponse
   }
   User: { // field return type
+    IFollow: boolean | null; // Boolean
     comments: NexusGenRootTypes['Comment'][]; // [Comment!]!
     createdAt: NexusGenScalars['DateTime'] | null; // DateTime
     email: string | null; // String
@@ -475,6 +476,7 @@ export interface NexusGenFieldTypes {
     followersCount: number | null; // Int
     following: NexusGenRootTypes['User'][]; // [User!]!
     followingCount: number | null; // Int
+    followsMe: boolean | null; // Boolean
     googleId: string | null; // String
     id: string | null; // String
     likes: NexusGenRootTypes['Like'][]; // [Like!]!
@@ -598,6 +600,7 @@ export interface NexusGenFieldTypeNames {
     userSub: 'userSubResponse'
   }
   User: { // field return type name
+    IFollow: 'Boolean'
     comments: 'Comment'
     createdAt: 'DateTime'
     email: 'String'
@@ -606,6 +609,7 @@ export interface NexusGenFieldTypeNames {
     followersCount: 'Int'
     following: 'User'
     followingCount: 'Int'
+    followsMe: 'Boolean'
     googleId: 'String'
     id: 'String'
     likes: 'Like'

@@ -325,6 +325,14 @@ export const follow = mutationField('follow', {
   async resolve(_root, { userId }, context) {
     const myId = isAuth(context) as string
 
+    const userExists = await context.prisma.user.findUnique({
+      where: { id: myId },
+    })
+
+    if (!userExists) {
+      throw new Error('User not found.')
+    }
+
     const userToFollowExists = await context.prisma.user.findUnique({
       where: { id: userId },
     })
@@ -336,6 +344,15 @@ export const follow = mutationField('follow', {
     await context.prisma.user.update({
       where: { id: myId },
       data: { following: { connect: { id: userId } } },
+    })
+
+    await context.prisma.notification.create({
+      data: {
+        receiverId: userId,
+        dispatcherId: myId,
+        message: `${userExists.name} followed you.`,
+        link: `/user/${myId}`,
+      },
     })
 
     return userToFollowExists

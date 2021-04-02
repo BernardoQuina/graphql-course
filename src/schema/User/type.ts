@@ -70,5 +70,40 @@ export const User = objectType({
         })
       },
     })
+
+    t.field('followsMe', {
+      type: 'Boolean',
+      async resolve(root, _, context) {
+        const myId = isAuth(context, false)
+
+        if (!myId) return false
+
+        const followsMe = await context.prisma.user.findFirst({
+          where: { id: root.id!, following: { some: { id: myId } } },
+        })
+
+        if (followsMe) return true
+
+        return false
+      },
+    })
+
+    t.field('IFollow', {
+      type: 'Boolean',
+      async resolve(root, _, context) {
+        const myId = isAuth(context, false)
+
+        if (!myId) return false
+
+
+        const IFollow = await context.prisma.user.findFirst({
+          where: { id: myId, following: { some: { id: root.id! } } },
+        })
+
+        if(IFollow) return true
+
+        return false
+      }
+    })
   },
 })

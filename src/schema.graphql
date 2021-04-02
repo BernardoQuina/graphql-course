@@ -362,6 +362,7 @@ type Subscription {
 }
 
 type User {
+  IFollow: Boolean
   comments(cursor: CommentWhereUniqueInput, skip: Int, take: Int): [Comment!]!
   createdAt: DateTime
   email: String
@@ -370,6 +371,7 @@ type User {
   followersCount: Int
   following(cursor: UserWhereUniqueInput, skip: Int, take: Int): [User!]!
   followingCount: Int
+  followsMe: Boolean
   googleId: String
   id: String
   likes(cursor: LikeWhereUniqueInput, skip: Int, take: Int): [Like!]!
