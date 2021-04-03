@@ -24,8 +24,8 @@ interface PrismaModels {
 interface NexusPrismaInputs {
   Query: {
     users: {
-      filtering: 'AND' | 'OR' | 'NOT' | 'id' | 'name' | 'password' | 'email' | 'googleId' | 'facebookId' | 'photo' | 'createdAt' | 'updatedAt' | 'followers' | 'following' | 'posts' | 'comments' | 'likes' | 'myNotification' | 'sentNotification'
-      ordering: 'id' | 'name' | 'password' | 'email' | 'googleId' | 'facebookId' | 'photo' | 'createdAt' | 'updatedAt'
+      filtering: 'AND' | 'OR' | 'NOT' | 'id' | 'name' | 'password' | 'email' | 'googleId' | 'facebookId' | 'photo' | 'cloudinaryPhoto' | 'createdAt' | 'updatedAt' | 'followers' | 'following' | 'posts' | 'comments' | 'likes' | 'myNotification' | 'sentNotification'
+      ordering: 'id' | 'name' | 'password' | 'email' | 'googleId' | 'facebookId' | 'photo' | 'cloudinaryPhoto' | 'createdAt' | 'updatedAt'
     }
     posts: {
       filtering: 'AND' | 'OR' | 'NOT' | 'id' | 'title' | 'body' | 'images' | 'published' | 'createdAt' | 'updatedAt' | 'author' | 'userId' | 'comments' | 'likes'
@@ -46,12 +46,12 @@ interface NexusPrismaInputs {
   },
   User: {
     followers: {
-      filtering: 'AND' | 'OR' | 'NOT' | 'id' | 'name' | 'password' | 'email' | 'googleId' | 'facebookId' | 'photo' | 'createdAt' | 'updatedAt' | 'followers' | 'following' | 'posts' | 'comments' | 'likes' | 'myNotification' | 'sentNotification'
-      ordering: 'id' | 'name' | 'password' | 'email' | 'googleId' | 'facebookId' | 'photo' | 'createdAt' | 'updatedAt'
+      filtering: 'AND' | 'OR' | 'NOT' | 'id' | 'name' | 'password' | 'email' | 'googleId' | 'facebookId' | 'photo' | 'cloudinaryPhoto' | 'createdAt' | 'updatedAt' | 'followers' | 'following' | 'posts' | 'comments' | 'likes' | 'myNotification' | 'sentNotification'
+      ordering: 'id' | 'name' | 'password' | 'email' | 'googleId' | 'facebookId' | 'photo' | 'cloudinaryPhoto' | 'createdAt' | 'updatedAt'
     }
     following: {
-      filtering: 'AND' | 'OR' | 'NOT' | 'id' | 'name' | 'password' | 'email' | 'googleId' | 'facebookId' | 'photo' | 'createdAt' | 'updatedAt' | 'followers' | 'following' | 'posts' | 'comments' | 'likes' | 'myNotification' | 'sentNotification'
-      ordering: 'id' | 'name' | 'password' | 'email' | 'googleId' | 'facebookId' | 'photo' | 'createdAt' | 'updatedAt'
+      filtering: 'AND' | 'OR' | 'NOT' | 'id' | 'name' | 'password' | 'email' | 'googleId' | 'facebookId' | 'photo' | 'cloudinaryPhoto' | 'createdAt' | 'updatedAt' | 'followers' | 'following' | 'posts' | 'comments' | 'likes' | 'myNotification' | 'sentNotification'
+      ordering: 'id' | 'name' | 'password' | 'email' | 'googleId' | 'facebookId' | 'photo' | 'cloudinaryPhoto' | 'createdAt' | 'updatedAt'
     }
     posts: {
       filtering: 'AND' | 'OR' | 'NOT' | 'id' | 'title' | 'body' | 'images' | 'published' | 'createdAt' | 'updatedAt' | 'author' | 'userId' | 'comments' | 'likes'
@@ -149,6 +149,7 @@ interface NexusPrismaOutputs {
     googleId: 'String'
     facebookId: 'String'
     photo: 'String'
+    cloudinaryPhoto: 'Boolean'
     createdAt: 'DateTime'
     updatedAt: 'DateTime'
     followers: 'User'

@@ -23,6 +23,10 @@ export interface NexusGenInputs {
     equals?: boolean | null; // Boolean
     not?: NexusGenInputs['NestedBoolFilter'] | null; // NestedBoolFilter
   }
+  BoolNullableFilter: { // input type
+    equals?: boolean | null; // Boolean
+    not?: NexusGenInputs['NestedBoolNullableFilter'] | null; // NestedBoolNullableFilter
+  }
   CommentListRelationFilter: { // input type
     every?: NexusGenInputs['CommentWhereInput'] | null; // CommentWhereInput
     none?: NexusGenInputs['CommentWhereInput'] | null; // CommentWhereInput
@@ -96,6 +100,10 @@ export interface NexusGenInputs {
   NestedBoolFilter: { // input type
     equals?: boolean | null; // Boolean
     not?: NexusGenInputs['NestedBoolFilter'] | null; // NestedBoolFilter
+  }
+  NestedBoolNullableFilter: { // input type
+    equals?: boolean | null; // Boolean
+    not?: NexusGenInputs['NestedBoolNullableFilter'] | null; // NestedBoolNullableFilter
   }
   NestedDateTimeFilter: { // input type
     equals?: NexusGenScalars['DateTime'] | null; // DateTime
@@ -243,6 +251,7 @@ export interface NexusGenInputs {
     some?: NexusGenInputs['UserWhereInput'] | null; // UserWhereInput
   }
   UserOrderByInput: { // input type
+    cloudinaryPhoto?: NexusGenEnums['SortOrder'] | null; // SortOrder
     createdAt?: NexusGenEnums['SortOrder'] | null; // SortOrder
     email?: NexusGenEnums['SortOrder'] | null; // SortOrder
     facebookId?: NexusGenEnums['SortOrder'] | null; // SortOrder
@@ -257,6 +266,7 @@ export interface NexusGenInputs {
     AND?: NexusGenInputs['UserWhereInput'][] | null; // [UserWhereInput!]
     NOT?: NexusGenInputs['UserWhereInput'][] | null; // [UserWhereInput!]
     OR?: NexusGenInputs['UserWhereInput'][] | null; // [UserWhereInput!]
+    cloudinaryPhoto?: NexusGenInputs['BoolNullableFilter'] | null; // BoolNullableFilter
     comments?: NexusGenInputs['CommentListRelationFilter'] | null; // CommentListRelationFilter
     createdAt?: NexusGenInputs['DateTimeFilter'] | null; // DateTimeFilter
     email?: NexusGenInputs['StringFilter'] | null; // StringFilter
@@ -337,6 +347,7 @@ export interface NexusGenObjects {
   Query: {};
   Subscription: {};
   User: { // root type
+    cloudinaryPhoto?: boolean | null; // Boolean
     createdAt?: NexusGenScalars['DateTime'] | null; // DateTime
     facebookId?: string | null; // String
     googleId?: string | null; // String
@@ -468,6 +479,7 @@ export interface NexusGenFieldTypes {
   }
   User: { // field return type
     IFollow: boolean | null; // Boolean
+    cloudinaryPhoto: boolean | null; // Boolean
     comments: NexusGenRootTypes['Comment'][]; // [Comment!]!
     createdAt: NexusGenScalars['DateTime'] | null; // DateTime
     email: string | null; // String
@@ -601,6 +613,7 @@ export interface NexusGenFieldTypeNames {
   }
   User: { // field return type name
     IFollow: 'Boolean'
+    cloudinaryPhoto: 'Boolean'
     comments: 'Comment'
     createdAt: 'DateTime'
     email: 'String'

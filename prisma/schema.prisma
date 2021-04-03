@@ -18,6 +18,7 @@ model User {
   googleId         String?        @unique
   facebookId       String?        @unique
   photo            String?
+  cloudinaryPhoto  Boolean?
   createdAt        DateTime       @default(now())
   updatedAt        DateTime       @updatedAt
   followers        User[]         @relation("UserFollows", references: [id])

@@ -38,7 +38,7 @@ export const createUser = mutationField('createUser', {
     const emailTaken = await prisma.user.findUnique({ where: { email } })
 
     if (emailTaken) {
-      throw new Error('An account is already using this email')
+      throw new Error('An account is already using this email.')
     }
 
     const newUser = await prisma.user.create({
@@ -132,28 +132,38 @@ export const updateUser = mutationField('updateUser', {
 
     if (updateEmail || updatePassword) {
       if (!password) {
-        throw new Error('Invalid credentials. 1')
+        throw new Error('Invalid credentials.')
       }
 
       const isMatch = await bcrypt.compare(password, userExists.password!)
 
       if (!isMatch) {
-        throw new Error('Invalid credentials. 2')
+        throw new Error('Invalid credentials.')
       }
     }
 
     let data: {
       email?: string
       photo?: string
+      cloudinaryPhoto?: boolean
       name?: string
       password?: string
     } = {}
 
     if (updatePhoto) {
       data.photo = updatePhoto
+      data.cloudinaryPhoto = true
     }
 
     if (updateEmail) {
+      const emailTaken = await context.prisma.user.findUnique({
+        where: { email: updateEmail },
+      })
+
+      if (emailTaken && updateEmail !== userExists.email) {
+        throw new Error('An account is already using this email.')
+      }
+
       data.email = updateEmail
     }
 
