@@ -101,7 +101,7 @@ export const logoutUser = mutationField('logoutUser', {
 export const updateUser = mutationField('updateUser', {
   type: 'User',
   args: {
-    password: nonNull(stringArg()),
+    password: stringArg(),
     updateName: stringArg(),
     updatePhoto: stringArg(),
     updateEmail: stringArg(),
@@ -130,10 +130,16 @@ export const updateUser = mutationField('updateUser', {
       throw new Error('User not found')
     }
 
-    const isMatch = await bcrypt.compare(password, userExists.password!)
+    if (updateEmail || updatePassword) {
+      if (!password) {
+        throw new Error('Invalid credentials. 1')
+      }
 
-    if (!isMatch) {
-      throw new Error('Invalid credentials.')
+      const isMatch = await bcrypt.compare(password, userExists.password!)
+
+      if (!isMatch) {
+        throw new Error('Invalid credentials. 2')
+      }
     }
 
     let data: {

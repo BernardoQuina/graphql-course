@@ -701,7 +701,7 @@ export interface NexusGenArgTypes {
     }
     updateUser: { // args
       confirmNewPassword?: string | null; // String
-      password: string; // String!
+      password?: string | null; // String
       updateEmail?: string | null; // String
       updateName?: string | null; // String
       updatePassword?: string | null; // String
