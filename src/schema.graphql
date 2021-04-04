@@ -13,14 +13,14 @@ input BoolNullableFilter {
 }
 
 type Comment {
-  author: User
-  createdAt: DateTime
-  id: String
-  post: Post
-  postId: String
-  text: String
-  updatedAt: DateTime
-  userId: String
+  author: User!
+  createdAt: DateTime!
+  id: String!
+  post: Post!
+  postId: String!
+  text: String!
+  updatedAt: DateTime!
+  userId: String!
 }
 
 input CommentListRelationFilter {
@@ -70,13 +70,13 @@ input DateTimeFilter {
 }
 
 type Like {
-  active: Boolean
-  author: User
-  createdAt: DateTime
-  post: Post
-  postId: String
-  updatedAt: DateTime
-  userId: String
+  active: Boolean!
+  author: User!
+  createdAt: DateTime!
+  post: Post!
+  postId: String!
+  updatedAt: DateTime!
+  userId: String!
 }
 
 input LikeListRelationFilter {
@@ -186,17 +186,17 @@ input NestedStringNullableFilter {
 }
 
 type Notification {
-  createdAt: DateTime
-  dispatcher: User
-  dispatcherId: String
-  id: String
-  link: String
-  message: String
-  read: Boolean
-  receiver: User
-  receiverId: String
-  seen: Boolean
-  updatedAt: DateTime
+  createdAt: DateTime!
+  dispatcher: User!
+  dispatcherId: String!
+  id: String!
+  link: String!
+  message: String!
+  read: Boolean!
+  receiver: User!
+  receiverId: String!
+  seen: Boolean!
+  updatedAt: DateTime!
 }
 
 input NotificationListRelationFilter {
@@ -239,20 +239,20 @@ input NotificationWhereUniqueInput {
 }
 
 type Post {
-  author: User
-  body: String
+  author: User!
+  body: String!
   commentCount: Int
   comments(cursor: CommentWhereUniqueInput, skip: Int, take: Int): [Comment!]!
-  createdAt: DateTime
-  id: String
+  createdAt: DateTime!
+  id: String!
   images: [String!]!
   likeCount: Int
   likes(cursor: LikeWhereUniqueInput, skip: Int, take: Int): [Like!]!
-  published: Boolean
+  published: Boolean!
   textSnippet: String
-  title: String
-  updatedAt: DateTime
-  userId: String
+  title: String!
+  updatedAt: DateTime!
+  userId: String!
 }
 
 input PostListRelationFilter {
@@ -375,8 +375,8 @@ type User {
   IFollow: Boolean
   cloudinaryPhoto: Boolean
   comments(cursor: CommentWhereUniqueInput, skip: Int, take: Int): [Comment!]!
-  createdAt: DateTime
-  email: String
+  createdAt: DateTime!
+  email: String!
   facebookId: String
   followers(cursor: UserWhereUniqueInput, skip: Int, take: Int): [User!]!
   followersCount: Int
@@ -384,17 +384,17 @@ type User {
   followingCount: Int
   followsMe: Boolean
   googleId: String
-  id: String
+  id: String!
   likes(cursor: LikeWhereUniqueInput, skip: Int, take: Int): [Like!]!
   myNotification(cursor: NotificationWhereUniqueInput, skip: Int, take: Int): [Notification!]!
-  name: String
+  name: String!
 
   """Only logged in user can query it but its hashed anyway"""
   password: String
   photo: String
   posts(cursor: PostWhereUniqueInput, skip: Int, take: Int): [Post!]!
   sentNotification(cursor: NotificationWhereUniqueInput, skip: Int, take: Int): [Notification!]!
-  updatedAt: DateTime
+  updatedAt: DateTime!
 }
 
 input UserListRelationFilter {

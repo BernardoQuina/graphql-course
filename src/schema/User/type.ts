@@ -1,4 +1,3 @@
-import { User as UserDef } from '@prisma/client' // From prisma User model
 import { objectType } from 'nexus'
 import { isAuth } from '../../util/isAuth'
 
@@ -8,8 +7,8 @@ export const User = objectType({
     t.model.id()
     t.model.name()
     t.model.email({
-      async resolve(_root: UserDef, args, ctx, info, originalResolver) {
-        const res = await originalResolver(_root, args, ctx, info)
+      async resolve(_root, args, ctx, info, originalResolver) {
+        const res = originalResolver(_root, args, ctx, info)
         const userId = isAuth(ctx, false)
 
         // info.operation.selectionSet.selections[0].name.value
@@ -25,19 +24,19 @@ export const User = objectType({
         ) {
           return res
         }
-        return null
+        return 'Not authorized.'
       },
     })
     t.model.password({
       description: 'Only logged in user can query it but its hashed anyway',
-      async resolve(_root: UserDef, args, ctx, info, originalResolver) {
-        const res = await originalResolver(_root, args, ctx, info)
+      async resolve(_root, args, ctx, info, originalResolver) {
+        const res = originalResolver(_root, args, ctx, info)
         const userId = isAuth(ctx, false)
 
         if (userId === _root.id) {
           return res
         }
-        return null
+        return 'Not authorized.'
       },
     })
     t.model.googleId()

@@ -308,53 +308,53 @@ export interface NexusGenScalars {
 
 export interface NexusGenObjects {
   Comment: { // root type
-    createdAt?: NexusGenScalars['DateTime'] | null; // DateTime
-    id?: string | null; // String
-    postId?: string | null; // String
-    text?: string | null; // String
-    updatedAt?: NexusGenScalars['DateTime'] | null; // DateTime
-    userId?: string | null; // String
+    createdAt: NexusGenScalars['DateTime']; // DateTime!
+    id: string; // String!
+    postId: string; // String!
+    text: string; // String!
+    updatedAt: NexusGenScalars['DateTime']; // DateTime!
+    userId: string; // String!
   }
   Like: { // root type
-    active?: boolean | null; // Boolean
-    createdAt?: NexusGenScalars['DateTime'] | null; // DateTime
-    postId?: string | null; // String
-    updatedAt?: NexusGenScalars['DateTime'] | null; // DateTime
-    userId?: string | null; // String
+    active: boolean; // Boolean!
+    createdAt: NexusGenScalars['DateTime']; // DateTime!
+    postId: string; // String!
+    updatedAt: NexusGenScalars['DateTime']; // DateTime!
+    userId: string; // String!
   }
   Mutation: {};
   Notification: { // root type
-    createdAt?: NexusGenScalars['DateTime'] | null; // DateTime
-    dispatcherId?: string | null; // String
-    id?: string | null; // String
-    link?: string | null; // String
-    message?: string | null; // String
-    read?: boolean | null; // Boolean
-    receiverId?: string | null; // String
-    seen?: boolean | null; // Boolean
-    updatedAt?: NexusGenScalars['DateTime'] | null; // DateTime
+    createdAt: NexusGenScalars['DateTime']; // DateTime!
+    dispatcherId: string; // String!
+    id: string; // String!
+    link: string; // String!
+    message: string; // String!
+    read: boolean; // Boolean!
+    receiverId: string; // String!
+    seen: boolean; // Boolean!
+    updatedAt: NexusGenScalars['DateTime']; // DateTime!
   }
   Post: { // root type
-    body?: string | null; // String
-    createdAt?: NexusGenScalars['DateTime'] | null; // DateTime
-    id?: string | null; // String
+    body: string; // String!
+    createdAt: NexusGenScalars['DateTime']; // DateTime!
+    id: string; // String!
     images: string[]; // [String!]!
-    published?: boolean | null; // Boolean
-    title?: string | null; // String
-    updatedAt?: NexusGenScalars['DateTime'] | null; // DateTime
-    userId?: string | null; // String
+    published: boolean; // Boolean!
+    title: string; // String!
+    updatedAt: NexusGenScalars['DateTime']; // DateTime!
+    userId: string; // String!
   }
   Query: {};
   Subscription: {};
   User: { // root type
     cloudinaryPhoto?: boolean | null; // Boolean
-    createdAt?: NexusGenScalars['DateTime'] | null; // DateTime
+    createdAt: NexusGenScalars['DateTime']; // DateTime!
     facebookId?: string | null; // String
     googleId?: string | null; // String
-    id?: string | null; // String
-    name?: string | null; // String
+    id: string; // String!
+    name: string; // String!
     photo?: string | null; // String
-    updatedAt?: NexusGenScalars['DateTime'] | null; // DateTime
+    updatedAt: NexusGenScalars['DateTime']; // DateTime!
   }
   commentSubResponse: { // root type
     data?: NexusGenRootTypes['Comment'] | null; // Comment
@@ -382,23 +382,23 @@ export type NexusGenAllTypes = NexusGenRootTypes & NexusGenScalars & NexusGenEnu
 
 export interface NexusGenFieldTypes {
   Comment: { // field return type
-    author: NexusGenRootTypes['User'] | null; // User
-    createdAt: NexusGenScalars['DateTime'] | null; // DateTime
-    id: string | null; // String
-    post: NexusGenRootTypes['Post'] | null; // Post
-    postId: string | null; // String
-    text: string | null; // String
-    updatedAt: NexusGenScalars['DateTime'] | null; // DateTime
-    userId: string | null; // String
+    author: NexusGenRootTypes['User']; // User!
+    createdAt: NexusGenScalars['DateTime']; // DateTime!
+    id: string; // String!
+    post: NexusGenRootTypes['Post']; // Post!
+    postId: string; // String!
+    text: string; // String!
+    updatedAt: NexusGenScalars['DateTime']; // DateTime!
+    userId: string; // String!
   }
   Like: { // field return type
-    active: boolean | null; // Boolean
-    author: NexusGenRootTypes['User'] | null; // User
-    createdAt: NexusGenScalars['DateTime'] | null; // DateTime
-    post: NexusGenRootTypes['Post'] | null; // Post
-    postId: string | null; // String
-    updatedAt: NexusGenScalars['DateTime'] | null; // DateTime
-    userId: string | null; // String
+    active: boolean; // Boolean!
+    author: NexusGenRootTypes['User']; // User!
+    createdAt: NexusGenScalars['DateTime']; // DateTime!
+    post: NexusGenRootTypes['Post']; // Post!
+    postId: string; // String!
+    updatedAt: NexusGenScalars['DateTime']; // DateTime!
+    userId: string; // String!
   }
   Mutation: { // field return type
     changePassword: NexusGenRootTypes['User'] | null; // User
@@ -421,33 +421,33 @@ export interface NexusGenFieldTypes {
     updateUser: NexusGenRootTypes['User'] | null; // User
   }
   Notification: { // field return type
-    createdAt: NexusGenScalars['DateTime'] | null; // DateTime
-    dispatcher: NexusGenRootTypes['User'] | null; // User
-    dispatcherId: string | null; // String
-    id: string | null; // String
-    link: string | null; // String
-    message: string | null; // String
-    read: boolean | null; // Boolean
-    receiver: NexusGenRootTypes['User'] | null; // User
-    receiverId: string | null; // String
-    seen: boolean | null; // Boolean
-    updatedAt: NexusGenScalars['DateTime'] | null; // DateTime
+    createdAt: NexusGenScalars['DateTime']; // DateTime!
+    dispatcher: NexusGenRootTypes['User']; // User!
+    dispatcherId: string; // String!
+    id: string; // String!
+    link: string; // String!
+    message: string; // String!
+    read: boolean; // Boolean!
+    receiver: NexusGenRootTypes['User']; // User!
+    receiverId: string; // String!
+    seen: boolean; // Boolean!
+    updatedAt: NexusGenScalars['DateTime']; // DateTime!
   }
   Post: { // field return type
-    author: NexusGenRootTypes['User'] | null; // User
-    body: string | null; // String
+    author: NexusGenRootTypes['User']; // User!
+    body: string; // String!
     commentCount: number | null; // Int
     comments: NexusGenRootTypes['Comment'][]; // [Comment!]!
-    createdAt: NexusGenScalars['DateTime'] | null; // DateTime
-    id: string | null; // String
+    createdAt: NexusGenScalars['DateTime']; // DateTime!
+    id: string; // String!
     images: string[]; // [String!]!
     likeCount: number | null; // Int
     likes: NexusGenRootTypes['Like'][]; // [Like!]!
-    published: boolean | null; // Boolean
+    published: boolean; // Boolean!
     textSnippet: string | null; // String
-    title: string | null; // String
-    updatedAt: NexusGenScalars['DateTime'] | null; // DateTime
-    userId: string | null; // String
+    title: string; // String!
+    updatedAt: NexusGenScalars['DateTime']; // DateTime!
+    userId: string; // String!
   }
   Query: { // field return type
     comment: NexusGenRootTypes['Comment'] | null; // Comment
@@ -481,8 +481,8 @@ export interface NexusGenFieldTypes {
     IFollow: boolean | null; // Boolean
     cloudinaryPhoto: boolean | null; // Boolean
     comments: NexusGenRootTypes['Comment'][]; // [Comment!]!
-    createdAt: NexusGenScalars['DateTime'] | null; // DateTime
-    email: string | null; // String
+    createdAt: NexusGenScalars['DateTime']; // DateTime!
+    email: string; // String!
     facebookId: string | null; // String
     followers: NexusGenRootTypes['User'][]; // [User!]!
     followersCount: number | null; // Int
@@ -490,15 +490,15 @@ export interface NexusGenFieldTypes {
     followingCount: number | null; // Int
     followsMe: boolean | null; // Boolean
     googleId: string | null; // String
-    id: string | null; // String
+    id: string; // String!
     likes: NexusGenRootTypes['Like'][]; // [Like!]!
     myNotification: NexusGenRootTypes['Notification'][]; // [Notification!]!
-    name: string | null; // String
+    name: string; // String!
     password: string | null; // String
     photo: string | null; // String
     posts: NexusGenRootTypes['Post'][]; // [Post!]!
     sentNotification: NexusGenRootTypes['Notification'][]; // [Notification!]!
-    updatedAt: NexusGenScalars['DateTime'] | null; // DateTime
+    updatedAt: NexusGenScalars['DateTime']; // DateTime!
   }
   commentSubResponse: { // field return type
     data: NexusGenRootTypes['Comment'] | null; // Comment
